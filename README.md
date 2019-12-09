@@ -7,4 +7,4 @@ is developed using the Django REST framework, while for its front-end side is us
 Compared with the similar tools available online, Procode integrates a <strong>machine learning</strong> technique to support its users
 coding the occupations. Over time, its training dataset will grow and improve the coding accuracy.
 
-The tool URL (from Jan 2020): www.pro-code.ch
+Available at URL (from Jan 2020): www.pro-code.ch
