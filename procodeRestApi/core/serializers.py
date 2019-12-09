@@ -112,7 +112,7 @@ class SchemeSerializer(serializers.ModelSerializer):
             else:
                 print(obj_for_update_ser.errors)
             
-        return super().update(validated_data)
+        return super().update(validated_data) 
         
 
 class ClassificationSerializer(serializers.ModelSerializer):

@@ -17,7 +17,7 @@ class Scheme(models.Model):
     dscr = models.CharField(
         max_length=255,
         blank=True, 
-        verbose_name="Description (optional)") 
+        verbose_name="Description (optional)")  
 
     def __str__(self):
         return self.name

@@ -9,6 +9,6 @@ core_router.register(r'classification', ClassificationViewSet)
 core_router.register(r'translation', TranslationViewSet)
 core_router.register(r'data', DataViewSet)
 
-# end-user endpoints ---------------------------------
+# end-user endpoints --------------------------------- 
 
 urlpatterns = core_router.urls
