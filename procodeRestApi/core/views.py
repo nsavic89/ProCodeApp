@@ -3,7 +3,7 @@ from .models import *
 from .serializers import *
 
 
-# Admin pages ----------------------------------
+# Administrator's pages ----------------------------------
 
 class SchemeViewSet(viewsets.ModelViewSet):
     queryset = Scheme.objects.all()

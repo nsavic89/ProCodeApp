@@ -37,7 +37,13 @@ class Classification(models.Model):
     title_it = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
-        return '{}: {}'.format(self.code, self.title)
+        if self.title != "":
+            return '{}: {}'.format(self.code, self.title)
+        
+        elif self.title_fr != "":
+            return '{}: {}'.format(self.code, self.title_fr)
+
+        return '{}: {}'.format(self.code, self.title_ge)
 
 class Translation(models.Model):
     # translation between two classification entries
@@ -57,16 +63,16 @@ class Data(models.Model):
     # uploaded by admin or sent as feedback from user
     scheme = models.ForeignKey(
         Scheme,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name="Classification scheme"
     )
     code = models.ForeignKey(
         Classification,
         on_delete=models.CASCADE
     )
-    data = models.CharField(max_length=255)
-    data_tokens = models.CharField(max_length=255)
-    lng = models.CharField(max_length=15)
-
+    text = models.CharField(max_length=255)
+    tokens = models.CharField(max_length=255)
+    lng = models.CharField(max_length=2)
 
 
 # User's models ----------------------------------

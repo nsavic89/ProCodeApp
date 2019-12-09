@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.response import Response
+from rest_framework import status
 from .models import *
 import xlrd
 
@@ -129,3 +131,30 @@ class DataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Data
         fields = '__all__'
+
+    LANG = [
+        ('en', 'English'),
+        ('ge', 'German'),
+        ('fr', 'French'),
+        ('it', 'Italian')
+    ]
+    lng = serializers.ChoiceField(
+        choices=LANG,
+        label="Language")
+    
+    # since data_tokens is required in model
+    # we make its validation to read_only and thus not required
+    # but actually it is -> but after it is passed through create
+    # we pass data (raw text) through tokenization and then save
+    tokens = serializers.CharField(read_only=True)
+
+    def create(self, validated_data):
+        tokens = "test"
+        data_ser = DataSerializer(data=validated_data)
+        
+        if data_ser.is_valid():
+            data_ser.save(tokens=tokens)
+            return Response(data_ser.data, status=status.HTTP_201_CREATED)
+
+        print(data_ser.errors)
+        return Response("Error", status=status.HTTP_400_BAD_REQUEST)
