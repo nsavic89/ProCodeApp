@@ -9,14 +9,18 @@ class Scheme(models.Model):
     # includes details on the given scheme: year, version ...
     name = models.CharField(max_length=50)
     stype = models.CharField(
-        max_length=25,
-        verbose_name="Scheme type")
+        max_length=1,
+        verbose_name="Scheme type"
+    )
     version = models.CharField(max_length=10, blank=True)
     year = models.CharField(max_length=4, blank=True)
     dscr = models.CharField(
         max_length=255,
         blank=True, 
-        verbose_name="Description (optional)")
+        verbose_name="Description (optional)") 
+
+    def __str__(self):
+        return self.name
 
 class Classification(models.Model):
     # one classification entry for Scheme
@@ -25,12 +29,15 @@ class Classification(models.Model):
         Scheme,
         on_delete=models.CASCADE
     )
-    parent = models.CharField(max_length=25)
+    parent = models.CharField(max_length=25, verbose_name="Parent code")
     code = models.CharField(max_length=25)
     title = models.CharField(max_length=255, blank=True)
     title_ge = models.CharField(max_length=255, blank=True)
     title_fr = models.CharField(max_length=255, blank=True)
     title_it = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return '{}: {}'.format(self.code, self.title)
 
 class Translation(models.Model):
     # translation between two classification entries
@@ -71,6 +78,9 @@ class MyFile(models.Model):
     name = models.CharField(max_length=50)
     date = models.DateField(auto_now_add=True)
     dscr = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return self.name
 
 class MyData(models.Model):
     # contains user's files' data
