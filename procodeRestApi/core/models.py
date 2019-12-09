@@ -8,10 +8,15 @@ class Scheme(models.Model):
     # classification scheme of occupations or economic sectors
     # includes details on the given scheme: year, version ...
     name = models.CharField(max_length=50)
-    stype = models.CharField(max_length=25)
+    stype = models.CharField(
+        max_length=25,
+        verbose_name="Scheme type")
     version = models.CharField(max_length=10, blank=True)
     year = models.CharField(max_length=4, blank=True)
-    dscr = models.CharField(max_length=255, blank=True)
+    dscr = models.CharField(
+        max_length=255,
+        blank=True, 
+        verbose_name="Description (optional)")
 
 class Classification(models.Model):
     # one classification entry for Scheme
@@ -35,7 +40,7 @@ class Translation(models.Model):
         related_name="starting",
         on_delete=models.CASCADE
     )
-    outcome = models.ManyToManyField(
+    output = models.ManyToManyField(
         Classification,
         related_name="outcome"
     )
@@ -77,6 +82,41 @@ class MyData(models.Model):
         on_delete=models.CASCADE
     ) 
     data = models.TextField()
-    code = models.ManyToManyField(
+
+# desired to keep track of previous codings and transcodings
+# foreign keys (coding): MyFile, Scheme, Classification
+# many Classification instances may be result
+# variable in Coding is column name that was coded (from MyData.data["variable_x"])
+class Coding(models.Model):
+    my_file = models.ForeignKey(
+        MyFile,
+        on_delete=models.CASCADE
+    )
+    scheme = models.ForeignKey(
+        Scheme,
+        on_delete=models.CASCADE
+    )
+    variable = models.CharField(max_length=50)
+    output = models.ManyToManyField(
+        Classification
+    )
+
+class Transcoding(models.Model):
+    my_file = models.ForeignKey(
+        MyFile,
+        on_delete=models.CASCADE
+    )
+    scheme_starting = models.ForeignKey(
+        Scheme,
+        on_delete=models.CASCADE,
+        related_name="starting"
+    )
+    scheme_output = models.ForeignKey(
+        Scheme,
+        on_delete=models.CASCADE,
+        related_name="output"
+    )
+    variable = models.CharField(max_length=50)
+    output = models.ManyToManyField(
         Classification
     )
