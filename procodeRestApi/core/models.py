@@ -4,14 +4,14 @@ from django.db import models
 # Administrator's data --------------------------------------
 # The admin uploads Scheme, Classification, Translations and Training data
 
+# this is required when saving new Data instance (see below)
+from .coding import get_tokens
+
 class Scheme(models.Model):
     # classification scheme of occupations or economic sectors
     # includes details on the given scheme: year, version ...
     name = models.CharField(max_length=50)
-    stype = models.CharField(
-        max_length=1,
-        verbose_name="Scheme type"
-    )
+    stype = models.CharField(max_length=1)
     version = models.CharField(max_length=10, blank=True)
     year = models.CharField(max_length=4, blank=True)
     dscr = models.CharField(
@@ -35,6 +35,25 @@ class Classification(models.Model):
     title_ge = models.CharField(max_length=255, blank=True)
     title_fr = models.CharField(max_length=255, blank=True)
     title_it = models.CharField(max_length=255, blank=True)
+
+    # tokens for titles -> see the next comment
+    tokens = models.CharField(max_length=255, blank=True)
+    tokens_ge = models.CharField(max_length=255, blank=True)
+    tokens_fr = models.CharField(max_length=255, blank=True)
+    tokens_it = models.CharField(max_length=255, blank=True)
+
+    # we need to get tokens at this point when saving new instance
+    # to save time when later we run CNB algorithm...then we have already tokens
+    def set_tokens(self):
+        self.tokens = get_tokens(self.title, 'en')
+        self.tokens_ge = get_tokens(self.title_ge, 'ge')
+        self.tokens_fr = get_tokens(self.title_fr, 'fr')
+        self.tokens_it = get_tokens(self.title_it, 'it')
+
+    # before saving needed to tokenize titles
+    def save(self, *args, **kwargs):
+        self.set_tokens()
+        super(Classification, self).save(*args, **kwargs)
 
     def __str__(self):
         if self.title != "":
@@ -73,6 +92,14 @@ class Data(models.Model):
     text = models.CharField(max_length=255)
     tokens = models.CharField(max_length=255)
     lng = models.CharField(max_length=2)
+
+    # get tokens for self.text
+    def set_tokens(self):
+        self.tokens = get_tokens(self.text, self.lng)
+
+    def save(self, *args, **kwargs):
+        self.set_tokens()
+        super(Data, self).save(*args, **kwargs)
 
 
 # User's models ----------------------------------

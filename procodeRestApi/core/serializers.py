@@ -17,8 +17,12 @@ class SchemeSerializer(serializers.ModelSerializer):
         ('E', 'Economic sectors')
     ]
 
-    excel = serializers.FileField(write_only=True)
-    stype = serializers.ChoiceField(choices=CHOICES)
+    excel = serializers.FileField(
+        write_only=True, label="MS Excel file")
+
+    stype = serializers.ChoiceField(
+        choices=CHOICES,
+        label="Scheme type")
 
     class Meta:
         model = Scheme
@@ -127,6 +131,7 @@ class TranslationSerializer(serializers.ModelSerializer):
         model = Translation
         fields = '__all__'
 
+# Machine learning data -> train CNB
 class DataSerializer(serializers.ModelSerializer):
     class Meta:
         model = Data
@@ -148,13 +153,3 @@ class DataSerializer(serializers.ModelSerializer):
     # we pass data (raw text) through tokenization and then save
     tokens = serializers.CharField(read_only=True)
 
-    def create(self, validated_data):
-        tokens = "test"
-        data_ser = DataSerializer(data=validated_data)
-        
-        if data_ser.is_valid():
-            data_ser.save(tokens=tokens)
-            return Response(data_ser.data, status=status.HTTP_201_CREATED)
-
-        print(data_ser.errors)
-        return Response("Error", status=status.HTTP_400_BAD_REQUEST)
