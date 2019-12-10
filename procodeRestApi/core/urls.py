@@ -1,5 +1,6 @@
 from rest_framework import routers
 from .views import *
+from django.urls import path, include
 
 core_router = routers.DefaultRouter()
 
@@ -11,4 +12,8 @@ core_router.register(r'data', DataViewSet)
 
 # end-user endpoints --------------------------------- 
 
-urlpatterns = core_router.urls
+urlpatterns = [
+    path('', include(core_router.urls)),
+    path('upload-view/', UploadView.as_view()),
+    path('scheme-upload-view/', SchemeUploadView.as_view())
+]
