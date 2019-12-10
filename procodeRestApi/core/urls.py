@@ -12,8 +12,12 @@ core_router.register(r'data', DataViewSet)
 
 # end-user endpoints --------------------------------- 
 
+
+
+
+
+
 urlpatterns = [
     path('', include(core_router.urls)),
-    path('upload-view/', UploadView.as_view()),
-    path('scheme-upload-view/', SchemeUploadView.as_view())
+    path('scheme-upload/', SchemeUploadView.as_view())
 ]

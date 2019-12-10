@@ -5,23 +5,35 @@ from .models import *
 import xlrd
 
 
+# Language choices
+LANG = [
+        ('en', 'English'),
+        ('ge', 'German'),
+        ('fr', 'French'),
+        ('it', 'Italian')
+    ]
+
+# Schemes choices
+SCHEMES = [(s.id, s.name) for s in Scheme.objects.all()]
+
 # Admin: Scheme, Classification, Translation, Data
 # User: MyFile, MyData
 
 # Serializers for upload
 class SchemeUploadSerializer(serializers.Serializer):
-    CHOICES = [
-        (
-            scheme.id,
-            scheme.name
-        ) for scheme in Scheme.objects.all()]
-        
-    scheme = serializers.ChoiceField(
-        choices=CHOICES
-    )
-
+    scheme = serializers.ChoiceField(choices=SCHEMES)
     excel = serializers.FileField(
         write_only=True, label="MS Excel file")
+
+# Machine learning data for a scheme upload from Excel
+class DataUploadSerializer(serializers.Serializer):
+    scheme = serializers.ChoiceField(choices=SCHEMES)
+    excel = serializers.FileField(
+        write_only=True, label="MS Excel file")
+
+    lng = serializers.ChoiceField(
+        choices=LANG, label="Language")
+
 
 # Serializers for viewsets
 class SchemeSerializer(serializers.ModelSerializer):
@@ -55,12 +67,6 @@ class DataSerializer(serializers.ModelSerializer):
         model = Data
         fields = '__all__'
 
-    LANG = [
-        ('en', 'English'),
-        ('ge', 'German'),
-        ('fr', 'French'),
-        ('it', 'Italian')
-    ]
     lng = serializers.ChoiceField(
         choices=LANG,
         label="Language")

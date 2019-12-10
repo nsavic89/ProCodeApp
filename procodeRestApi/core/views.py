@@ -13,6 +13,8 @@ class UploadView(APIView):
         For scheme/classification, data and mydata
         we need to read excel files and save the data
         in a single step, instead of one entry at time
+
+        This class is not used as view in urls.py -> no end-point
     """
     def read_excel(self):
         # read excel file and the first sheet
@@ -54,17 +56,74 @@ class UploadView(APIView):
         self.excel = request.data['excel']
         self.read_excel()
 
+        # data decoded from ms excel
+        data = self.data_list
+
+        # foreign key in the given model
+        # for classification, e.g., we must know scheme
+        if self.parent is not None:
+            parent_id = request.data[self.parent]
+            
+            # add parent id to each row from excel
+            # which is now decoded in self.data_list
+            for e in data:
+                e[self.parent] = parent_id
+
+                # exception for Data
+                # two foreign keys -> the second need to be interpreted
+                # -----------------------------------------------------
+                if self.__class__.__name__ == "DataUploadView":
+                    try:
+                        classification = Classification.objects.get(
+                            code=e['code']
+                        )
+                        e['code'] = classification.id
+                    except:
+                        print('Code not found in table Classification')
+                        e['code'] = False
+
+                # -----------------------------------------------------
+
+        if self.__class__.__name__ == "DataUploadView":
+            data = [d for d in data if d['code'] != False]
+            
+        # now serialization and saving
+        data_serialized = self.model_serializer(data=data, many=True)
+
+        if data_serialized.is_valid():
+            data_serialized.save()
+            return Response(data_serialized.data, status=status.HTTP_201_CREATED)
+            
+        # if something wrong
+        print(data_serialized.errors)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 
 # Administrator's pages ----------------------------------
 
-# views based on UploadExcelView
+# Views based on UploadExcelView
+
 class SchemeUploadView(UploadView):
+    """
+        Upload all classification data at once
+    """
     serializer_class = SchemeUploadSerializer
+    model_serializer = ClassificationSerializer
     parent = "scheme"
 
+class DataUploadView(UploadView):
+    """
+        Upload training data for machine learning
+        for a given Scheme and language
+    """
+    serializer_class = DataUploadSerializer
+    model_serializer = DataSerializer
+    parent = 'scheme'
 
-# viewsets
+
+
+# Viewsets
 
 class SchemeViewSet(viewsets.ModelViewSet):
     queryset = Scheme.objects.all()
