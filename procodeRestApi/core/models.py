@@ -139,11 +139,7 @@ class MyData(models.Model):
 
     # results of coding/transcoding
     # when transcoded -> code takes transcoded values
-    code = models.ForeignKey(
-        Classification,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True)
+    code = models.ManyToManyField(Classification)
 
     def __str__(self):
         return '{} {} {} {} {}'.format(
@@ -153,40 +149,19 @@ class MyData(models.Model):
             self.var4,
             self.var5)
 
-# desired to keep track of previous codings and transcodings
+# desired to keep track of previous codings
 # foreign keys (coding): MyFile, Scheme, Classification
 # many Classification instances may be result
-# variable in Coding is column name that was coded (from MyData.data["variable_x"])
-class Coding(models.Model):
-    my_file = models.ForeignKey(
-        MyFile,
-        on_delete=models.CASCADE
-    )
+class MyCoding(models.Model):
     scheme = models.ForeignKey(
         Scheme,
         on_delete=models.CASCADE
     )
-    variable = models.CharField(max_length=50)
-    output = models.ManyToManyField(
-        Classification
-    )
+    text = models.CharField(max_length=255)
+    output = models.ManyToManyField(Classification)
 
-class Transcoding(models.Model):
-    my_file = models.ForeignKey(
-        MyFile,
-        on_delete=models.CASCADE
-    )
-    scheme_starting = models.ForeignKey(
-        Scheme,
-        on_delete=models.CASCADE,
-        related_name="starting"
-    )
-    scheme_output = models.ForeignKey(
-        Scheme,
-        on_delete=models.CASCADE,
-        related_name="output"
-    )
-    variable = models.CharField(max_length=50)
+class MyTranscoding(models.Model):
+    starting = models.ForeignKey(
+        Classification, related_name="starting")
     output = models.ManyToManyField(
-        Classification
-    )
+        Classification, related_name="output")
