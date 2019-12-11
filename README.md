@@ -8,3 +8,9 @@ Compared with the similar tools available online, Procode integrates a <strong>m
 coding the occupations. Over time, its training dataset will grow and improve the coding accuracy.
 
 Available at URL (from Jan 2020): www.pro-code.ch
+
+<h3>Built with</h3>
+<ul>
+  <li><strong>Django REST framework:</strong>  Python web framework (server-side)</li>
+  <li><strong>React.js:</strong> JavaScript framework (client- or browser-side)</li>
+</ul>
