@@ -5,7 +5,7 @@ from django.db import models
 # The admin uploads Scheme, Classification, Translations and Training data
 
 # this is required when saving new Data instance (see below)
-from .coding import get_tokens
+from .tokenization import get_tokens
 
 class Scheme(models.Model):
     # classification scheme of occupations or economic sectors
@@ -31,6 +31,7 @@ class Classification(models.Model):
     )
     parent = models.CharField(max_length=25, verbose_name="Parent code")
     code = models.CharField(max_length=25)
+    level = models.CharField(max_length=1)
     title = models.CharField(max_length=255, blank=True)
     title_ge = models.CharField(max_length=255, blank=True)
     title_fr = models.CharField(max_length=255, blank=True)
@@ -110,8 +111,13 @@ class MyFile(models.Model):
     # file uploaded by user -> contains details
     name = models.CharField(max_length=50)
     date = models.DateField(auto_now_add=True)
-    dscr = models.CharField(max_length=255, blank=True)
+    dscr = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name="Description (optional)")
 
+    variables = models.CharField(max_length=255, blank=True)
+    lng = models.CharField(max_length=2)
     def __str__(self):
         return self.name
 
@@ -122,9 +128,30 @@ class MyData(models.Model):
     # code: results of coding or transcoding saved every time
     my_file = models.ForeignKey(
         MyFile,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="my_data"
     ) 
-    data = models.TextField()
+    var1 = models.CharField(max_length=255, blank=True)
+    var2 = models.CharField(max_length=255, blank=True)
+    var3 = models.CharField(max_length=255, blank=True)
+    var4 = models.CharField(max_length=255, blank=True)
+    var5 = models.CharField(max_length=255, blank=True)
+
+    # results of coding/transcoding
+    # when transcoded -> code takes transcoded values
+    code = models.ForeignKey(
+        Classification,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True)
+
+    def __str__(self):
+        return '{} {} {} {} {}'.format(
+            self.var1,
+            self.var2,
+            self.var3,
+            self.var4,
+            self.var5)
 
 # desired to keep track of previous codings and transcodings
 # foreign keys (coding): MyFile, Scheme, Classification

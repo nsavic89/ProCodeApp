@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .models import *
 from .serializers import *
 import xlrd
+import json
 
 # General views ------------------------------------------
 # both administrator and end-users
@@ -16,6 +17,7 @@ class UploadView(APIView):
 
         This class is not used as view in urls.py -> no end-point
     """
+
     def read_excel(self):
         # read excel file and the first sheet
         excel = xlrd.open_workbook(
@@ -25,13 +27,20 @@ class UploadView(APIView):
 
         # get column names
         col_names = excel.row_values(0)
+        self.excel_col_names = col_names 
+
+        # if variables are already defined by parent
+        # --> column names or fields of this object
+        if self.variables is not None:
+            col_names = self.variables
+            col_names = col_names[0:len(self.excel_col_names)]
 
         # dictionary will store data from excel 
-        one_row = {}
         data_list = []
 
         # convert data in excel to dictionary
         for row in range(1, excel.nrows):
+            one_row = {}
             for col in range(0, len(col_names)):
 
                 # get cell value in given row and col
@@ -50,11 +59,13 @@ class UploadView(APIView):
         self.data_list = data_list
 
     def post(self, request):
-        if 'excel' not in request.data:
+        # to avoid overriding in inherited views if not needed
+        if self.run_read_excel == True:
+            self.excel = request.data['excel']
+            self.read_excel()
+
+        if self.excel is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        
-        self.excel = request.data['excel']
-        self.read_excel()
 
         # data decoded from ms excel
         data = self.data_list
@@ -63,29 +74,11 @@ class UploadView(APIView):
         # for classification, e.g., we must know scheme
         if self.parent is not None:
             parent_id = request.data[self.parent]
-            
+
             # add parent id to each row from excel
             # which is now decoded in self.data_list
             for e in data:
                 e[self.parent] = parent_id
-
-                # exception for Data
-                # two foreign keys -> the second need to be interpreted
-                # -----------------------------------------------------
-                if self.__class__.__name__ == "DataUploadView":
-                    try:
-                        classification = Classification.objects.get(
-                            code=e['code']
-                        )
-                        e['code'] = classification.id
-                    except:
-                        print('Code not found in table Classification')
-                        e['code'] = False
-
-                # -----------------------------------------------------
-
-        if self.__class__.__name__ == "DataUploadView":
-            data = [d for d in data if d['code'] != False]
             
         # now serialization and saving
         data_serialized = self.model_serializer(data=data, many=True)
@@ -111,6 +104,57 @@ class SchemeUploadView(UploadView):
     serializer_class = SchemeUploadSerializer
     model_serializer = ClassificationSerializer
     parent = "scheme"
+    run_read_excel = True
+
+    def put(self, request):
+        """
+            to updata language
+
+            ...e.g. initially added english
+            later we want german or french
+        """
+        # to avoid overriding in inherited views if not needed
+        if self.run_read_excel == True:
+            self.excel = request.data['excel']
+            self.read_excel()
+
+        if self.excel is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        # data decoded from ms excel
+        data = self.data_list
+        
+        # this will not allow to create new objects
+        # just update existing ones with new lang
+        for e in data:
+            try:
+                if (type(e['code']) is float):
+                    e['code'] = str( int(e['code']) )
+
+                cls_obj = Classification.objects.get(
+                    scheme=request.data['scheme'],
+                    code=e['code']
+                )
+                
+                if 'title' in e:
+                    cls_obj.title = e['title']
+                
+                if 'title_ge' in e:
+                    cls_obj.title_ge = e['title_ge']
+
+                if 'title_fr' in e:
+                    cls_obj.title_fr = e['title_fr']
+
+                if 'title_it' in e:
+                    cls_obj.title_it = e['title_it']
+
+                cls_obj.save()
+            except:
+                continue
+
+        return Response(status=status.HTTP_200_OK)
+
+
 
 class DataUploadView(UploadView):
     """
@@ -120,10 +164,85 @@ class DataUploadView(UploadView):
     serializer_class = DataUploadSerializer
     model_serializer = DataSerializer
     parent = 'scheme'
+    run_read_excel = False
+
+    # because it includes two parents
+    # second parent is not found in excel (cls code -> cls id)
+    def post(self, request):
+
+        # read excel file
+        self.excel = request.data['excel']
+        self.read_excel()
+        scheme = request.data['scheme']
+
+        # convert codes to their id (Classification table)
+        for e in self.data_list:
+
+            # set language based on request.data
+            e['lng'] = request.data['lng']
+
+            # try to identify classification object based on code
+            try:
+                code = Classification.objects.get(
+                            scheme=scheme,
+                            code=e['code']
+                        ).id
+                e['code'] = code
+            except:
+                e['code'] = ''
+                print("Classification instance not found for provided code")
+        
+        return super().post(request)
 
 
+class TranslationUploadView(UploadView):
+    """
+        Upload of MS Excel with translations
+    """
+    serializer_class = TranslationUploadSerializer
+    model_serializer = TranslationSerializer
+    run_read_excel = False
 
-# Viewsets
+    def post(self, request):
+        self.excel = request.data['excel']
+        self.read_excel()
+
+        starting_scheme_id = self.request.data['starting_scheme_id']
+        output_scheme_id = self.request.data['output_scheme_id']
+
+        new_data_list = []
+        for e in self.data_list:
+            try:
+                starting_cls_id = Classification.objects.get(
+                        sheme=starting_scheme_id,
+                        code=e['starting']
+                    ).id
+                output_cls_ids = []
+                output_list = json.loads(e['output'])
+
+                for out in output_list:
+                    try:
+                        out_id = Classification.objects.get(
+                            sheme=output_scheme_id,
+                            code=out
+                        ).id
+                    except:
+                        continue
+                
+                new_data_list.append(
+                    {
+                        "starting": starting_cls_id,
+                        "output": output_cls_ids
+                    }
+                )
+            except:
+                continue
+        
+        self.data_list = new_data_list
+        return super().post(request)
+
+
+# Viewsets -------------------------------------------
 
 class SchemeViewSet(viewsets.ModelViewSet):
     queryset = Scheme.objects.all()
@@ -140,3 +259,34 @@ class TranslationViewSet(viewsets.ModelViewSet):
 class DataViewSet(viewsets.ModelViewSet):
     queryset = Data.objects.all()
     serializer_class = DataSerializer
+
+
+
+
+# End-user views ----------------------------------------------
+class MyFileViewSet(viewsets.ModelViewSet):
+    queryset = MyFile.objects.all()
+    serializer_class = MyFileSerializer
+
+class MyDataViewSet(viewsets.ModelViewSet):
+    queryset = MyData.objects.all()
+    serializer_class = MyDataSerializer
+
+
+# Excel upload views
+class MyFileUploadView(UploadView):
+    serializer_class = MyFileUploadSerializer
+    model_serializer = MyDataSerializer
+    parent = 'my_file'
+    run_read_excel = False
+    # field names defined in parent field variables
+    variables = ['var1', 'var2', 'var3', 'var4', 'var5']
+
+    # in order to get column names we override post method
+    def post(self, request):
+        self.excel = request.data['excel']
+        self.read_excel()
+        my_file = MyFile.objects.get(pk=request.data['my_file'])
+        my_file.variables = json.dumps(self.excel_col_names)
+        my_file.save()
+        return super().post(request)

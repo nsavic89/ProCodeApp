@@ -11,13 +11,18 @@ core_router.register(r'translation', TranslationViewSet)
 core_router.register(r'data', DataViewSet)
 
 # end-user endpoints --------------------------------- 
-
-
+core_router.register(r'myfile', MyFileViewSet)
+core_router.register(r'mydata', MyDataViewSet)
 
 
 
 
 urlpatterns = [
     path('', include(core_router.urls)),
-    path('scheme-upload/', SchemeUploadView.as_view())
+
+    # upload urls
+    path('scheme-upload/', SchemeUploadView.as_view()),
+    path('data-upload/', DataUploadView.as_view()),
+    path('translation-upload/', TranslationUploadView.as_view()),
+    path('my-file-upload/', MyFileUploadView.as_view())
 ]
