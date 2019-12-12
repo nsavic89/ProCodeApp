@@ -103,6 +103,13 @@ class Data(models.Model):
         super(Data, self).save(*args, **kwargs)
 
 
+
+
+
+
+
+
+
 # User's models ----------------------------------
 # Regular John Doe uploads its own Files
 # User files -> for coding and transcoding
@@ -137,31 +144,44 @@ class MyData(models.Model):
     var4 = models.CharField(max_length=255, blank=True)
     var5 = models.CharField(max_length=255, blank=True)
 
-    # results of coding/transcoding
-    # when transcoded -> code takes transcoded values
-    code = models.ManyToManyField(Classification)
 
-    def __str__(self):
-        return '{} {} {} {} {}'.format(
-            self.var1,
-            self.var2,
-            self.var3,
-            self.var4,
-            self.var5)
 
-# desired to keep track of previous codings
-# foreign keys (coding): MyFile, Scheme, Classification
-# many Classification instances may be result
+
+
+
+
+
+# End-user models with no corresponding serializers
+
+# The following two models present history of codings
+# or transcodings in procodeRestApi made by end-users
 class MyCoding(models.Model):
+    my_file = models.ForeignKey(
+        MyFile,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+        )
     scheme = models.ForeignKey(
         Scheme,
         on_delete=models.CASCADE
-    )
+        )
     text = models.CharField(max_length=255)
+    lng = models.CharField(max_length=2)
     output = models.ManyToManyField(Classification)
 
 class MyTranscoding(models.Model):
+    my_file = models.ForeignKey(
+        MyFile,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+        )
     starting = models.ForeignKey(
-        Classification, related_name="starting")
+        Classification,
+        related_name="my_trans_starting",
+        on_delete=models.CASCADE
+        )
     output = models.ManyToManyField(
-        Classification, related_name="output")
+        Classification,
+        related_name="my_trans_output")

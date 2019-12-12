@@ -7,14 +7,19 @@ from .models import Data, Classification
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import ComplementNB
 from .tokenization import get_tokens
+import json
 
 
-
-def run_cnb(text, scheme, lng, level):
+def run_cnb(my_coding_data):
     """
         executes CNB algorithm
+        -> arg: coding_data is MyCodingSerializer.data
         -> returns assigned classification
     """
+    text = json.loads(my_coding_data['text'])
+    scheme = my_coding_data['scheme']
+    lng = my_coding_data['lng']
+    level = my_coding_data['level']
 
     # load training data
     # also include classification for the given scheme
@@ -31,7 +36,7 @@ def run_cnb(text, scheme, lng, level):
         label = label + '_' + lng
     
     # get all texts, titles
-    data_list2 = [(o.code, o[label]) for o in clsf]
+    data_list2 = [(o.code, o.title) for o in clsf]
 
     # final tuples (code id, label)
     data_final = data_list1 + data_list2
@@ -40,12 +45,10 @@ def run_cnb(text, scheme, lng, level):
     # at required level
     # it is important to exclude those of lower levels
     # higher level obj must be converted to the required one
-    data_final = set_levels(data_final, level, scheme)
-
     refined = []
     for tpl in data_final:
         clsf = Classification.objects.get(id=tpl[0])
-
+        
         # if lower level (e.g. '5' but level required == 2)
         if int(clsf.level) < level:
             continue

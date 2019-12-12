@@ -11,10 +11,9 @@ core_router.register(r'translation', TranslationViewSet)
 core_router.register(r'data', DataViewSet)
 
 # end-user endpoints --------------------------------- 
-core_router.register(r'myfile', MyFileViewSet)
-core_router.register(r'mydata', MyDataViewSet)
-
-
+core_router.register(r'my-file', MyFileViewSet)
+core_router.register(r'my-data', MyDataViewSet)
+core_router.register(r'my-coding', MyCodingViewSet)
 
 
 urlpatterns = [

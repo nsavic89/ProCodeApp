@@ -5,6 +5,7 @@ from .models import *
 from .serializers import *
 import xlrd
 import json
+from .coding import run_cnb
 
 # General views ------------------------------------------
 # both administrator and end-users
@@ -290,3 +291,22 @@ class MyFileUploadView(UploadView):
         my_file.variables = json.dumps(self.excel_col_names)
         my_file.save()
         return super().post(request)
+
+
+# Performing predictions/coding of texts
+class MyCodingViewSet(viewsets.ModelViewSet):
+    queryset = MyCoding.objects.all()
+    serializer_class = MyCodingSerializer
+
+    def create(self, request):
+        """
+            runs CNB to predict codings
+        """
+        coding = MyCodingSerializer(data=request.data)
+  
+        if coding.is_valid():
+            # run bayes
+            output = run_cnb(coding.data)
+            print(output)
+        
+        return Response("OK")

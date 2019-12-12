@@ -86,11 +86,6 @@ class DataSerializer(serializers.ModelSerializer):
 
 
 # End-user serializers ----------------------------------------------
-class MyDataSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MyData
-        fields = '__all__'
-
 class MyFileSerializer(serializers.ModelSerializer):
     LANG = [
         ('en', 'English'),
@@ -102,13 +97,55 @@ class MyFileSerializer(serializers.ModelSerializer):
     lng = serializers.ChoiceField(
         choices=LANG, label="Language")
 
-    my_data = serializers.StringRelatedField(many=True)
-
     class Meta:
         model = MyFile 
+        fields = '__all__'
+
+class MyDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyData
         fields = '__all__'
 
 # upload serializer ------------------------------------------------
 class MyFileUploadSerializer(serializers.Serializer):
     excel = serializers.FileField(label="MS Excel file")
     my_file = serializers.CharField()
+
+
+
+# Coding and transcoding
+class MyCodingSerializer(serializers.ModelSerializer):
+
+    output = serializers.CharField(read_only=True)
+    variable = serializers.CharField(
+        write_only=True,
+        allow_blank=True
+        )
+
+    # lng only required when not coding entire file
+    # since files include language information
+    LANG = [
+        ('en', 'English'),
+        ('ge', 'German'),
+        ('fr', 'French'),
+        ('it', 'Italian')
+    ]
+    lng = serializers.ChoiceField(
+        choices=LANG,
+        label="Language (if not coding file)",
+        allow_blank=True
+        )
+    level = serializers.CharField()
+
+    class Meta:
+        model = MyCoding 
+        fields = [
+            'id',
+            'my_file',
+            'variable',
+            'text',
+            'scheme',
+            'level',
+            'lng',
+            'output'
+        ]
