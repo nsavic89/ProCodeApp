@@ -10,21 +10,17 @@ from .tokenization import get_tokens
 import json
 
 
-def run_cnb(my_coding_data):
+def run_cnb(text, lng, level, scheme):
     """
         executes CNB algorithm
-        -> arg: coding_data is MyCodingSerializer.data
         -> returns assigned classification
     """
-    text = json.loads(my_coding_data['text'])
-    scheme = my_coding_data['scheme']
-    lng = my_coding_data['lng']
-    level = my_coding_data['level']
 
     # load training data
     # also include classification for the given scheme
     data = Data.objects.filter(scheme=scheme, lng=lng)
     clsf = Classification.objects.filter(scheme=scheme)
+    print(len(data))
 
     # get all texts from data
     data_list1 = [(o.code, o.text) for o in data]
@@ -40,6 +36,7 @@ def run_cnb(my_coding_data):
 
     # final tuples (code id, label)
     data_final = data_list1 + data_list2
+    print(data_final)
 
     # know we need to get actual codes
     # at required level
@@ -48,7 +45,7 @@ def run_cnb(my_coding_data):
     refined = []
     for tpl in data_final:
         clsf = Classification.objects.get(id=tpl[0])
-        
+        print(clsf)
         # if lower level (e.g. '5' but level required == 2)
         if int(clsf.level) < level:
             continue

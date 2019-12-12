@@ -119,7 +119,8 @@ class MyCodingSerializer(serializers.ModelSerializer):
     output = serializers.CharField(read_only=True)
     variable = serializers.CharField(
         write_only=True,
-        allow_blank=True
+        allow_blank=True,
+        label="Variable in file"
         )
 
     # lng only required when not coding entire file

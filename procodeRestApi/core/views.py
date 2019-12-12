@@ -299,14 +299,33 @@ class MyCodingViewSet(viewsets.ModelViewSet):
     serializer_class = MyCodingSerializer
 
     def create(self, request):
-        """
-            runs CNB to predict codings
-        """
-        coding = MyCodingSerializer(data=request.data)
-  
-        if coding.is_valid():
-            # run bayes
-            output = run_cnb(coding.data)
-            print(output)
+        # Runs the CNB algorithm from predictions
+        # for a single or array of texts returns
+        # codings of a given classificaiton scheme
+
+        text = [ request.data['text'] ]
+        lng = request.data['lng']
+        scheme = request.data['scheme']
+        level = request.data['level']
+
+        # if coding file
+        # then text (given a variable) is in my_file
+        if request.data['my_file'] != '':
+            text = []
+            pk = request.data['my_file']
+            var = request.data['variable']
+
+            # get MyFile and language
+            my_file = MyFile.objects.get(pk=pk)
+            lng = my_file.lng
+
+            # filter texts of my_file
+            my_data = MyData.objects.filter(my_file=pk)
+            
+            for obj in my_data:
+                text.append( obj[var] )
+
+        # run CNB and get codes
+        output = run_cnb(text, lng, level, scheme)
         
         return Response("OK")

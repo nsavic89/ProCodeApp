@@ -166,7 +166,10 @@ class MyCoding(models.Model):
         Scheme,
         on_delete=models.CASCADE
         )
-    text = models.CharField(max_length=255)
+    text = models.CharField(
+        max_length=255,
+        verbose_name="Text for coding (if not coding file)"
+        )
     lng = models.CharField(max_length=2)
     output = models.ManyToManyField(Classification)
 
