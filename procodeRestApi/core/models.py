@@ -69,14 +69,14 @@ class Translation(models.Model):
     # translation between two classification entries
     # e.g. between ISCO and NOC
     starting = models.ForeignKey(
-        Classification,
-        related_name="starting",
-        on_delete=models.CASCADE
-    )
+            Classification,
+            related_name="starting",
+            on_delete=models.CASCADE
+        )
     output = models.ManyToManyField(
-        Classification,
-        related_name="outcome"
-    )
+            Classification,
+            related_name="outcome"
+        )
 
 class Data(models.Model):
     # data to train machine learning algorithm

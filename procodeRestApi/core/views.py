@@ -18,6 +18,7 @@ class UploadView(APIView):
 
         This class is not used as view in urls.py -> no end-point
     """
+    variables = None
 
     def read_excel(self):
         # read excel file and the first sheet
@@ -307,6 +308,7 @@ class MyCodingViewSet(viewsets.ModelViewSet):
         lng = request.data['lng']
         scheme = request.data['scheme']
         level = request.data['level']
+        my_file = None
 
         # if coding file
         # then text (given a variable) is in my_file
@@ -320,12 +322,62 @@ class MyCodingViewSet(viewsets.ModelViewSet):
             lng = my_file.lng
 
             # filter texts of my_file
-            my_data = MyData.objects.filter(my_file=pk)
+            my_data = MyData.objects.filter(my_file=my_file.id)
             
             for obj in my_data:
                 text.append( obj[var] )
 
         # run CNB and get codes
-        output = run_cnb(text, lng, level, scheme)
+        res = run_cnb(text, lng, level, scheme)
+
+        # because res is numpy array
+        res = res.tolist()
+
+        # now save the resuts to db
+        for txt in text:
+
+            my_coding = MyCoding(
+                my_file=my_file,
+                scheme=Scheme.objects.get(pk=scheme),
+                text=txt,
+                lng=lng
+            )
+            my_coding.save()
+            output = Classification.objects.get(
+                scheme=Scheme.objects.get(pk=scheme),
+                code=res[text.index(txt)])
+     
+            my_coding.output.add(output)
+    
+        return Response(res, status=status.HTTP_200_OK)
+
+
+class MyTranscodingViewSet(viewsets.ModelViewSet):
+    queryset = MyTranscoding.objects.all()
+    serializer_class = MyTranscodingSerializer
+
+    def create(self, request):
+        my_file = None
+        starting = [ request.data['starting'] ]
+
+        if request.data['my_file'] != '':
+            starting = []
+            my_file = MyFile.objects.get(pk=request.data['my_file'])
+            var = request.data['variable']
+
+            # filter texts of my_file
+            my_data = MyData.objects.filter(my_file=my_file.id)
+            
+            for obj in my_data:
+                starting.append( obj[var] )
+
+        # transcode codes
+        for code in starting:
+            output = Translation.objects.get(
+                starting=code).output.all()
+            my_transcoding = MyTranscoding(my_file=my_file, starting=code)
+            my_transcoding.save()
+            my_transcoding.output.add(output)
         
-        return Response("OK")
+        return Response("OK", status=status.HTTP_200_OK)
+            

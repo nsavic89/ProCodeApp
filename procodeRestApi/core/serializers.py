@@ -10,7 +10,9 @@ import xlrd
 
 # Serializers for upload
 class SchemeUploadSerializer(serializers.Serializer):
-    scheme = serializers.CharField()
+    scheme = serializers.PrimaryKeyRelatedField(
+            queryset=Scheme.objects.all()
+        )
     excel = serializers.FileField(label="MS Excel file")
 
 # Machine learning data for a scheme upload from Excel
@@ -116,7 +118,7 @@ class MyFileUploadSerializer(serializers.Serializer):
 # Coding and transcoding
 class MyCodingSerializer(serializers.ModelSerializer):
 
-    output = serializers.CharField(read_only=True)
+    output = ClassificationSerializer(read_only=True, many=True)
     variable = serializers.CharField(
         write_only=True,
         allow_blank=True,
@@ -136,7 +138,7 @@ class MyCodingSerializer(serializers.ModelSerializer):
         label="Language (if not coding file)",
         allow_blank=True
         )
-    level = serializers.CharField()
+    level = serializers.CharField(write_only=True)
 
     class Meta:
         model = MyCoding 
@@ -148,5 +150,27 @@ class MyCodingSerializer(serializers.ModelSerializer):
             'scheme',
             'level',
             'lng',
+            'output'
+        ]
+
+class MyTranscodingSerializer(serializers.ModelSerializer):
+
+    variable = serializers.CharField(write_only=True)
+    starting = serializers.PrimaryKeyRelatedField(
+            queryset=Classification.objects.all()
+        )
+    end_scheme = serializers.PrimaryKeyRelatedField(
+            queryset=Scheme.objects.all()
+        )
+    output = ClassificationSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = MyTranscoding
+        fields = [
+            'id',
+            'my_file',
+            'variable',
+            'starting',
+            'end_scheme',
             'output'
         ]

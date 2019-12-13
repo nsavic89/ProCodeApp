@@ -15,28 +15,32 @@ def run_cnb(text, lng, level, scheme):
         executes CNB algorithm
         -> returns assigned classification
     """
+    level = int(level)
 
     # load training data
     # also include classification for the given scheme
     data = Data.objects.filter(scheme=scheme, lng=lng)
     clsf = Classification.objects.filter(scheme=scheme)
-    print(len(data))
 
     # get all texts from data
-    data_list1 = [(o.code, o.text) for o in data]
+    data_list1 = [(o.code, o.tokens) for o in data]
 
-    # label (field) of the titles in classification
     # determined by the language (lng in args)
     label = 'tokens'
-    if lng != 'en':
-        label = label + '_' + lng
+    if lng == 'en':
+        data_list2 = [(o.code, o.tokens) for o in clsf]
+
+    elif lng == 'ge':
+        data_list2 = [(o.code, o.tokens_ge) for o in clsf]
     
-    # get all texts, titles
-    data_list2 = [(o.code, o.title) for o in clsf]
+    elif lng == 'fr':
+        data_list2 = [(o.code, o.tokens_fr) for o in clsf]
+
+    elif lng == 'it':
+        data_list2 = [(o.code, o.tokens_it) for o in clsf]
 
     # final tuples (code id, label)
     data_final = data_list1 + data_list2
-    print(data_final)
 
     # know we need to get actual codes
     # at required level
@@ -44,28 +48,26 @@ def run_cnb(text, lng, level, scheme):
     # higher level obj must be converted to the required one
     refined = []
     for tpl in data_final:
-        clsf = Classification.objects.get(id=tpl[0])
-        print(clsf)
-        # if lower level (e.g. '5' but level required == 2)
+        clsf = Classification.objects.get(scheme=scheme,code=tpl[0])
+    
+        # if lower level (e.g. code = '5' but level required == 2)
         if int(clsf.level) < level:
             continue
 
         # if equal to level -> just append
         # code from clsf and title from tlp as tuple
         if int(clsf.level) == level:
-            refined.append( (clsf.code, tlp[1]) )
+            refined.append( (clsf.code, tpl[1]) )
             continue
         
         # finally if higher level (better precision than required)
         is_leveled = False
-
         while is_leveled == False:
-
             clsf = Classification.objects.get(
                 code=clsf.parent, scheme=scheme)
 
-            if int(clsf.code) == level:
-                refined.append( (clsf.code, tlp[1] ))
+            if int(clsf.level) == level:
+                refined.append( (clsf.code, tpl[1] ))
                 is_leveled = True
 
     codes = [x for (x,y) in refined]
@@ -76,7 +78,7 @@ def run_cnb(text, lng, level, scheme):
     tf = TfidfVectorizer(analyzer='word', ngram_range=(1,2),
                         min_df=0, sublinear_tf=True)
 
-    X = tf.fit_tranform(titles)
+    X = tf.fit_transform(titles)
 
     # Sencondly -> train classifer CNB
     classifier = ComplementNB()
@@ -84,7 +86,7 @@ def run_cnb(text, lng, level, scheme):
 
     # Finally -> we have trained CNB
     # Run prediction for text (list of texts)
-    text_tokenized = [ get_tokens(t, lng) for t in texts ]
+    text_tokenized = [ get_tokens(t, lng) for t in text ]
     text_tf = tf.transform(text_tokenized)
     output = classifier.predict(text_tf)
 

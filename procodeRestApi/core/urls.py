@@ -14,6 +14,7 @@ core_router.register(r'data', DataViewSet)
 core_router.register(r'my-file', MyFileViewSet)
 core_router.register(r'my-data', MyDataViewSet)
 core_router.register(r'my-coding', MyCodingViewSet)
+core_router.register(r'my-transcoding', MyTranscodingViewSet)
 
 
 urlpatterns = [
