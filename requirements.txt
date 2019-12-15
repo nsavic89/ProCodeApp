@@ -1,7 +1,8 @@
 asgiref==3.2.3
 Django==3.0
+django-cors-headers==3.2.0
 djangorestframework==3.10.3
-joblib==0.14.0
+joblib==0.14.1
 nltk==3.4.5
 numpy==1.17.4
 pytz==2019.3

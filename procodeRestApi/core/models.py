@@ -12,6 +12,7 @@ class Scheme(models.Model):
     # includes details on the given scheme: year, version ...
     name = models.CharField(max_length=50)
     stype = models.CharField(max_length=1)
+    levels = models.CharField(max_length=50, default="[]")
     version = models.CharField(max_length=10, blank=True)
     year = models.CharField(max_length=4, blank=True)
     dscr = models.CharField(

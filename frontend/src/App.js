@@ -1,12 +1,15 @@
 import React, { Suspense} from 'react';
-import Home from './views/Home';
-
+import Main from './views/Main';
+import { BrowserRouter } from 'react-router-dom';
+import './app.css';
 
 function App() {
     return (
-        <Suspense fallback="loading">
-            <Home />
-        </Suspense>
+        <BrowserRouter>
+            <Suspense fallback="loading">
+                <Main />
+            </Suspense>
+        </BrowserRouter>
     );
 }
 

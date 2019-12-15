@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -106,7 +107,42 @@ class SchemeUploadView(UploadView):
     serializer_class = SchemeUploadSerializer
     model_serializer = ClassificationSerializer
     parent = "scheme"
-    run_read_excel = True
+    run_read_excel = False
+
+    def set_levels(self, pk):
+        """ 
+            get classification levels
+        """
+        data = self.data_list
+        levels = []
+        scheme = Scheme.objects.get(pk=pk)
+
+        if scheme is None:
+            return False
+
+        for e in data:
+            lvl = e['level']
+
+            if lvl not in levels:
+                levels.append(lvl)
+
+        # to json
+        levels = json.dumps(levels)
+        scheme.levels = levels
+        scheme.save()
+        return scheme
+
+    def post(self, request):
+        # because we must set levels
+        self.excel = request.data['excel']
+        self.read_excel()
+
+        if self.excel is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        self.set_levels(pk=request.data['scheme'])
+
+        return super().post(request)
 
     def put(self, request):
         """
@@ -122,6 +158,8 @@ class SchemeUploadView(UploadView):
 
         if self.excel is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        self.set_levels(pk=request.data['scheme'])
 
         # data decoded from ms excel
         data = self.data_list
@@ -249,6 +287,12 @@ class TranslationUploadView(UploadView):
 class SchemeViewSet(viewsets.ModelViewSet):
     queryset = Scheme.objects.all()
     serializer_class = SchemeSerializer
+
+    def retrieve(self, request, pk):
+        scheme = get_object_or_404(Scheme, pk=pk)
+        scheme_ser = SchemeSerializer(scheme)
+        scheme_ser.data['level'] = 3
+        return Response(scheme_ser.data, status=status.HTTP_200_OK)
 
 class ClassificationViewSet(viewsets.ModelViewSet):
     queryset = Classification.objects.all()
