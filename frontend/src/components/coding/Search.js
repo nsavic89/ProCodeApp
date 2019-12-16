@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Form,
@@ -9,15 +9,15 @@ import {
     Alert
 } from 'antd';
 import axios from 'axios';
-import { Loading } from '../Loading';
 
 // css styling
 const styling = {
-    form: {
-       
-    },
     select: {
-        width: 150
+        width: 200,
+        fontSize: 16
+    },
+    input: {
+        fontSize: 16
     },
     radio: {
         minWidth: 75
@@ -43,27 +43,6 @@ function Search(props) {
 
     const lng = i18n.language;
 
-    // load classification schemes
-    useEffect(() => {
-        axios.get(
-            `${process.env.REACT_APP_API_URL}/scheme/`
-        ).then(
-            res => {
-                let schemes = res.data.results;
-                for (let i in schemes) {
-                    schemes[i].levels = JSON.parse(schemes[i].levels);
-                }
-
-                setState({
-                    schemes: schemes,
-                    loaded: true
-                })
-            }
-        ).catch(
-            () => message.error(t('messages.request-failed'))
-        )
-    }, [])
-
     // Submit entered data and get codes
     const handleSubmit = e => {
         e.preventDefault();
@@ -73,7 +52,20 @@ function Search(props) {
                     `${process.env.REACT_APP_API_URL}/my-coding/`,
                     values
                 ).then(
-                    res => props.getResults(res.data)
+                    res => {
+                        // format data and send back to parent (coding)
+                        let data = [];
+                        for (let i in res.data) {
+                            // title label (field of model) based on current language
+                            let titleLabel = values.lng === 'en' ? 'title' : `title_${values.lng}`;
+
+                            let title = state.scheme.classification.find(
+                                o => o.code === res.data[i]
+                            )[titleLabel]
+                            data.push({ code: res.data[i], title: title });
+                        }
+                        props.getResults(data);
+                    }
                 ).catch(
                     () => message.error(t('messages.request-failed'))
                 )
@@ -81,14 +73,6 @@ function Search(props) {
         });
     };
 
-    // prevent going further if schemes not loaded yet
-    if (!state.loaded) {
-        return (
-            <div>
-                { Loading }
-            </div>
-        )
-    }
 
     // Select menu with classification schemes
     const SchemeSelect = getFieldDecorator('scheme', {
@@ -103,10 +87,10 @@ function Search(props) {
             style={ styling.select }
             onChange={val => setState({
                 ...state, 
-                scheme: state.schemes.find(o => o.id === val) 
+                scheme: props.schemes.find(o => o.id === val) 
             })}
         >
-            { state.schemes.map(
+            { props.schemes.map(
                 item => (
                     <Select.Option value={item.id} key={item.id}>
                         { item.name }
@@ -133,6 +117,8 @@ function Search(props) {
                         placeholder={t('coding.search.input-placeholder')} 
                         enterButton
                         addonBefore={ SchemeSelect }
+                        size="large"
+                        style={styling.input}
                     />
                 ) }
             </Form.Item>
@@ -149,9 +135,9 @@ function Search(props) {
                             message: t('messages.field-obligatory')
                         }
                     ],
-                    initialValue: lng
+                    initialValue: lng === 'en-US' ? 'en' : lng
                 })(
-                    <Radio.Group size="small" buttonStyle="solid">
+                    <Radio.Group buttonStyle="solid">
                     {[
                         {
                             label: t('langs.en'),
@@ -197,7 +183,7 @@ function Search(props) {
                             ],
                             initialValue: 2
                         })(
-                            <Radio.Group size="small"  buttonStyle="solid">
+                            <Radio.Group  buttonStyle="solid">
                                 { state.scheme.levels.map(
                                     item => 
                                         <Radio.Button value={item} key={item} style={styling.radio}>

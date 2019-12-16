@@ -42,7 +42,7 @@ function MyHeader () {
         <Row type="flex" justify="space-between">
             <Col md={{ span: 20 }}>
                 <Row gutter={16} type="flex" justify="start"> 
-                    <Col lg={{ span: 16 }} md={{ span: 12 }} sm={{ span: 0 }}>
+                    <Col lg={{ span: 16 }} md={{ span: 12 }} xs={{ span: 0 }}>
                         <Input.Search
                             style={styling.search}
                             size="large"

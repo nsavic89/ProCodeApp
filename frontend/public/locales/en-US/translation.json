@@ -1,0 +1,59 @@
+{
+    "general": {
+        "help": "Help",
+        "submit": "Submit",
+        "cancel": "Cancel",
+        "language": "Language"
+    },
+
+    "messages": {
+        "field-obligatory": "This field cannot be empty",
+        "request-failed": "Connection failed",
+        "request-success": "Successfully added"
+    },
+
+    "langs": {
+        "en": "English",
+        "ge": "German",
+        "fr": "French",
+        "it": "Italian"
+    },
+
+    "header": {
+        "search-placeholder": "Search file by its name",
+        "security": "Security",
+        "language": "Language",
+        "logout": "Logout"
+    },
+
+    "file-upload": {
+        "upload-file-btn": "Upload file",
+        "title": "New file upload",
+        "name": "File name",
+        "lng": "Language",
+        "dscr": "Description",
+        "file": "MS Excel (.xlsx)"
+    },
+
+    
+    "sider": {
+        "coding": "Coding",
+        "transcoding": "Transcoding",
+        "my-files": "My files",
+        "history": "History"
+    },
+
+    "coding": {
+        "help-text": "Find a classification code for a selected classification scheme, entered data and selected coding level. The level usually (not always!) corresponds to the number of digits in a classification code.",
+        "page-title": "Coding",
+        "results": {
+            "dont-agree": "None of the results correspond to the entered criteria"
+        },
+        "search": {
+            "input-placeholder": "Enter details on occupation/economic activity...",
+            "level": "Level",
+            "alert-select-scheme": "Please select a classification scheme"
+        }
+    }
+
+}

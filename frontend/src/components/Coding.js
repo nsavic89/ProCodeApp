@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Search from './coding/Search';
 import Results from './coding/Results';
 import { useTranslation } from 'react-i18next';
-import { Tooltip, Icon } from 'antd';
+import { Tooltip, Icon, message } from 'antd';
+import axios from 'axios';
+import { Loading } from './Loading';
 
 // basically coding view
 // includes coding form with classification scheme, search input
@@ -18,12 +20,32 @@ const styling = {
 function Coding () {
     const { t } = useTranslation();
     const [state, setState] = useState({});
+
+    // load classification schemes
+    useEffect(() => {
+        axios.get(
+            `${process.env.REACT_APP_API_URL}/scheme/`
+        ).then(
+            res => {
+                let schemes = res.data.results;
+                for (let i in schemes) {
+                    schemes[i].levels = JSON.parse(schemes[i].levels);
+                }
+
+                setState({
+                    schemes: schemes,
+                    loaded: true
+                })
+            }
+        ).catch(
+            () => message.error( t('messages.request-failed') )
+        )
+    }, [t])
     
     // search component returns results (codes)
     const getResults = (results) => {
         setState({
-            ...state,
-            results: results
+            ...state, results: results
         })
     }
 
@@ -40,9 +62,14 @@ function Coding () {
             </div>
 
             <div style={ styling.codingForm }>
-                <Search 
-                    getResults={getResults}
-                />
+                {
+                    state.loaded ? 
+                        <Search 
+                            schemes={state.schemes}
+                            getResults={getResults}
+                        />
+                        : <div>{ Loading }</div>
+                }
             </div>
 
             <div>

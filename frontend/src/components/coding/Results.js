@@ -1,7 +1,6 @@
 import React from 'react';
 import { Tag, Radio } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { OmitProps } from 'antd/lib/transfer/renderListBody';
 
 
 
