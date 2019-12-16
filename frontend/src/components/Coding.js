@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Search from './coding/Search';
 import Results from './coding/Results';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,15 @@ const styling = {
 
 function Coding () {
     const { t } = useTranslation();
+    const [state, setState] = useState({});
+    
+    // search component returns results (codes)
+    const getResults = (results) => {
+        setState({
+            ...state,
+            results: results
+        })
+    }
 
     return (
         <div>
@@ -31,11 +40,15 @@ function Coding () {
             </div>
 
             <div style={ styling.codingForm }>
-                <Search />
+                <Search 
+                    getResults={getResults}
+                />
             </div>
 
             <div>
-                <Results />
+                <Results 
+                    results={state.results}
+                />
             </div>
         </div>
     )

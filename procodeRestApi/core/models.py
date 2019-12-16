@@ -28,7 +28,8 @@ class Classification(models.Model):
     # one instance contains different languages
     scheme = models.ForeignKey(
         Scheme,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="classification"
     )
     parent = models.CharField(max_length=25, verbose_name="Parent code")
     code = models.CharField(max_length=25)

@@ -38,6 +38,10 @@ class TranslationUploadSerializer(serializers.Serializer):
 
 
 # Serializers for viewsets ------------------------------------
+class ClassificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Classification
+        fields = '__all__'
 class SchemeSerializer(serializers.ModelSerializer):
     CHOICES = [
         ('O', 'Occupations'),
@@ -48,15 +52,13 @@ class SchemeSerializer(serializers.ModelSerializer):
         choices=CHOICES,
         label = "Scheme type"
     )
+    classification = ClassificationSerializer(read_only=True, many=True)
     class Meta:
         model = Scheme
         fields = '__all__'
         
 
-class ClassificationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Classification
-        fields = '__all__'
+
 
 class TranslationSerializer(serializers.ModelSerializer):
     class Meta:

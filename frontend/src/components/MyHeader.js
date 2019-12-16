@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Input, Icon, Button, Dropdown, Menu, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import MyFileUpload from './MyFileUpload';
@@ -7,9 +7,6 @@ import MyFileUpload from './MyFileUpload';
 const styling = {
     search: {
         width: "100%"
-    },
-    uploadButton: {
-        borderRadius: 2
     },
     userButton: {
         fontSize: 20,
@@ -23,7 +20,6 @@ const styling = {
 function MyHeader () {
 
     const { t } = useTranslation();
-    const [state, setState] = useState({});
 
     // overlay menu for dropdown user icon
     const menu = (
@@ -54,21 +50,9 @@ function MyHeader () {
                         />
                     </Col>
 
-                    <Col>
-                        <Button
-                            type="danger"
-                            size="large"
-                            style={ styling.uploadButton }
-                            onClick={ () => setState({ ...state, visible: true }) }
-                        >
-                            <Icon type="upload" /> { t('header.upload-file') }
-                        </Button>
-                        
+                    <Col>                      
                         {/* Upload new Excel file -> modal -> form */}
-                        <MyFileUpload 
-                            visible={state.visible}
-                            onCancel={ () => setState({ ...state, visible: false }) }
-                        />
+                        <MyFileUpload />
                     </Col>
                 </Row>
             </Col>

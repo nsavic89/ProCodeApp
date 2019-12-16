@@ -51,7 +51,7 @@ function MySider () {
         {
             label: t('sider.coding'),
             value: 'coding',
-            icon: <Icon type='fire' />,
+            icon: <Icon style={{ color: "#fa541c" }} type='fire' />,
             link: "/"
         }, {
             label: t('sider.transcoding'),

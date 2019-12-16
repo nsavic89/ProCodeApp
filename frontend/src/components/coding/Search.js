@@ -4,17 +4,31 @@ import {
     Form,
     Input,
     Select,
-    Slider,
-    message
+    Radio,
+    message,
+    Alert
 } from 'antd';
 import axios from 'axios';
 import { Loading } from '../Loading';
 
 // css styling
 const styling = {
+    form: {
+       
+    },
     select: {
         width: 150
+    },
+    radio: {
+        minWidth: 75
     }
+}
+
+const formItemLayout = {
+    wrapperCol:
+        {md: {span: 12}},
+    labelCol:
+        {md: {span: 2}}
 }
 
 // Coding of occupations using CNB
@@ -23,9 +37,11 @@ const styling = {
 // will call my-coding url on api rest
 function Search(props) {
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { getFieldDecorator } = props.form;
     const [state, setState] = useState({});
+
+    const lng = i18n.language;
 
     // load classification schemes
     useEffect(() => {
@@ -44,7 +60,7 @@ function Search(props) {
                 })
             }
         ).catch(
-            () => message.error("Connection failed")
+            () => message.error(t('messages.request-failed'))
         )
     }, [])
 
@@ -53,7 +69,14 @@ function Search(props) {
         e.preventDefault();
         props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-              console.log('Received values of form: ', values);
+                axios.post(
+                    `${process.env.REACT_APP_API_URL}/my-coding/`,
+                    values
+                ).then(
+                    res => props.getResults(res.data)
+                ).catch(
+                    () => message.error(t('messages.request-failed'))
+                )
             };
         });
     };
@@ -76,7 +99,13 @@ function Search(props) {
             }
         ]
     })(
-        <Select style={ styling.select }>
+        <Select 
+            style={ styling.select }
+            onChange={val => setState({
+                ...state, 
+                scheme: state.schemes.find(o => o.id === val) 
+            })}
+        >
             { state.schemes.map(
                 item => (
                     <Select.Option value={item.id} key={item.id}>
@@ -89,6 +118,7 @@ function Search(props) {
     return(
         <Form
             onSubmit={handleSubmit}
+            style={styling.form}
         >
             <Form.Item>
                 { getFieldDecorator("text", {
@@ -108,26 +138,80 @@ function Search(props) {
             </Form.Item>
 
             <Form.Item
-                label={ t('coding.search.level') }
-                wrapperCol={{md: {span: 14}}}
-                labelCol={{md: {span: 2}}}
+                label={ t('general.language' )}
+                {...formItemLayout}
                 labelAlign="left"
             >
-                { getFieldDecorator('level', {
+                { getFieldDecorator("lng", {
                     rules: [
                         {
                             required: true,
                             message: t('messages.field-obligatory')
                         }
                     ],
-                    initialValue: 2
+                    initialValue: lng
                 })(
-                    <Slider 
-                        step={1} 
-                        min={1} max={4}
-                    />
+                    <Radio.Group size="small" buttonStyle="solid">
+                    {[
+                        {
+                            label: t('langs.en'),
+                            value: 'en'
+                        }, {
+                            label: t('langs.ge'),
+                            value: 'ge'
+                        }, {
+                            label: t('langs.fr'),
+                            value: 'fr'
+                        }, {
+                            label: t('langs.it'),
+                            value: 'it'
+                        }
+                    ].map(
+                        item => (
+                            <Radio.Button 
+                                key={item.value}
+                                value={item.value}
+                                style={styling.radio}
+                            >
+                                { item.label }
+                            </Radio.Button>
+                        )
+                    )}
+                    </Radio.Group>
                 ) }
             </Form.Item>
+
+            {   // only when a scheme is selected -> levels are shown
+                state.scheme ? 
+                    <Form.Item
+                        label={ t('coding.search.level') }
+                        {...formItemLayout}
+                        labelAlign="left"
+                    >
+                        { getFieldDecorator('level', {
+                            rules: [
+                                {
+                                    required: true,
+                                    message: t('messages.field-obligatory')
+                                }
+                            ],
+                            initialValue: 2
+                        })(
+                            <Radio.Group size="small"  buttonStyle="solid">
+                                { state.scheme.levels.map(
+                                    item => 
+                                        <Radio.Button value={item} key={item} style={styling.radio}>
+                                            { item }
+                                        </Radio.Button>
+                                ) }
+                            </Radio.Group>
+                        ) }
+                    </Form.Item>
+                    : <Alert
+                        type="info"
+                        message={ t('coding.search.alert-select-scheme') }
+                    />
+            }
         </Form>
     )
 }

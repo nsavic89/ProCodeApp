@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tag, Radio } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { OmitProps } from 'antd/lib/transfer/renderListBody';
 
 
 
@@ -20,15 +21,12 @@ const styling = {
     }
 }
 
-function Results() {
+function Results(props) {
     const { t } = useTranslation();
 
-    const results = [
-        {
-            code: "110",
-            title: "Worker in a restaurant"
-        }
-    ]
+    if (!props.results) {
+        return <div />;
+    }
 
     // results are listed as radio buttons
     // when selected shows confirm button
@@ -38,7 +36,7 @@ function Results() {
             <Radio.Group>
                 {/* codes/titles received from the server */}
                 {
-                    results.map(
+                    props.results.map(
                         item => (
                             <Radio
                                 key={ item.code }

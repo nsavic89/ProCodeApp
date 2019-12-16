@@ -7,6 +7,7 @@ from .serializers import *
 import xlrd
 import json
 from .coding import run_cnb
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # General views ------------------------------------------
 # both administrator and end-users
@@ -20,6 +21,7 @@ class UploadView(APIView):
         This class is not used as view in urls.py -> no end-point
     """
     variables = None
+    parser_classes = (MultiPartParser, FormParser)
 
     def read_excel(self):
         # read excel file and the first sheet
@@ -356,7 +358,7 @@ class MyCodingViewSet(viewsets.ModelViewSet):
 
         # if coding file
         # then text (given a variable) is in my_file
-        if request.data['my_file'] != '':
+        if 'my_file' in request.data:
             text = []
             pk = request.data['my_file']
             var = request.data['variable']

@@ -2,23 +2,37 @@
     "general": {
         "help": "Help",
         "submit": "Submit",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "language": "Language"
     },
 
     "messages": {
-        "field-obligatory": "This field cannot be empty"
+        "field-obligatory": "This field cannot be empty",
+        "request-failed": "Connection failed",
+        "request-success": "Successfully added"
+    },
+
+    "langs": {
+        "en": "English",
+        "ge": "German",
+        "fr": "French",
+        "it": "Italian"
     },
 
     "header": {
         "search-placeholder": "Search file by its name",
-        "upload-file": "Upload file",
         "security": "Security",
         "language": "Language",
         "logout": "Logout"
     },
 
     "file-upload": {
-        "title": "New file upload"
+        "upload-file-btn": "Upload file",
+        "title": "New file upload",
+        "name": "File name",
+        "lng": "Language",
+        "dscr": "Description",
+        "file": "MS Excel (.xlsx)"
     },
 
     
@@ -37,7 +51,8 @@
         },
         "search": {
             "input-placeholder": "Enter details on occupation/economic activity...",
-            "level": "Level"
+            "level": "Level",
+            "alert-select-scheme": "Please select a classification scheme"
         }
     }
 
