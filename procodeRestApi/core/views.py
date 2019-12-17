@@ -355,11 +355,12 @@ class MyCodingViewSet(viewsets.ModelViewSet):
         scheme = request.data['scheme']
         level = request.data['level']
         my_file = None
-
+        
         # if coding file
         # then text (given a variable) is in my_file
         if 'my_file' in request.data:
             text = []
+            print("test-1s")
             pk = request.data['my_file']
             var = request.data['variable']
 
@@ -372,10 +373,10 @@ class MyCodingViewSet(viewsets.ModelViewSet):
             
             for obj in my_data:
                 text.append( obj[var] )
-
+      
         # run CNB and get codes
         res = run_cnb(text, lng, level, scheme)
-
+      
         # because res is numpy array
         res = res.tolist()
 

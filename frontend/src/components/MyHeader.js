@@ -1,13 +1,10 @@
 import React from 'react';
-import { Input, Icon, Button, Dropdown, Menu, Row, Col } from 'antd';
+import { Icon, Button, Dropdown, Menu, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import MyFileUpload from './MyFileUpload';
-
+import { Link } from 'react-router-dom';
 
 const styling = {
-    search: {
-        width: "100%"
-    },
     userButton: {
         fontSize: 20,
         marginRight: 10
@@ -33,7 +30,9 @@ function MyHeader () {
             </Menu.Item>
 
             <Menu.Item>
-                <Icon type="logout" /> {t("header.logout")}
+                <Link to="/login">
+                    <Icon type="logout" /> {t("header.logout")}
+                </Link>
             </Menu.Item>
         </Menu>
     )
@@ -41,20 +40,8 @@ function MyHeader () {
     return(
         <Row type="flex" justify="space-between">
             <Col md={{ span: 20 }}>
-                <Row gutter={16} type="flex" justify="start"> 
-                    <Col lg={{ span: 16 }} md={{ span: 12 }} xs={{ span: 0 }}>
-                        <Input.Search
-                            style={styling.search}
-                            size="large"
-                            placeholder={ t('header.search-placeholder') }
-                        />
-                    </Col>
-
-                    <Col>                      
-                        {/* Upload new Excel file -> modal -> form */}
-                        <MyFileUpload />
-                    </Col>
-                </Row>
+                {/* Upload new Excel file -> modal -> form */}
+                <MyFileUpload />
             </Col>
             
             <Col>

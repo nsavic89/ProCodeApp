@@ -13,7 +13,7 @@ import axios from 'axios';
 // css styling
 const styling = {
     select: {
-        width: 200,
+        width: "100%",
         fontSize: 16
     },
     input: {
@@ -26,9 +26,9 @@ const styling = {
 
 const formItemLayout = {
     wrapperCol:
-        {md: {span: 12}},
+        {md: {span: 16}},
     labelCol:
-        {md: {span: 2}}
+        {md: {span: 4}}
 }
 
 // Coding of occupations using CNB
@@ -48,6 +48,9 @@ function Search(props) {
         e.preventDefault();
         props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
+                // activates spinner in results
+                props.updateParent(null, true);
+
                 axios.post(
                     `${process.env.REACT_APP_API_URL}/my-coding/`,
                     values
@@ -55,16 +58,19 @@ function Search(props) {
                     res => {
                         // format data and send back to parent (coding)
                         let data = [];
+                        let titleLabel= null;
+
                         for (let i in res.data) {
                             // title label (field of model) based on current language
-                            let titleLabel = values.lng === 'en' ? 'title' : `title_${values.lng}`;
+                            titleLabel = values.lng === 'en' ? 'title' : `title_${values.lng}`;
 
                             let title = state.scheme.classification.find(
                                 o => o.code === res.data[i]
                             )[titleLabel]
                             data.push({ code: res.data[i], title: title });
                         }
-                        props.getResults(data);
+                        // state.scheme is selected (active) scheme needed for feeback
+                        props.updateParent(data, false, state.scheme, titleLabel, values);
                     }
                 ).catch(
                     () => message.error(t('messages.request-failed'))
@@ -74,54 +80,11 @@ function Search(props) {
     };
 
 
-    // Select menu with classification schemes
-    const SchemeSelect = getFieldDecorator('scheme', {
-        rules: [
-            {
-                required: true,
-                message: t('messages.field-obligatory')
-            }
-        ]
-    })(
-        <Select 
-            style={ styling.select }
-            onChange={val => setState({
-                ...state, 
-                scheme: props.schemes.find(o => o.id === val) 
-            })}
-        >
-            { props.schemes.map(
-                item => (
-                    <Select.Option value={item.id} key={item.id}>
-                        { item.name }
-                    </Select.Option>)
-            ) }
-        </Select>
-    );
-
     return(
         <Form
             onSubmit={handleSubmit}
             style={styling.form}
-        >
-            <Form.Item>
-                { getFieldDecorator("text", {
-                    rules: [
-                        {
-                            required: true,
-                            message: t('messages.field-obligatory')
-                        }
-                    ]
-                })(
-                    <Input.Search
-                        placeholder={t('coding.search.input-placeholder')} 
-                        enterButton
-                        addonBefore={ SchemeSelect }
-                        size="large"
-                        style={styling.input}
-                    />
-                ) }
-            </Form.Item>
+        >   
 
             <Form.Item
                 label={ t('general.language' )}
@@ -167,37 +130,89 @@ function Search(props) {
                 ) }
             </Form.Item>
 
-            {   // only when a scheme is selected -> levels are shown
-                state.scheme ? 
-                    <Form.Item
-                        label={ t('coding.search.level') }
-                        {...formItemLayout}
-                        labelAlign="left"
+            <Form.Item
+                label={ t('coding.search.scheme' )}
+                {...formItemLayout}
+                labelAlign="left"
+            >
+                { getFieldDecorator('scheme', {
+                    rules: [
+                        {
+                            required: true,
+                            message: t('messages.field-obligatory')
+                        }
+                    ]
+                })(
+                    <Select 
+                        placeholder={ t('coding.search.scheme-placeholder') }
+                        style={ styling.select }
+                        onChange={val => setState({
+                            ...state, 
+                            scheme: props.schemes.find(o => o.id === val) 
+                        })}
                     >
-                        { getFieldDecorator('level', {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: t('messages.field-obligatory')
-                                }
-                            ],
-                            initialValue: 2
-                        })(
-                            <Radio.Group  buttonStyle="solid">
-                                { state.scheme.levels.map(
-                                    item => 
-                                        <Radio.Button value={item} key={item} style={styling.radio}>
-                                            { item }
-                                        </Radio.Button>
-                                ) }
-                            </Radio.Group>
+                        { props.schemes.map(
+                            item => (
+                                <Select.Option value={item.id} key={item.id}>
+                                    { item.name }
+                                </Select.Option>)
                         ) }
-                    </Form.Item>
-                    : <Alert
-                        type="info"
-                        message={ t('coding.search.alert-select-scheme') }
-                    />
+                    </Select>
+                )}
+            </Form.Item>
+
+            {   // only when a scheme is selected -> levels are shown
+                
+                <Form.Item
+                    label={ t('coding.search.level') }
+                    {...formItemLayout}
+                    labelAlign="left"
+                >
+                    { getFieldDecorator('level', {
+                        rules: [
+                            {
+                                required: true,
+                                message: t('messages.field-obligatory')
+                            }
+                        ],
+                    })(
+                        state.scheme ? 
+                        <Radio.Group  buttonStyle="solid">
+                            { state.scheme.levels.map(
+                                (item, inx) => 
+                                    <Radio.Button value={item} key={inx} style={styling.radio}>
+                                        { item }
+                                    </Radio.Button>
+                            ) }
+                        </Radio.Group>
+                        : <Alert
+                            type="info"
+                            message={ t('coding.search.alert-select-scheme') }
+                        />
+                    ) }
+                </Form.Item>
             }
+
+            <Form.Item
+                label={ t('coding.search.text' )}
+                {...formItemLayout}
+                labelAlign="left"
+            >
+                { getFieldDecorator("text", {
+                    rules: [
+                        {
+                            required: true,
+                            message: t('messages.field-obligatory')
+                        }
+                    ]
+                })(
+                    <Input.Search
+                        placeholder={t('coding.search.input-placeholder')} 
+                        enterButton
+                        onSearch={(val, e) => handleSubmit(e)}
+                    />
+                ) }
+            </Form.Item>
         </Form>
     )
 }

@@ -4,6 +4,8 @@ import MySider from '../components/MySider';
 import MyHeader from '../components/MyHeader';
 import { Switch, Route } from 'react-router-dom';
 import Coding from '../components/Coding';
+import Files from '../components/Files';
+import Transcoding from '../components/Transcoding';
 
 // Main view for all components for end-user
 // layout with header and sider
@@ -20,8 +22,7 @@ function Main() {
         },
         content: {
             background: "white",
-            minHeight: 700,
-            height: "85vh",
+            minHeight: 825,
             padding: 24
         },
         footer: {
@@ -50,6 +51,8 @@ function Main() {
                         {/* routes */}
                         <Switch>
                             <Route path="/" exact component={ Coding } />
+                            <Route path="/my-files" exact component={ Files } />
+                            <Route path="/transcoding" exact component={ Transcoding } />
                         </Switch>
                     </Layout.Content>
                 </Layout>

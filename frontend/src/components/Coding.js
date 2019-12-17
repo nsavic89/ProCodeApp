@@ -13,7 +13,7 @@ import { Loading } from './Loading';
 
 const styling = {
     codingForm: {
-        marginTop: 50
+        marginTop: 35
     }
 }
 
@@ -43,9 +43,18 @@ function Coding () {
     }, [t])
     
     // search component returns results (codes)
-    const getResults = (results) => {
+    const updateState = (results, status, scheme, titleLabel, values) => {
+        // status === true -> coding started
+        // renders spinner in results
+
         setState({
-            ...state, results: results
+            ...state, 
+            results: results,
+            coding: status,
+            scheme: scheme,
+            titleLabel: titleLabel,
+            text: values ? values.text : "",
+            lng: values ? values.lng : ""
         })
     }
 
@@ -66,7 +75,7 @@ function Coding () {
                     state.loaded ? 
                         <Search 
                             schemes={state.schemes}
-                            getResults={getResults}
+                            updateParent={updateState}
                         />
                         : <div>{ Loading }</div>
                 }
@@ -75,6 +84,11 @@ function Coding () {
             <div>
                 <Results 
                     results={state.results}
+                    coding={state.coding}
+                    scheme={state.scheme}
+                    titleLabel={state.titleLabel}
+                    text={state.text}
+                    lng={state.lng}
                 />
             </div>
         </div>

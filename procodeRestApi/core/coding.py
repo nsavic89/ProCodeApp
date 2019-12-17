@@ -23,8 +23,8 @@ def run_cnb(text, lng, level, scheme):
     clsf = Classification.objects.filter(scheme=scheme)
 
     # get all texts from data
-    data_list1 = [(o.code, o.tokens) for o in data]
-
+    data_list1 = [(o.code.code, o.tokens) for o in data]
+    
     # determined by the language (lng in args)
     label = 'tokens'
     if lng == 'en':
@@ -41,7 +41,7 @@ def run_cnb(text, lng, level, scheme):
 
     # final tuples (code id, label)
     data_final = data_list1 + data_list2
-
+    
     # know we need to get actual codes
     # at required level
     # it is important to exclude those of lower levels

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Modal, Form, Input, Select, Button, Icon, Upload, message } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Modal, Form, Input, Select, Button, Icon, Upload, message, Row, Col, Tooltip } from 'antd';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import { Loading } from './Loading';
 
 const formItemLayout = {
     labelCol: {
@@ -15,6 +16,9 @@ const formItemLayout = {
 const styling = {
     uploadButton: {
         borderRadius: 2
+    },
+    select: {
+        width: "100%"
     }
 }
 
@@ -26,7 +30,19 @@ function MyFileUpload(props) {
     const [state, setState] = useState({});
 
 
-
+    // on load -> load my-files
+    useEffect(() => {
+        axios.get(
+            `${process.env.REACT_APP_API_URL}/my-file/`
+        ).then(
+            res => setState({
+                loaded: true,
+                files: res.data.results
+            })
+        ).catch(
+            () => message.error( t('messages.request-failed') )
+        )
+    }, [state.update, t])
 
     // save new file to the server
     const handleSubmit = e => {
@@ -53,7 +69,9 @@ function MyFileUpload(props) {
                                 message.success(t('messages.request-success'));
                                 setState({
                                     ...state,
-                                    visible: false
+                                    visible: false,
+                                    update: state.update + 1,
+                                    loaded: false
                                 })
                             }
                         ).catch(
@@ -72,15 +90,44 @@ function MyFileUpload(props) {
 
     return(
         <div>
-            {/* upload button in header */}
-            <Button
-                type="danger"
-                size="large"
-                style={ styling.uploadButton }
-                onClick={ () => setState({ ...state, visible: true }) }
-            >
-                <Icon type="upload" /> { t('file-upload.upload-file-btn') }
-            </Button>
+            <Row gutter={16} type="flex" justify="start"> 
+                
+                <Col lg={{ span: 16 }} md={{ span: 12 }} xs={{ span: 0 }}>
+                    {
+                        state.loaded ? 
+                            <Select
+                                style={styling.select}
+                                size="large"
+                                placeholder={ t('header.search-placeholder') }
+                                showSearch
+                            >
+                                {
+                                    state.files.map(
+                                        item => (
+                                            <Select.Option key={item.id} value={item.id}>
+                                                <Tooltip title={item.dscr}>
+                                                    { item.name } (uploaded: {item.date}) { t(`langs.${item.lng}`) }
+                                                </Tooltip>
+                                            </Select.Option>
+                                        )
+                                    )
+                                }
+                            </Select> : <div>{ Loading }</div>
+                    }
+                </Col>
+
+                <Col>                      
+                    {/* upload button in header */}
+                    <Button
+                        type="danger"
+                        size="large"
+                        style={ styling.uploadButton }
+                        onClick={ () => setState({ ...state, visible: true }) }
+                    >
+                        <Icon type="upload" /> { t('file-upload.upload-file-btn') }
+                    </Button>
+                </Col>
+            </Row>
 
             {/* create new file form */}
             <Modal
@@ -161,7 +208,10 @@ function MyFileUpload(props) {
                     >
                         { getFieldDecorator('excel', {
                             rules: [
-                                
+                                {
+                                    required: true,
+                                    message: t('messages.field-obligatory') 
+                                }
                             ]
                         }) (
                             <Upload beforeUpload={() => false}>
