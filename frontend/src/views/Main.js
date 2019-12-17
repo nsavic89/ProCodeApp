@@ -22,7 +22,8 @@ function Main() {
         },
         content: {
             background: "white",
-            minHeight: 825,
+            minHeight: 500,
+            height: "85vh",
             padding: 24
         },
         footer: {

@@ -65,7 +65,7 @@ function Coding () {
             </h2>
             
             <div className="help">
-                <Tooltip title={ t('coding.help-text' )}>
+                <Tooltip title={ t('coding.help-text' )} placement="left">
                     <Icon type="question-circle"  /> { t('general.help' )}
                 </Tooltip>
             </div>
