@@ -350,8 +350,6 @@ class MyCodingViewSet(viewsets.ModelViewSet):
         # for a single or array of texts returns
         # codings of a given classificaiton scheme
 
-        text = [ request.data['text'] ]
-        lng = request.data['lng']
         scheme = request.data['scheme']
         level = request.data['level']
         my_file = None
@@ -360,7 +358,6 @@ class MyCodingViewSet(viewsets.ModelViewSet):
         # then text (given a variable) is in my_file
         if 'my_file' in request.data:
             text = []
-            print("test-1s")
             pk = request.data['my_file']
             var = request.data['variable']
 
@@ -372,7 +369,10 @@ class MyCodingViewSet(viewsets.ModelViewSet):
             my_data = MyData.objects.filter(my_file=my_file.id)
             
             for obj in my_data:
-                text.append( obj[var] )
+                text.append( MyDataSerializer(obj).data[var] )
+        else:
+            text = [ request.data['text'] ]
+            lng = request.data['lng']
       
         # run CNB and get codes
         res = run_cnb(text, lng, level, scheme)

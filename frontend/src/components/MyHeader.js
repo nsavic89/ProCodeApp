@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Icon, Button, Dropdown, Menu, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import MyFileUpload from './MyFileUpload';
 import { Link } from 'react-router-dom';
+import CodingFileForm from './files/CodingFileForm';
 
 const styling = {
     userButton: {
         fontSize: 20,
-        marginRight: 10
+        marginRight: 10,
+        background: "#f5f5f5"
     }
 }
 
@@ -17,6 +19,9 @@ const styling = {
 function MyHeader () {
 
     const { t } = useTranslation();
+    const [state, setState] = useState({
+        file: false
+    });
 
     // overlay menu for dropdown user icon
     const menu = (
@@ -38,24 +43,36 @@ function MyHeader () {
     )
     
     return(
-        <Row type="flex" justify="space-between">
-            <Col md={{ span: 20 }}>
-                {/* Upload new Excel file -> modal -> form */}
-                <MyFileUpload />
-            </Col>
-            
-            <Col>
-                <Dropdown overlay={menu}>
-                    <Button
-                        style={styling.userButton}
-                        shape="circle"
-                        size="large"
-                    >
-                        <Icon type="user" />
-                    </Button>
-                </Dropdown>
-            </Col>
-        </Row>
+        <div>
+            <Row type="flex" justify="space-between">
+                <Col md={{ span: 20 }}>
+                    {/* Upload new Excel file -> modal -> form */}
+                    <MyFileUpload 
+                        onChange={val => setState({
+                            file: val
+                        })}
+                    />
+                </Col>
+                
+                <Col>
+                    <Dropdown overlay={menu}>
+                        <Button
+                            style={styling.userButton}
+                            shape="circle"
+                            size="large"
+                        >
+                            <Icon type="user" />
+                        </Button>
+                    </Dropdown>
+                </Col>
+            </Row>
+
+            {/* modal for coding/transcoding */}
+            <CodingFileForm
+                file={state.file}
+                onCancel={() => setState({ file: false })}
+            />
+        </div>
     )
 }
 export default MyHeader;

@@ -90,6 +90,11 @@ class DataSerializer(serializers.ModelSerializer):
 
 
 # End-user serializers ----------------------------------------------
+class MyDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyData
+        fields = '__all__'
+        
 class MyFileSerializer(serializers.ModelSerializer):
     LANG = [
         ('en', 'English'),
@@ -101,13 +106,10 @@ class MyFileSerializer(serializers.ModelSerializer):
     lng = serializers.ChoiceField(
         choices=LANG, label="Language")
 
+    my_data = MyDataSerializer(read_only=True, many=True)
+
     class Meta:
         model = MyFile 
-        fields = '__all__'
-
-class MyDataSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MyData
         fields = '__all__'
 
 # upload serializer ------------------------------------------------

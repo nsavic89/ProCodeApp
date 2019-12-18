@@ -6,6 +6,8 @@ import { Switch, Route } from 'react-router-dom';
 import Coding from '../components/Coding';
 import Files from '../components/Files';
 import Transcoding from '../components/Transcoding';
+import CodingResults from '../components/files/CodingResults';
+import History from '../components/History';
 
 // Main view for all components for end-user
 // layout with header and sider
@@ -24,6 +26,7 @@ function Main() {
             background: "white",
             minHeight: 500,
             height: "85vh",
+            overflow: "auto",
             padding: 24
         },
         footer: {
@@ -54,6 +57,8 @@ function Main() {
                             <Route path="/" exact component={ Coding } />
                             <Route path="/my-files" exact component={ Files } />
                             <Route path="/transcoding" exact component={ Transcoding } />
+                            <Route path="/coding-results/file=:id" component={ CodingResults } />
+                            <Route path="/history" component={ History } />
                         </Switch>
                     </Layout.Content>
                 </Layout>

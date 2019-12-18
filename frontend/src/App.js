@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './app.css';
 import { Switch, Route } from 'react-router-dom';
 import Login from './views/Login';
+import UserDataContextProvider from './contexts/UserDataContext';
 
 function App() {
     return (
@@ -11,7 +12,10 @@ function App() {
             <Suspense fallback="loading">
                 <Switch>
                     <Route exact path="/login" component={Login} />
-                    <Route path="/" component={Main} />
+                
+                    <UserDataContextProvider>
+                        <Route path="/" component={Main} />
+                    </UserDataContextProvider>
                 </Switch>
             </Suspense>
         </BrowserRouter>

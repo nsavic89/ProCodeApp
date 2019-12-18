@@ -3,7 +3,8 @@
         "help": "Help",
         "submit": "Submit",
         "cancel": "Cancel",
-        "language": "Language"
+        "language": "Language",
+        "created-date": "Created"
     },
 
     "messages": {
@@ -12,7 +13,9 @@
         "request-success": "Successfully added",
         "data-deleted": "Data deleted",
         "are-you-sure": "Are you sure?",
-        "no-data-alert": "Nothing to show. You have no corresponding data uploaded yet."
+        "no": "No",
+        "yes": "Yes",
+        "no-data-alert": "Nothing to show. You have no data that matches purpose of this page."
     },
 
     "langs": {
@@ -65,12 +68,22 @@
             "scheme-placeholder": "Please select",
             "scheme": "Classification:",
             "text": "Input"
+        },
+        "file": {
+            "modal-title": "File coding/transcoding",
+            "coding": "Coding",
+            "transcoding": "Transcoding",
+            "variables": "Variable",
+            "variable-help": "The selected file for coding may have included multiple columns. Select the one containing the data for coding/transcoding",
+            "modal-ok-text": "Run"
         }
     },
 
 
     "files": {
-        "page-title" : "My files"
+        "page-title" : "My files",
+        "no-data-tag": "The file is empty",
+        "file-size": "File size:"
     },
 
     "transcoding": {
@@ -79,5 +92,10 @@
         "starting-scheme": "Transcoding from",
         "classification": "Code/title",
         "end-scheme": "Transcode to"
+    },
+
+
+    "history": {
+        "page-title": "History"
     }
 }

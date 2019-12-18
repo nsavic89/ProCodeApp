@@ -27,7 +27,7 @@ function Coding () {
             `${process.env.REACT_APP_API_URL}/scheme/`
         ).then(
             res => {
-                let schemes = res.data.results;
+                let schemes = res.data;
                 for (let i in schemes) {
                     schemes[i].levels = JSON.parse(schemes[i].levels);
                 }

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Select, Radio, message, Tooltip, Icon, Form } from 'antd';
-import axios from 'axios';
+import { Select, Radio, Tooltip, Icon, Form } from 'antd';
 import { Loading } from './Loading';
 import SchemeTree from './coding/SchemeTree';
+import { UserDataContext } from '../contexts/UserDataContext';
 
 
 
@@ -29,24 +29,9 @@ function Transcoding(props) {
     const { t, i18n } = useTranslation();
     const lng = i18n.language;
     const { getFieldDecorator, getFieldValue } = props.form;
-    const [state, setState] = useState({});
+    const context = useContext(UserDataContext);
 
-
-    // load all schemes from server
-    useEffect(() => {
-        axios.get(
-            `${process.env.REACT_APP_API_URL}/scheme/`
-        ).then(
-            res => setState({
-                loaded: true,
-                schemes: res.data.results
-            })
-        ).catch(
-            () => message.error( t('messages.request-failed') )
-        )
-    }, [t])
-
-    if (!state.loaded) {
+    if (!context.loaded) {
         return (
             <div>{ Loading }</div>
         )
@@ -124,7 +109,7 @@ function Transcoding(props) {
                     })(
                         <Select style={styling.select}>
                             {
-                                state.schemes.map(
+                                context.schemes.map(
                                     item => (
                                         <Select.Option key={item.id} value={item.id}>
                                             { item.name }
@@ -153,7 +138,7 @@ function Transcoding(props) {
                         })(
                             <SchemeTree 
                                 scheme={
-                                    state.schemes.find(
+                                    context.schemes.find(
                                         o => o.id === getFieldValue('scheme')
                                     )}
                                 titleLabel={
@@ -182,7 +167,7 @@ function Transcoding(props) {
                     })(
                         <Select style={styling.select}>
                             {
-                                state.schemes.map(
+                                context.schemes.map(
                                     item => (
                                         <Select.Option key={item.id} value={item.id}>
                                             { item.name }

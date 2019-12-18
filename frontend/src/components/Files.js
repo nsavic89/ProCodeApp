@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
-import { message, Row, Col, Popconfirm, Icon, Card, Alert } from 'antd';
+import { message, Row, Col, Popconfirm, Icon, Card, Alert, Tag } from 'antd';
 import { Loading } from './Loading';
+import { UserDataContext } from '../contexts/UserDataContext';
 
 const styling = {
+    pageHeader: {
+        marginBottom: 25
+    },
     card: {
         marginBottom: 20
     },
@@ -19,6 +23,9 @@ const styling = {
         height: 50,
         overflow: "auto",
         color: "#bfbfbf"
+    },
+    tag: {
+        fontSize: 18
     }
 }
 
@@ -33,21 +40,7 @@ const scaling = {
 // It allows to delete and modify data in files
 function Files() {
     const { t } = useTranslation();
-    const [state, setState] = useState({});
-
-    useEffect(() => {
-        axios.get(
-            `${process.env.REACT_APP_API_URL}/my-file/`
-        ).then(
-            res => setState({
-                loaded: true,
-                files: res.data.results
-            })
-        ).catch(
-            () => message.error( t('messages.request-failed') )
-        )
-    }, [state.update, t])
-
+    const context = useContext(UserDataContext);
 
     // delete file when requested
     const handleDelete = id => {
@@ -56,7 +49,7 @@ function Files() {
         ).then(
             () => {
                 message.warning( t('messages.data-deleted') );
-                setState({ ...state, update: state.update + 1 })
+                context.refreshData();
             }
         ).catch(
             () => message.error( t('messages.request-failed') )
@@ -64,13 +57,13 @@ function Files() {
     }
 
 
-    if (!state.loaded) {
+    if (!context.loaded) {
         return (
             <div>{ Loading }</div>
         )
     }
 
-    if (state.files.length === 0) {
+    if (context.files.length === 0) {
         return(
             <div>
                 <Alert
@@ -84,14 +77,14 @@ function Files() {
 
     return(
         <div>
-            <h2>
+            <h2 style={styling.pageHeader}>
                 { t('files.page-title') }
             </h2>
 
             {/* files list */}
             <Row gutter={16} type="flex" justify="start">
                 {
-                    state.files.map(
+                    context.files.map(
                         item => (
                             <Col key={item.id} {...scaling}>
                                 <Card 
@@ -100,6 +93,8 @@ function Files() {
                                         <Popconfirm 
                                             title={t('messages.are-you-sure')}
                                             onConfirm={() => handleDelete(item.id)}
+                                            okText={ t('messages.yes') }
+                                            cancelText={ t('messages.no') }
                                         >
                                             <Icon 
                                                 style={styling.actionDelete }
@@ -116,8 +111,18 @@ function Files() {
                                     /> <span>{item.name}</span>
                                     </div>}
                                 >
-                                    <div>{item.date}</div>
-                                    <div style={styling.dscr}>{item.dscr}</div>                                 
+                                    <div>{ t('general.created-date') }: {item.date}</div>
+                                    <div style={styling.dscr}>{item.dscr}</div>          
+
+                                    <div>{
+                                        item['my_data'].length === 0 ?
+                                            <Tag color="#f5222d">
+                                                { t('files.no-data.tag') }
+                                            </Tag> 
+                                            : <Tag color="#52c41a" style={styling.tag}>
+                                                { t('files.file-size') } {item['my_data'].length}
+                                            </Tag> 
+                                    }</div>          
                                 </Card>
                             </Col>
                         )
