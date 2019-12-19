@@ -29,7 +29,7 @@ function MySider () {
             height: 35,
             margin: 10,
             marginTop: 20,
-            marginLeft: collapsed ? 15 : 10
+            marginLeft: collapsed ? 20 : 10
         },
         menu: {
             background: "none",
