@@ -92,6 +92,7 @@ function MyFileUpload(props) {
                                     placeholder={ t('header.search-placeholder') }
                                     showSearch
                                     onChange={props.onChange}
+                                    allowClear
                                 >
                                     {
                                         values.files.map(

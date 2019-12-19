@@ -83,7 +83,14 @@
     "files": {
         "page-title" : "My files",
         "no-data-tag": "The file is empty",
-        "file-size": "File size:"
+        "file-size": "File size:",
+        "results": {
+            "page-title": "Coding results",
+            "column-input": "Input text",
+            "column-code": "Code",
+            "column-title": "Title",
+            "column-scheme": "Classification scheme"
+        }
     },
 
     "transcoding": {

@@ -34,7 +34,7 @@ function CodingFileForm(props) {
         radio: "c"
     })
 
-    if (!context.loaded || props.file === false) {
+    if (!context.loaded || !props.file) {
         return (
             <div />
         )

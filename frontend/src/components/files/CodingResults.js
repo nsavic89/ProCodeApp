@@ -38,6 +38,10 @@ function CodingResults(props) {
             dataIndex: 'text',
             key: 'text'
         }, {
+            title: t('files.results.column-scheme'),
+            dataIndex: 'scheme',
+            key: 'scheme'
+        }, {
             title: t('files.results.column-code'),
             dataIndex: 'code',
             key: 'code'
@@ -53,10 +57,12 @@ function CodingResults(props) {
     let labelTitle = file.lng === 'en' ? 'title' : 'title_' + file.lng;
 
     for (let i in myCoding) {
-        console.log(myCoding[i])
+        let schemeID = myCoding[i].scheme;
+
         let obj = {
             key: i.toString(),
-            text: myCoding[i].text
+            text: myCoding[i].text,
+            scheme: context.schemes.find(o => o.id === schemeID).name
         }
 
         let output =  myCoding[i].output;
