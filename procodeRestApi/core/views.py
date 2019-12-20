@@ -370,6 +370,18 @@ class MyCodingViewSet(viewsets.ModelViewSet):
             
             for obj in my_data:
                 text.append( MyDataSerializer(obj).data[var] )
+
+            # for saving coding of files only
+            # for one my_file several schemes may be validated
+            # prvent the same my_file with multiple the same schemes
+            myCoding = MyCoding.objects.filter(
+                my_file=request.data['my_file'],
+                scheme=request.data['scheme']
+                )
+            print(myCoding)
+            for cod in myCoding:
+                cod.delete()
+
         else:
             text = [ request.data['text'] ]
             lng = request.data['lng']

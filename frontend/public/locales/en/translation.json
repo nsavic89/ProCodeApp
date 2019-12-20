@@ -18,6 +18,12 @@
         "no-data-alert": "Nothing to show. You have no data that matches purpose of this page."
     },
 
+    "login": {
+        "login": "Sign in",
+        "welcome-text": "Code your occupational database according to a standardized classification scheme. Procode is a tool that supports your work by using advanced machine learning algrotithms based on a large dataset of previuos codings",
+        "register": "New user"
+    },
+
     "langs": {
         "en": "English",
         "ge": "German",
@@ -103,6 +109,8 @@
 
 
     "history": {
-        "page-title": "History"
+        "page-title": "History",
+        "file": "Coded file",
+        "coded-in": "Coded for"
     }
 }

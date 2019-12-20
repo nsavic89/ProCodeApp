@@ -25,7 +25,7 @@ const styling = {
         color: "#bfbfbf"
     },
     tag: {
-        fontSize: 18
+        fontSize: 14
     }
 }
 
@@ -119,7 +119,7 @@ function Files() {
                                             <Tag color="#f5222d">
                                                 { t('files.no-data.tag') }
                                             </Tag> 
-                                            : <Tag color="#52c41a" style={styling.tag}>
+                                            : <Tag style={styling.tag}>
                                                 { t('files.file-size') } {item['my_data'].length}
                                             </Tag> 
                                     }</div>          

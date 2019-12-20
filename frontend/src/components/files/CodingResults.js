@@ -70,8 +70,8 @@ function CodingResults(props) {
         let titles = [];
 
         for (let o in output) {
-            codes.push(<div>{output[o].code}</div>);
-            titles.push(<div>{output[o][labelTitle]}</div>);
+            codes.push(<div key={i.toString()}>{output[o].code}</div>);
+            titles.push(<div key={i.toString()}>{output[o][labelTitle]}</div>);
         }
 
         obj.code = codes;
@@ -79,7 +79,7 @@ function CodingResults(props) {
 
         dataSource.push(obj);
     }
-
+    console.log(dataSource)
     return(
         <div>
             <h2>

@@ -155,8 +155,8 @@ class MyCodingSerializer(serializers.ModelSerializer):
             'level',
             'lng',
             'output'
-        ]
-
+        ]    
+        
 class MyTranscodingSerializer(serializers.ModelSerializer):
 
     variable = serializers.CharField(write_only=True)
