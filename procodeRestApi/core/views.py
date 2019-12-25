@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from .models import *
 from .serializers import *
 import xlrd
@@ -409,6 +410,15 @@ class MyCodingViewSet(viewsets.ModelViewSet):
             my_coding.output.add(output)
     
         return Response(res, status=status.HTTP_200_OK)
+    
+# if deleting coding of files
+# then we delete all codings for a given file
+@api_view(['DELETE'])
+def delete_file_coding(request, pk):
+    coding = MyCoding.objects.filter(my_file=pk)
+    for c in coding:
+        c.delete()
+    return Response(status=status.HTTP_200_OK)
 
 
 class MyTranscodingViewSet(viewsets.ModelViewSet):

@@ -3,6 +3,7 @@
         "help": "Help",
         "submit": "Submit",
         "cancel": "Cancel",
+        "close": "Close",
         "language": "Language",
         "created-date": "Created"
     },
@@ -21,7 +22,16 @@
     "login": {
         "login": "Sign in",
         "welcome-text": "Code your occupational database according to a standardized classification scheme. Procode is a tool that supports your work by using advanced machine learning algrotithms based on a large dataset of previuos codings",
-        "register": "New user"
+        "register": "New user",
+        "title": "Login page",
+        "username": "Username",
+        "password": "Password",
+        "sign-up": {
+            "title": "New user",
+            "email": "E-mail",
+            "password": "Password",
+            "password2": "Repeat password"
+        }
     },
 
     "langs": {
@@ -112,5 +122,12 @@
         "page-title": "History",
         "file": "Coded file",
         "coded-in": "Coded for"
+    },
+
+    "security": {
+        "title": "Change password",
+        "old-pw": "Old password",
+        "new-pw": "New password",
+        "new-pw2": "New password (confirmation)"
     }
 }

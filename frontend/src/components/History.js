@@ -2,8 +2,9 @@ import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserDataContext } from '../contexts/UserDataContext';
 import { Loading } from './Loading';
-import { Alert, Card, Icon, Col, Row, Tag } from 'antd';
+import { Alert, Card, Icon, Col, Row, Tag, message, Popconfirm } from 'antd';
 import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 // scaling of cards
 const scaling = {
@@ -17,7 +18,8 @@ const styling = {
     deleteIcon: { color: "#f5222d" },
     codedIn: { marginTop: 15 },
     codedFile: { paddingLeft: 15, marginTop: 5 },
-    codedSchemes: { paddingLeft: 15, marginTop: 5 }
+    codedSchemes: { paddingLeft: 15, marginTop: 5 },
+    files: {marginTop: 25}
 }
 
 
@@ -31,6 +33,21 @@ function History(props) {
             <div>
                 { Loading }
             </div>
+        )
+    }
+
+    // handle file delete
+    const handleFileDelete = id => {
+        axios.delete(
+            `${process.env.REACT_APP_API_URL}/delete-file-coding/${id}/`,
+            {file: true}
+        ).then(
+            () => {
+                message.warning( t('messages.data-deleted') );
+                context.refreshData();
+            }
+        ).catch(
+            () => message.error( t('messages.request-failed') )
         )
     }
 
@@ -77,7 +94,7 @@ function History(props) {
                     message={ t('messages.no-data-alert') }
                     showIcon
                 />
-                : <Row gutter={16} type="flex" justify="start">
+                : <Row gutter={16} type="flex" justify="start" style={styling.files}>
                     {
                         files.map(
                             item => (
@@ -86,9 +103,22 @@ function History(props) {
                                         actions={[
                                             <Icon 
                                                 type="search"
-                                                onClick={() => props.history.push(`/coding-results/file=${item.fileID}`)} 
+                                                onClick={
+                                                    () => props.history.push(
+                                                        `/coding-results/file=${item.fileID}`
+                                                    )} 
                                             />,
-                                            <Icon type="delete" style={ styling.deleteIcon } />
+                                            <Popconfirm 
+                                                title={t('messages.are-you-sure')}
+                                                onConfirm={ () => handleFileDelete( item.fileID )}
+                                                okText={ t('messages.yes') }
+                                                cancelText={ t('messages.no') }
+                                            >
+                                                <Icon
+                                                    type="delete"
+                                                    style={ styling.deleteIcon } 
+                                                />
+                                            </Popconfirm>
                                         ]}
                                     >
                                         <span>{ t('history.file') }: </span>

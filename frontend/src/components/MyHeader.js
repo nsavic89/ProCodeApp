@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import MyFileUpload from './MyFileUpload';
 import { Link } from 'react-router-dom';
 import CodingFileForm from './files/CodingFileForm';
+import Language from './Language';
+import Security from './Security';
 
 const styling = {
     userButton: {
@@ -26,11 +28,23 @@ function MyHeader () {
     // overlay menu for dropdown user icon
     const menu = (
         <Menu>
-            <Menu.Item>
-                <Icon type="global" /> {t("header.language")}
+            <Menu.Item
+                onClick={() => setState({
+                    ...state,
+                    languageVisible: true
+                })}
+            >
+                <Icon 
+                    type="global"
+                /> {t("header.language")}
             </Menu.Item>
 
-            <Menu.Item>
+            <Menu.Item
+                onClick={() => setState({
+                    ...state,
+                    securityVisible: true
+                })}
+            >
                 <Icon type="lock" /> {t("header.security")}
             </Menu.Item>
 
@@ -71,6 +85,18 @@ function MyHeader () {
             <CodingFileForm
                 file={state.file}
                 onCancel={() => setState({ file: false })}
+            />
+
+            {/* language settings */}
+            <Language
+                onCancel={ () => setState({ ...state, languageVisible: false }) }
+                visible={ state.languageVisible }
+            />
+
+            {/* security / password change */}
+            <Security 
+                onCancel={ () => setState({ ...state, securityVisible: false })}
+                visible={ state.securityVisible }
             />
         </div>
     )

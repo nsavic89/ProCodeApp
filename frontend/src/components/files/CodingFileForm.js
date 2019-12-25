@@ -6,7 +6,7 @@ import {
 } from 'antd';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
-
+import { LoadingPage } from '../Loading';
 
 const styling = {
     radio: {
@@ -54,6 +54,7 @@ function CodingFileForm(props) {
     // handle submit -> request coding/transcoding
     const handleSubmit = e => {
         e.preventDefault();
+        setState({...state, loadingPage: true});
         props.form.validateFieldsAndScroll((err, values) => {
             if (!err) { 
                 axios.post(
@@ -63,6 +64,7 @@ function CodingFileForm(props) {
                     () => {
                         props.onCancel();
                         context.refreshData();
+                        setState({...state, loadingPage: false});
                         props.history.push('/coding-results/file='+props.file);
                     }
                 ).catch(
@@ -70,6 +72,15 @@ function CodingFileForm(props) {
                 )
             }
         })
+    }
+
+    // while coding -> spinner
+    if (state.loadingPage) {
+        return(
+            <div>
+                {LoadingPage}
+            </div>
+        )
     }
 
     // form coding

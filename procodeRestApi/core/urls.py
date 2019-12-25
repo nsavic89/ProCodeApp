@@ -20,6 +20,8 @@ core_router.register(r'my-transcoding', MyTranscodingViewSet)
 urlpatterns = [
     path('', include(core_router.urls)),
 
+    path('delete-file-coding/<int:pk>/', delete_file_coding),
+
     # upload urls
     path('scheme-upload/', SchemeUploadView.as_view()),
     path('data-upload/', DataUploadView.as_view()),

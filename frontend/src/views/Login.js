@@ -2,7 +2,9 @@ import React from 'react';
 import { Form, Button, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import Logo from '../media/logo_light.png';
-
+import ProfessionsImgs from '../media/login_imgs.png';
+import LoginForm from '../components/login/LoginForm';
+import RegisterForm from '../components/login/RegisterForm';
 
 
 const styling = {
@@ -31,10 +33,10 @@ const styling = {
     logo: {
         height: 75
     },
-    loginBtn: {
-        fontSize: 16,
-        margin: 5,
-        marginTop: 75
+    profImgs: {
+        height: 300,
+        paddingTop: 50,
+        opacity: 0.5
     },
     welcomeText: {
         marginTop: 75,
@@ -43,8 +45,9 @@ const styling = {
     }
 }
 
+
 function Login() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     return(
         <div style={styling.wrapper}>
@@ -58,6 +61,7 @@ function Login() {
                                 size="small"
                                 key={item}
                                 ghost
+                                onClick={() => i18n.changeLanguage(item)}
                             >{item}</Button>
                         )
                     )
@@ -65,31 +69,29 @@ function Login() {
                 </Col>
 
                 <Col>
-                    text
+                    { t('login.title') }
                 </Col>
             </Row>
 
-            <div style={styling.logoDiv}>
-                <img src={Logo} alt="" style={styling.logo} />
-            </div>
+            <Row type="flex" justify="space-around">
+                <Col md={{ span: 8 }} xs={{span: 0}}>
+                    <img src={ProfessionsImgs} alt="" style={styling.profImgs} />
+                </Col>
 
-            <div>
-                <Button
-                    style={styling.loginBtn}
-                    type="primary"
-         
-                >
-                    { t('login.login') }
-                </Button>
+                <Col md={{ span: 8 }} xs={{span: 24}}>
+                    <div style={styling.logoDiv}>
+                        <img src={Logo} alt="" style={styling.logo} />
+                    </div>
 
-                <Button
-                    style={styling.loginBtn}
-                    type="danger"
-              
-                >
-                    { t('login.register') }
-                </Button>
-            </div>
+                    <div>
+                        <LoginForm />
+                        <RegisterForm />
+                    </div>
+                </Col>
+
+                <Col md={{ span: 8 }} xs={{span: 0}}>
+                </Col>
+            </Row>
 
             <div style={styling.welcomeText}>
                 { t('login.welcome-text') }
