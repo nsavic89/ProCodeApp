@@ -245,6 +245,7 @@ class TranslationUploadView(UploadView):
     serializer_class = TranslationUploadSerializer
     model_serializer = TranslationSerializer
     run_read_excel = False
+    parent = None
 
     def post(self, request):
         self.excel = request.data['excel']
@@ -256,31 +257,33 @@ class TranslationUploadView(UploadView):
         new_data_list = []
         for e in self.data_list:
             try:
-                starting_cls_id = Classification.objects.get(
-                        sheme=starting_scheme_id,
+                starting_cls = Classification.objects.get(
+                        scheme=starting_scheme_id,
                         code=e['starting']
-                    ).id
-                output_cls_ids = []
-                output_list = json.loads(e['output'])
+                    ).id 
 
+                output_cls = []
+                output_list = e['output'].split(",")
+                print(output_list)
                 for out in output_list:
                     try:
-                        out_id = Classification.objects.get(
-                            sheme=output_scheme_id,
+                        out = Classification.objects.get(
+                            scheme=output_scheme_id,
                             code=out
                         ).id
+                        output_cls.append(out)
                     except:
                         continue
-                
+                    
                 new_data_list.append(
                     {
-                        "starting": starting_cls_id,
-                        "output": output_cls_ids
+                        "starting": starting_cls,
+                        "output": output_cls
                     }
                 )
             except:
                 continue
-        
+            
         self.data_list = new_data_list
         return super().post(request)
 
@@ -420,6 +423,13 @@ def delete_file_coding(request, pk):
         c.delete()
     return Response(status=status.HTTP_200_OK)
 
+@api_view(['DELETE'])
+def delete_file_transcoding(request, pk):
+    coding = MyTranscoding.objects.filter(my_file=pk)
+    for c in coding:
+        c.delete()
+    return Response(status=status.HTTP_200_OK)
+
 
 class MyTranscodingViewSet(viewsets.ModelViewSet):
     queryset = MyTranscoding.objects.all()
@@ -427,26 +437,51 @@ class MyTranscodingViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         my_file = None
-        starting = [ request.data['starting'] ]
+        # starting codes
+        starting = []
 
         if request.data['my_file'] != '':
-            starting = []
             my_file = MyFile.objects.get(pk=request.data['my_file'])
             var = request.data['variable']
 
             # filter texts of my_file
             my_data = MyData.objects.filter(my_file=my_file.id)
-            
-            for obj in my_data:
+            my_data_ser = MyDataSerializer(my_data, many=True)
+
+            for obj in my_data_ser.data:
                 starting.append( obj[var] )
+        
+        else:
+            starting = [ request.data['starting'] ]
 
         # transcode codes
+        my_transcoding = None
         for code in starting:
-            output = Translation.objects.get(
-                starting=code).output.all()
-            my_transcoding = MyTranscoding(my_file=my_file, starting=code)
-            my_transcoding.save()
-            my_transcoding.output.add(output)
+            try:
+                starting_id = Classification.objects.get(
+                    code=code,
+                    scheme=request.data['scheme']
+                )
+                output = Translation.objects.get(
+                    starting=starting_id).output.all()
         
-        return Response("OK", status=status.HTTP_200_OK)
+                my_transcoding = MyTranscoding(my_file=my_file, starting=starting_id)
+                my_transcoding.save()
+
+                for out in output:
+                    my_transcoding.output.add(out)
+            except:
+                continue
+            
+        if request.data['my_file'] == '':
+            # if transcoding failed
+            if my_transcoding is None:
+                return Response(status=status.HTTP_204_NO_CONTENT)
+
+            my_transcoding_ser = MyTranscodingSerializer(my_transcoding)
+            return Response(my_transcoding_ser.data, status=status.HTTP_201_CREATED)
+        
+        # if file transcoded
+        else:
+            return Response(status=status.HTTP_201_CREATED)
             

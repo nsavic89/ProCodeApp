@@ -33,8 +33,12 @@ class DataUploadSerializer(serializers.Serializer):
 # Translation upload
 class TranslationUploadSerializer(serializers.Serializer):
     excel = serializers.FileField(label="MS Excel file")
-    starting_scheme_id = serializers.CharField()
-    output_scheme_id = serializers.CharField()
+    starting_scheme_id = serializers.PrimaryKeyRelatedField(
+            queryset=Scheme.objects.all()
+        )
+    output_scheme_id = serializers.PrimaryKeyRelatedField(
+            queryset=Scheme.objects.all()
+        )
 
 
 # Serializers for viewsets ------------------------------------
@@ -160,11 +164,9 @@ class MyCodingSerializer(serializers.ModelSerializer):
 class MyTranscodingSerializer(serializers.ModelSerializer):
 
     variable = serializers.CharField(write_only=True)
-    starting = serializers.PrimaryKeyRelatedField(
-            queryset=Classification.objects.all()
-        )
+    starting = ClassificationSerializer(read_only=True)
     end_scheme = serializers.PrimaryKeyRelatedField(
-            queryset=Scheme.objects.all()
+            queryset=Scheme.objects.all(), write_only=True
         )
     output = ClassificationSerializer(read_only=True, many=True)
 

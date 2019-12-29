@@ -114,7 +114,8 @@
         "help-text": "Transcoding or translation between different classification schemes is performed on this page. Simply select the starting scheme, desired code/title for transcoding and a target scheme. The results will appear immediately below the fields.",
         "starting-scheme": "Transcoding from",
         "classification": "Code/title",
-        "end-scheme": "Transcode to"
+        "end-scheme": "Transcode to",
+        "button-title": "Run transcoding"
     },
 
 

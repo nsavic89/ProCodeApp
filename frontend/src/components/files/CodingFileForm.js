@@ -16,10 +16,10 @@ const styling = {
 
 const formItemLayout = {
     labelCol: {
-        md: {span: 6}
+        md: {span: 7}
     },
     wrapperCol: {
-        md: {span: 14}
+        md: {span: 16}
     }
 }
 
@@ -55,23 +55,45 @@ function CodingFileForm(props) {
     const handleSubmit = e => {
         e.preventDefault();
         setState({...state, loadingPage: true});
-        props.form.validateFieldsAndScroll((err, values) => {
-            if (!err) { 
-                axios.post(
-                    `${process.env.REACT_APP_API_URL}/my-coding/`,
-                    {...values, "my_file": props.file}
-                ).then(
-                    () => {
-                        props.onCancel();
-                        context.refreshData();
-                        setState({...state, loadingPage: false});
-                        props.history.push('/coding-results/file='+props.file);
-                    }
-                ).catch(
-                    () => message.error( t('messages.request-failed') )
-                )
-            }
-        })
+        
+        if (state.radio === 'c') {
+            props.form.validateFieldsAndScroll((err, values) => {
+                if (!err) { 
+                    axios.post(
+                        `${process.env.REACT_APP_API_URL}/my-coding/`,
+                        {...values, "my_file": props.file}
+                    ).then(
+                        () => {
+                            props.onCancel();
+                            context.refreshData();
+                            setState({...state, loadingPage: false});
+                            props.history.push('/coding-results/file='+props.file);
+                        }
+                    ).catch(
+                        () => message.error( t('messages.request-failed') )
+                    )
+                }
+            })
+        } else {
+            props.form.validateFieldsAndScroll((err, values) => {
+                console.log(values)
+                if (!err) { 
+                    axios.post(
+                        `${process.env.REACT_APP_API_URL}/my-transcoding/`,
+                        {...values, "my_file": props.file}
+                    ).then(
+                        () => {
+                            props.onCancel();
+                            context.refreshData();
+                            setState({...state, loadingPage: false});
+                            props.history.push('/transcoding-results/file='+props.file);
+                        }
+                    ).catch(
+                        () => message.error( t('messages.request-failed') )
+                    )
+                }
+            })
+        }
     }
 
     // while coding -> spinner
@@ -85,112 +107,204 @@ function CodingFileForm(props) {
 
     // form coding
     // when state.radio is "c"
-    const formCoding = (
-        <Form>
-            <Form.Item
-                label={ t('coding.search.scheme') }
-                labelAlign="left"
-                {...formItemLayout}
-            >
-                { getFieldDecorator('scheme', {
-                    rules: [
-                        {
-                            required: true,
-                            message: t('messages.field-obligatory')
-                        }
-                    ]
-                })(
-                    <Select>
-                        {
-                            context.schemes.map(
-                                item => (
-                                    <Select.Option key={item.id} value={item.id}>
-                                        { item.name }
-                                    </Select.Option> 
-                                )
-                            )
-                        }
-                    </Select>
-                ) }
-            </Form.Item>
-
-            <Form.Item
-                label={ 
-                    <span>{
-                        t('coding.file.variables')} <Tooltip
-                            title={t('coding.file.variable-help')}>
-                                <Icon type="question-circle" />
-                            </Tooltip>
-                    </span> }
-                labelAlign="left"
-                {...formItemLayout}
-            >
-                { getFieldDecorator('variable', {
-                    rules: [
-                        {
-                            required: true,
-                            message: t('messages.field-obligatory')
-                        }
-                    ]
-                })(
-                    <Radio.Group>
-                        {
-                            variables.map(
-                                (item, inx) => (
-                                    <Radio key={inx} value={"var" + (inx + 1)}>
-                                        { item }
-                                    </Radio> 
-                                )
-                            )
-                        }
-                    </Radio.Group>
-                ) }
-            </Form.Item>
-
-            {
-                getFieldValue('scheme') ?
-                    <Form.Item
-                        label={ t('coding.search.level') }
-                        labelAlign="left"
-                        {...formItemLayout}
-                    >
-                        { getFieldDecorator('level', {
-                            rules: [
-                                {
-                                    required: true,
-                                    message: t('messages.field-obligatory')
-                                }
-                            ]
-                        })(
-                            <Radio.Group>
-                                {
-                                    getLevels().map(
-                                        item => (
-                                            <Radio key={item} value={item}>
-                                                { item }
-                                            </Radio> 
-                                        )
+    let formCoding = <div />;
+    if (state.radio === 'c') {
+        formCoding = (
+            <Form>
+                <Form.Item
+                    label={ t('coding.search.scheme') }
+                    labelAlign="left"
+                    {...formItemLayout}
+                >
+                    { getFieldDecorator('scheme', {
+                        rules: [
+                            {
+                                required: true,
+                                message: t('messages.field-obligatory')
+                            }
+                        ]
+                    })(
+                        <Select>
+                            {
+                                context.schemes.map(
+                                    item => (
+                                        <Select.Option key={item.id} value={item.id}>
+                                            { item.name }
+                                        </Select.Option> 
                                     )
-                                }
-                            </Radio.Group>
-                        ) }
-                    </Form.Item>
-                    : <Alert
-                        type="info"
-                        message={ t('coding.search.alert-select-scheme') }
-                    />
-            }
-        </Form>
-    )
+                                )
+                            }
+                        </Select>
+                    ) }
+                </Form.Item>
+    
+                <Form.Item
+                    label={ 
+                        <span>{
+                            t('coding.file.variables')} <Tooltip
+                                title={t('coding.file.variable-help')}>
+                                    <Icon type="question-circle" />
+                                </Tooltip>
+                        </span> }
+                    labelAlign="left"
+                    {...formItemLayout}
+                >
+                    { getFieldDecorator('variable', {
+                        rules: [
+                            {
+                                required: true,
+                                message: t('messages.field-obligatory')
+                            }
+                        ]
+                    })(
+                        <Radio.Group>
+                            {
+                                variables.map(
+                                    (item, inx) => (
+                                        <Radio key={inx} value={"var" + (inx + 1)}>
+                                            { item }
+                                        </Radio> 
+                                    )
+                                )
+                            }
+                        </Radio.Group>
+                    ) }
+                </Form.Item>
+    
+                {
+                    getFieldValue('scheme') ?
+                        <Form.Item
+                            label={ t('coding.search.level') }
+                            labelAlign="left"
+                            {...formItemLayout}
+                        >
+                            { getFieldDecorator('level', {
+                                rules: [
+                                    {
+                                        required: true,
+                                        message: t('messages.field-obligatory')
+                                    }
+                                ]
+                            })(
+                                <Radio.Group>
+                                    {
+                                        getLevels().map(
+                                            item => (
+                                                <Radio key={item} value={item}>
+                                                    { item }
+                                                </Radio> 
+                                            )
+                                        )
+                                    }
+                                </Radio.Group>
+                            ) }
+                        </Form.Item>
+                        : <Alert
+                            type="info"
+                            message={ t('coding.search.alert-select-scheme') }
+                        />
+                }
+            </Form>
+        )
+    }
     
     
     // form transcoding
     // when state.radio is "t"
-    const formTranscoding = (
-        <Form>
-             trans   
-        </Form>
-    )
+    let formTranscoding = <div />;
+    if (state.radio === 't') {
+        formTranscoding = (
+            <Form>
+                <Form.Item
+                    label={t('transcoding.starting-scheme')}
+                    {...formItemLayout}
+                    labelAlign="left"
+                >
+                    {getFieldDecorator('scheme', {
+                        rules: [
+                            {
+                                required: true,
+                                message: t('messages.field-obligatory')
+                            }
+                        ]
+                    })(
+                        <Select style={styling.select}>
+                            {
+                                context.schemes.map(
+                                    item => (
+                                        <Select.Option key={item.id} value={item.id}>
+                                            { item.name }
+                                        </Select.Option>
+                                    )
+                                )
+                            }
+                        </Select>
+                    )}
+                </Form.Item>
+    
+                <Form.Item
+                    label={ 
+                        <span>{
+                            t('coding.file.variables')} <Tooltip
+                                title={t('coding.file.variable-help')}>
+                                    <Icon type="question-circle" />
+                                </Tooltip>
+                        </span> }
+                    labelAlign="left"
+                    {...formItemLayout}
+                >
+                    { getFieldDecorator('variable', {
+                        rules: [
+                            {
+                                required: true,
+                                message: t('messages.field-obligatory')
+                            }
+                        ]
+                    })(
+                        <Radio.Group>
+                            {
+                                variables.map(
+                                    (item, inx) => (
+                                        <Radio key={inx} value={"var" + (inx + 1)}>
+                                            { item }
+                                        </Radio> 
+                                    )
+                                )
+                            }
+                        </Radio.Group>
+                    ) }
+                </Form.Item>
+    
+                <Form.Item
+                    label={t('transcoding.end-scheme')}
+                    {...formItemLayout}
+                    labelAlign="left"
+                >
+                    {getFieldDecorator('scheme2', {
+                        rules: [
+                            {
+                                required: true,
+                                message: t('messages.field-obligatory')
+                            }
+                        ]
+                    })(
+                        <Select style={styling.select}>
+                            {
+                                context.schemes.map(
+                                    item => (
+                                        <Select.Option key={item.id} value={item.id}>
+                                            { item.name }
+                                        </Select.Option>
+                                    )
+                                )
+                            }
+                        </Select>
+                    )}
+                </Form.Item>
+    
+            </Form>
+        )
+    }
 
     return(
         <Modal

@@ -8,6 +8,8 @@ import Files from '../components/Files';
 import Transcoding from '../components/Transcoding';
 import CodingResults from '../components/files/CodingResults';
 import History from '../components/History';
+import TranscodingResults from '../components/files/TranscodingResults';
+import FileDataView from '../components/files/FileDataView';
 
 // Main view for all components for end-user
 // layout with header and sider
@@ -58,6 +60,8 @@ function Main() {
                             <Route path="/my-files" exact component={ Files } />
                             <Route path="/transcoding" exact component={ Transcoding } />
                             <Route path="/coding-results/file=:id" component={ CodingResults } />
+                            <Route path="/transcoding-results/file=:id" component={ TranscodingResults } />
+                            <Route path="/my-files/file=:id" component={ FileDataView } />
                             <Route path="/history" component={ History } />
                         </Switch>
                     </Layout.Content>

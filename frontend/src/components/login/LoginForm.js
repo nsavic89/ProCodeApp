@@ -8,8 +8,6 @@ const styling = {
         marginTop: 50
     },
     input: {
-        background: "none",
-        color: "white"
     },
     submit: {
         width: "100%"
@@ -50,7 +48,7 @@ function LoginForm(props) {
                         }
                     ]
                 }) (
-                    <Input placeholder={ t('login.username') } style={styling.input} />
+                    <Input size="large" placeholder={ t('login.username') } style={styling.input} />
                 ) }
             </Form.Item>
             <Form.Item>
@@ -62,7 +60,7 @@ function LoginForm(props) {
                         }
                     ]
                 }) (
-                    <Input placeholder={ t('login.password') } style={styling.input} />
+                    <Input size="large" placeholder={ t('login.password') } style={styling.input} />
                 ) }
             </Form.Item>
             <Button type="primary" style={styling.submit}>

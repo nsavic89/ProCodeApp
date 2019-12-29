@@ -12,6 +12,10 @@ const styling = {
     card: {
         marginBottom: 20
     },
+    headStyle: {
+        background: "#fafafa",
+        color: "#595959"
+    },
     actionDelete: {
         color: "#f5222d"
     },
@@ -24,8 +28,16 @@ const styling = {
         overflow: "auto",
         color: "#bfbfbf"
     },
-    tag: {
-        fontSize: 14
+    noDscr:  {
+        height: 50,
+        marginTop: 10,
+        color: "#bfbfbf"
+    },
+    dataSize: {
+        fontSize: 28,
+        fontWeight: 700,
+        textAlign: "right",
+        color: "#52c41a"
     }
 }
 
@@ -38,7 +50,7 @@ const scaling = {
 
 // My files page lists all uploaded files
 // It allows to delete and modify data in files
-function Files() {
+function Files(props) {
     const { t } = useTranslation();
     const context = useContext(UserDataContext);
 
@@ -89,6 +101,7 @@ function Files() {
                             <Col key={item.id} {...scaling}>
                                 <Card 
                                     style={styling.card}
+                                    headStyle={styling.headStyle}
                                     actions={[
                                         <Popconfirm 
                                             title={t('messages.are-you-sure')}
@@ -101,27 +114,40 @@ function Files() {
                                                 type="delete"
                                                 key="delete"
                                             />
-                                        </Popconfirm> ,
-                                        <Icon type="edit" key="edit" />,
-                                        <Icon type="search" key="data" />
+                                        </Popconfirm>,
+                                        <Icon 
+                                            type="search"
+                                            key="data" 
+                                            onClick={() => props.history.push(`my-files/file=${item.id}`)}/>
                                     ]}
                                     title={<div><Icon 
                                         style={styling.iconFolder}
-                                        type="folder" 
+                                        type="file-excel" 
+                                        twoToneColor="#73d13d"
+                                        theme="twoTone"
                                     /> <span>{item.name}</span>
                                     </div>}
                                 >
                                     <div>{ t('general.created-date') }: {item.date}</div>
-                                    <div style={styling.dscr}>{item.dscr}</div>          
+                                    
+                                    {item.dscr ? 
+                                    <div style={styling.dscr}>
+                                        {item.dscr}
+                                    </div> 
+                                    : <div style={styling.noDscr}>
+                                        { t('files.no-dscr') }
+                                    </div>}         
 
                                     <div>{
                                         item['my_data'].length === 0 ?
                                             <Tag color="#f5222d">
                                                 { t('files.no-data.tag') }
                                             </Tag> 
-                                            : <Tag style={styling.tag}>
-                                                { t('files.file-size') } {item['my_data'].length}
-                                            </Tag> 
+                                            : <div>{ t('files.file-size') }
+                                                <div style={styling.dataSize}>
+                                                    {item['my_data'].length}
+                                                </div>
+                                            </div>
                                     }</div>          
                                 </Card>
                             </Col>

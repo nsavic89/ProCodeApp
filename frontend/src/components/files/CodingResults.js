@@ -79,7 +79,7 @@ function CodingResults(props) {
 
         dataSource.push(obj);
     }
-    console.log(dataSource)
+    
     return(
         <div>
             <h2>

@@ -100,8 +100,10 @@
         "page-title" : "My files",
         "no-data-tag": "The file is empty",
         "file-size": "File size:",
+        "no-dscr": "No description",
         "results": {
             "page-title": "Coding results",
+            "page-title-trans": "Transcoding results",
             "column-input": "Input text",
             "column-code": "Code",
             "column-title": "Title",
@@ -114,14 +116,18 @@
         "help-text": "Transcoding or translation between different classification schemes is performed on this page. Simply select the starting scheme, desired code/title for transcoding and a target scheme. The results will appear immediately below the fields.",
         "starting-scheme": "Transcoding from",
         "classification": "Code/title",
-        "end-scheme": "Transcode to"
+        "end-scheme": "Transcode to",
+        "error": {
+            "no-content-204": "Procode failed to transcode the selected input code to the destination scheme. This is probably due to the missing transcoding rule between the two classification schemes."
+        }
     },
 
 
     "history": {
         "page-title": "History",
-        "file": "Coded file",
-        "coded-in": "Coded for"
+        "file": "File name",
+        "coded-in": "Coded for",
+        "transcoded-in": "Transcoded into"
     },
 
     "security": {

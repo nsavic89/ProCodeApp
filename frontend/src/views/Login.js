@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Button, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
-import Logo from '../media/logo_light.png';
+import Logo from '../media/logo_dark.png';
 import ProfessionsImgs from '../media/login_imgs.png';
 import LoginForm from '../components/login/LoginForm';
 import RegisterForm from '../components/login/RegisterForm';
@@ -9,22 +9,24 @@ import RegisterForm from '../components/login/RegisterForm';
 
 const styling = {
     wrapper: {
-        background: "rgb(30,30,30)",
+        background: "rgb(250,250,250)",
         height: "100vh",
         textAlign: "center",
-        color: "white"
+        color: "#333"
     },
     header: {
         width: "100%",
         minHeight: 50,
-        paddingTop: 10,
+        paddingTop: 12,
         paddingLeft: 25,
         paddingRight: 25,
-        background: "#333"
+        background: "white",
+        borderBottom: "1px solid silver"
     },
     lngBtn: {
         margin: 2,
-        border: "none"
+        color: "#333",
+        boxShadow: "none"
     },
     logoDiv: {
         textAlign: "center",
@@ -36,7 +38,7 @@ const styling = {
     profImgs: {
         height: 300,
         paddingTop: 50,
-        opacity: 0.5
+        opacity: 0.8
     },
     welcomeText: {
         marginTop: 75,

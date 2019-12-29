@@ -14,16 +14,20 @@ function UserDataContextProvider (props) {
     const { t } = useTranslation();
 
     useEffect(() => {
+        setState({ loaded: false });
+        
         const promise1 = axios.get(`${process.env.REACT_APP_API_URL}/scheme/`);
         const promise2 = axios.get(`${process.env.REACT_APP_API_URL}/my-file/`);
         const promise3 = axios.get(`${process.env.REACT_APP_API_URL}/my-coding/`);
+        const promise4 = axios.get(`${process.env.REACT_APP_API_URL}/my-transcoding/`);
 
-        Promise.all([promise1, promise2, promise3])
+        Promise.all([promise1, promise2, promise3, promise4])
             .then(
                 res => setState({
                     schemes: res[0].data,
                     files: res[1].data,
                     myCoding: res[2].data,
+                    myTranscoding: res[3].data,
                     loaded: true
                 })
             )

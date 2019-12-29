@@ -9,21 +9,24 @@ const styling = {
         marginTop: 75
     },
     header: {
-        background: "rgb(40,40,45)"
+        //background: "rgb(40,40,45)"
     },
     title: { 
-        color: "rgb(220,220,220)"
+        //color: "rgb(220,220,220)"
     },
     drawer: {
-        background: "rgb(30,30,35)",
-        color: "white"
+        //background: "rgb(30,30,35)",
+        //color: "white"
     },
     input: {
-        background: "none",
-        color: "white"
+        //background: "none",
+        //color: "white"
     },
     button: {
         margin: 3
+    },
+    submitBtn: {
+        width: "100%"
     }
 }
 
@@ -113,6 +116,10 @@ function RegisterForm (props) {
                             <Input style={styling.input} />
                         ) }
                     </Form.Item>
+
+                    <Button type="primary" style={styling.submitBtn}>
+                        { t('login.register') }
+                    </Button>
                 </Form>
             </Drawer>
         </div>
