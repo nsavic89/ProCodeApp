@@ -180,3 +180,18 @@ class MyTranscodingSerializer(serializers.ModelSerializer):
             'end_scheme',
             'output'
         ]
+
+# serializers for download
+class DownloadMyCodingSerializer(serializers.Serializer):
+    input_text = serializers.CharField()
+    classification_scheme = serializers.CharField()
+    codes = serializers.CharField()
+    titles = serializers.CharField()
+
+class DownloadMyTranscodingSerializer(serializers.Serializer):
+    starting_scheme = serializers.CharField()
+    starting_code = serializers.CharField()
+    starting_title = serializers.CharField()
+    end_scheme = serializers.CharField()
+    end_code = serializers.CharField()
+    end_title = serializers.CharField()

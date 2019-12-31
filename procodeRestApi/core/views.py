@@ -2,13 +2,14 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, renderer_classes
+from drf_renderer_xlsx.renderers import XLSXRenderer
+from rest_framework.parsers import MultiPartParser, FormParser
 from .models import *
 from .serializers import *
 import xlrd
 import json
 from .coding import run_cnb
-from rest_framework.parsers import MultiPartParser, FormParser
 
 # General views ------------------------------------------
 # both administrator and end-users
@@ -485,3 +486,98 @@ class MyTranscodingViewSet(viewsets.ModelViewSet):
         else:
             return Response(status=status.HTTP_201_CREATED)
             
+
+# download xlsx files for history of coding or transcoding
+# pk is primary key for file
+@api_view(['GET'])
+@renderer_classes([ XLSXRenderer ])
+def download_coding(request, pk):
+
+    data = MyCoding.objects.filter(my_file=pk)
+    data_list = []
+   
+    for d in data:
+        obj = {
+            "input_text": d.text,
+            "classification_scheme": d.scheme.name
+        }
+        # as one coding object may include many outputs
+        codes = []
+        titles = []
+
+        for out in d.output.all():
+            codes.append(out.code)
+
+            if d.lng == "ge":
+                titles.append(out.title_ge)
+            elif d.lng == "fr":
+                titles.append(out.title_fr)
+            elif d.lng == "it":
+                titles.append(out.title_it)
+            else:
+                titles.append(out.title)
+        
+        obj["codes"] = ','.join(codes)
+        obj["titles"] = ','.join(titles)
+        
+        data_list.append(obj)
+
+    # now serializer data list
+    data_ser = DownloadMyCodingSerializer(data=data_list, many=True)
+    if data_ser.is_valid():
+        return Response(
+            data_ser.data,
+            headers={
+                'Content-Disposition': 
+                'attachment; filename=download.xlsx'
+                }
+            )
+    
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@renderer_classes([ XLSXRenderer ])
+def download_transcoding(request, pk):
+    data = MyTranscoding.objects.filter(my_file=pk)
+    data_list = []
+
+    for d in data:
+        obj = {
+            "starting_scheme": d.starting.scheme.name,
+            "starting_code": d.starting.code,
+            "starting_title": "x",
+            "end_scheme": "x"
+        }
+        
+        codes = []
+        titles = []
+        
+        for out in d.output.all():
+            codes.append(out.code)
+
+            if d.my_file.lng == "ge":
+                titles.append(out.title_ge if out.title_ge != '' else '-')
+            elif d.my_file.lng == "fr":
+                titles.append(out.title_fr if out.title_fr != '' else '-')
+            elif d.my_file.lng == "it":
+                titles.append(out.title_it if out.title_it != '' else '-')
+            else:
+                titles.append(out.title if out.title != '' else '-')
+
+        obj["end_code"] = ','.join(codes) if len(codes) > 0 else "-"
+        obj["end_title"] = ','.join(titles) if len(titles) > 0 else "-"
+ 
+        data_list.append(obj)
+
+    # now serializer data list
+    data_ser = DownloadMyTranscodingSerializer(data=data_list, many=True)
+    if data_ser.is_valid():
+        return Response(
+            data_ser.data,
+            headers={
+                'Content-Disposition': 
+                'attachment; filename=download.xlsx'
+                }
+            )
+    
+    return Response(status=status.HTTP_400_BAD_REQUEST)

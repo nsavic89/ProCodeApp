@@ -20,6 +20,10 @@ core_router.register(r'my-transcoding', MyTranscodingViewSet)
 urlpatterns = [
     path('', include(core_router.urls)),
 
+    # download xlsx of coding history
+    path('download-coding/<int:pk>/', download_coding),
+    path('download-transcoding/<int:pk>/', download_transcoding),
+
     # delete views for coding and transcoding -> for files (file pk)
     path('delete-file-coding/<int:pk>/', delete_file_coding),
     path('delete-file-transcoding/<int:pk>/', delete_file_transcoding),

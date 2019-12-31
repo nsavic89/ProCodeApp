@@ -5,13 +5,16 @@
         "cancel": "Cancel",
         "close": "Close",
         "language": "Language",
-        "created-date": "Created"
+        "created-date": "Created",
+        "add-new-btn": "New entry",
+        "download": "Download"
     },
 
     "messages": {
         "field-obligatory": "This field cannot be empty",
         "request-failed": "Connection failed",
         "request-success": "Successfully added",
+        "request-success-update": "Successfully updated",
         "data-deleted": "Data deleted",
         "are-you-sure": "Are you sure?",
         "no": "No",
@@ -21,7 +24,7 @@
 
     "login": {
         "login": "Sign in",
-        "welcome-text": "Code your occupational database according to a standardized classification scheme. Procode is a tool that supports your work by using advanced machine learning algrotithms based on a large dataset of previuos codings",
+        "welcome-text": "Code your occupational database according to a standardized classification scheme. Procode is a tool that supports your work by using advanced machine learning algorithms based on a large dataset of previuos codings",
         "register": "New user",
         "title": "Login page",
         "username": "Username",
@@ -101,6 +104,7 @@
         "no-data-tag": "The file is empty",
         "file-size": "File size:",
         "no-dscr": "No description",
+        "modal-editing-title": "Edit data entry",
         "results": {
             "page-title": "Coding results",
             "page-title-trans": "Transcoding results",

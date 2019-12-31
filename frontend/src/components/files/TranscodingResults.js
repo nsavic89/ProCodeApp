@@ -2,10 +2,16 @@ import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { UserDataContext } from '../../contexts/UserDataContext';
 import { Loading } from '../Loading';
-import { Table } from 'antd';
+import { Icon, Table } from 'antd';
 
 
 const styling = {
+    action: {
+        textAlign: "right"
+    },
+    downloadBtn: {
+        borderRadius: 0
+    },
     table: {
         marginTop: 25
     }
@@ -85,11 +91,22 @@ function TranscodingResults(props) {
         dataSource.push(obj);
     }
 
+    // url for download of excel file
+    const url = `${process.env.REACT_APP_API_URL}/download-transcoding/${fileID}/`;
     return (
         <div>
             <h2>
                 { t('files.results.page-title-trans') }
             </h2>
+            <div style={styling.action}>
+                <button
+                    className="success-btn"
+                    style={styling.downloadBtn}
+                    onClick={() => window.open(url)}
+                >
+                    <Icon type="file-excel"/> {t('general.download')}
+                </button>
+            </div>
             <Table
                 style={styling.table}
                 dataSource={dataSource}

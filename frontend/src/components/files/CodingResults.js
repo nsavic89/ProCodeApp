@@ -1,12 +1,17 @@
 import React, { useContext } from 'react';
 import { UserDataContext } from '../../contexts/UserDataContext';
 import { Loading } from '../Loading';
-import { Table } from 'antd';
+import { Table, Icon } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 
-
 const styling = {
+    action: {
+        textAlign: "right"
+    },
+    downloadBtn: {
+        borderRadius: 0
+    },
     table: {
         marginTop: 25
     }
@@ -80,11 +85,24 @@ function CodingResults(props) {
         dataSource.push(obj);
     }
     
+    // url for download of excel file
+    const url = `${process.env.REACT_APP_API_URL}/download-coding/${fileID}/`;
     return(
         <div>
             <h2>
                 { t('files.results.page-title') }
             </h2>
+
+            <div style={styling.action}>
+                <button
+                    className="success-btn"
+                    style={styling.downloadBtn}
+                    onClick={() => window.open(url)}
+                >
+                    <Icon type="file-excel"/> {t('general.download')}
+                </button>
+            </div>
+
             <Table
                 style={styling.table}
                 columns={columns}
