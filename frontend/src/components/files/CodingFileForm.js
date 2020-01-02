@@ -61,7 +61,11 @@ function CodingFileForm(props) {
                 if (!err) { 
                     axios.post(
                         `${process.env.REACT_APP_API_URL}/my-coding/`,
-                        {...values, "my_file": props.file}
+                        {...values, "my_file": props.file},
+                        {headers: {
+                            Pragma: "no-cache",
+                            Authorization: 'JWT ' + localStorage.getItem('token')
+                        }}
                     ).then(
                         () => {
                             props.onCancel();
@@ -80,7 +84,11 @@ function CodingFileForm(props) {
                 if (!err) { 
                     axios.post(
                         `${process.env.REACT_APP_API_URL}/my-transcoding/`,
-                        {...values, "my_file": props.file}
+                        {...values, "my_file": props.file},
+                        {headers: {
+                            Pragma: "no-cache",
+                            Authorization: 'JWT ' + localStorage.getItem('token')
+                        }}
                     ).then(
                         () => {
                             props.onCancel();

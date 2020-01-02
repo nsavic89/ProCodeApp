@@ -1,50 +1,47 @@
 {
     "general": {
-        "help": "Help",
-        "submit": "Submit",
-        "cancel": "Cancel",
-        "close": "Close",
-        "language": "Language",
-        "created-date": "Created",
-        "add-new-btn": "New entry",
-        "download": "Download"
+        "help": "Hilfe",
+        "submit": "Absenden",
+        "cancel": "Abbrechen",
+        "close": "Schließen",
+        "language": "Sprache",
+        "created-date": "Erstellt",
+        "add-new-btn": "Neue Eingabe",
+        "download": "Herunterladen"
     },
 
     "messages": {
-        "field-obligatory": "This field cannot be empty",
-        "request-failed": "Connection failed",
-        "request-success": "Successfully added",
-        "request-success-update": "Successfully updated",
-        "data-deleted": "Data deleted",
-        "are-you-sure": "Are you sure?",
-        "no": "No",
-        "yes": "Yes",
-        "no-data-alert": "Nothing to show. You have no data that matches purpose of this page.",
-        "invalid-email": "Not valid e-mail"
+        "field-obligatory": "Dieses Feld kann nicht leer sein",
+        "request-failed": "Verbindungsausfall",
+        "request-success": "Erfolgreich hinzugefügt",
+        "request-success-update": "Erfolgreich aktualisiert",
+        "data-deleted": "Gelöscht",
+        "are-you-sure": "Sind Sie sicher?",
+        "no": "Nein",
+        "yes": "Ja",
+        "no-data-alert": "Nichts vorzuweisen. Keine Angaben für diese Seite"
     },
 
     "login": {
-        "login": "Sign in",
+        "login": "Anmelden",
         "welcome-text": "Code your occupational database according to a standardized classification scheme. Procode is a tool that supports your work by using advanced machine learning algorithms based on a large dataset of previuos codings",
-        "register": "New user",
-        "title": "Login page",
-        "username": "Username",
-        "password": "Password",
-        "message-login-failed": "Failed! Check username or/and password",
+        "register": "Sich anmelden",
+        "title": "Anmeldung",
+        "username": "Benutzer",
+        "password": "Kennwort",
         "sign-up": {
-            "title": "New user",
+            "title": "Neue Benutzer",
             "email": "E-mail",
-            "password": "Password",
-            "password2": "Repeat password",
-            "message-success": "Successfully registered"
+            "password": "Kennwort",
+            "password2": "Kennwort wiederholen"
         }
     },
 
     "langs": {
-        "en": "English",
-        "ge": "German",
-        "fr": "French",
-        "it": "Italian"
+        "en": "Englisch",
+        "ge": "Deutsch",
+        "fr": "Französisch",
+        "it": "Italienisch"
     },
 
     "header": {
@@ -55,20 +52,20 @@
     },
 
     "file-upload": {
-        "upload-file-btn": "Upload file",
-        "title": "New file upload",
-        "name": "File name",
-        "lng": "Language",
-        "dscr": "Description",
+        "upload-file-btn": "Hochladen Datei",
+        "title": "Neue Datei hochladen",
+        "name": "Name",
+        "lng": "Sprache",
+        "dscr": "Beschreibung",
         "file": "MS Excel (.xlsx)"
     },
 
     
     "sider": {
-        "coding": "Coding",
-        "transcoding": "Transcoding",
-        "my-files": "My files",
-        "history": "History"
+        "coding": "Kodierung",
+        "transcoding": "Transkodierung",
+        "my-files": "Meine Dateien",
+        "history": "Verlauf"
     },
 
     "coding": {
@@ -82,14 +79,13 @@
             "no-response-msg": "Please specify the correct result",
             "feedback-sent-msg": "Thank you for your feedback",
             "feedback-info": "The field below lists all codes/titles for the corresponding classification scheme. Please specify which of them describes best the entered (searched) data",
-            "feedback-text": "To help Procode become smarter, please specify which of the provided results is correct. If none is correct, then select the last option and click on the submit button below.",
-            "error-no-lang": "The selected language is not supported for this classification scheme"
+            "feedback-text": "To help Procode become smarter, please specify which of the provided results is correct. If none is correct, then select the last option and click on the submit button below."
         },
         "search": {
-            "input-placeholder": "Textual description",
-            "level": "Level",
+            "input-placeholder": "Beschreibung",
+            "level": "Niveau",
             "alert-select-scheme": "Level not available before classification scheme is selected",
-            "scheme-placeholder": "Please select",
+            "scheme-placeholder": "Wählen Sie aus bitte",
             "scheme": "Classification:",
             "text": "Input"
         },
@@ -128,7 +124,6 @@
         "help-text": "Transcoding or translation between different classification schemes is performed on this page. Simply select the starting scheme, desired code/title for transcoding and a target scheme. The results will appear immediately below the fields.",
         "starting-scheme": "Transcoding from",
         "classification": "Code/title",
-        "button-title": "Run transcoding",
         "end-scheme": "Transcode to",
         "error": {
             "no-content-204": "Procode failed to transcode the selected input code to the destination scheme. This is probably due to the missing transcoding rule between the two classification schemes."

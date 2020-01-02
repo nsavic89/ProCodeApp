@@ -9,7 +9,9 @@ import {
     message,
     Alert,
     Button,
-    Icon
+    Icon,
+    Row,
+    Col
 } from 'antd';
 import axios from 'axios';
 
@@ -24,6 +26,8 @@ const styling = {
     },
     radio: {
         minWidth: 75
+    },
+    errorNoLang: {
     }
 }
 
@@ -56,10 +60,21 @@ function Search(props) {
 
                 axios.post(
                     `${process.env.REACT_APP_API_URL}/my-coding/`,
-                    values
+                    values,
+                    { headers: {
+                        Pragma: "no-cache",
+                        Authorization: 'JWT ' + localStorage.getItem('token')
+                    }}
                 ).then(
                     res => {
                         // format data and send back to parent (coding)
+                        if (res.status === 204) {
+                            setState({ ...state, errorNoLang: true });
+                            // deactivates spinner in results
+                            props.updateParent(null, false);
+                            return;
+                        }
+
                         let data = [];
                         let titleLabel= null;
 
@@ -72,6 +87,7 @@ function Search(props) {
                             )[titleLabel]
                             data.push({ code: res.data[i], title: title });
                         }
+                        setState({ ...state, errorNoLang: false });
                         // state.scheme is selected (active) scheme needed for feeback
                         props.updateParent(data, false, state.scheme, titleLabel, values);
                     }
@@ -82,8 +98,7 @@ function Search(props) {
         });
     };
 
-
-    return(
+    const form = (
         <Form
             onSubmit={handleSubmit}
             style={styling.form}
@@ -228,6 +243,25 @@ function Search(props) {
                     </Button>
             </Form.Item>
         </Form>
+    );
+    return(
+        <div>
+            <span>{ form }</span>
+            {
+                state.errorNoLang ?
+                <Row>
+                    <Col md={{ offset: 4 }}>
+                        <Alert
+                            style={styling.errorNoLang}
+                            type="warning"
+                            message={ t('coding.results.error-no-lang') }
+                            showIcon
+                        />
+                    </Col>
+                </Row>
+                : <div />
+            }
+        </div>
     )
 }
 export default Form.create()( Search );

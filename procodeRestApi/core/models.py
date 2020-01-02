@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 # Administrator's data --------------------------------------
 # The admin uploads Scheme, Classification, Translations and Training data
@@ -118,6 +118,7 @@ class Data(models.Model):
 
 class MyFile(models.Model):
     # file uploaded by user -> contains details
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     date = models.DateField(auto_now_add=True)
     dscr = models.CharField(
@@ -158,6 +159,7 @@ class MyData(models.Model):
 # The following two models present history of codings
 # or transcodings in procodeRestApi made by end-users
 class MyCoding(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     my_file = models.ForeignKey(
         MyFile,
         on_delete=models.SET_NULL,
@@ -176,6 +178,7 @@ class MyCoding(models.Model):
     output = models.ManyToManyField(Classification)
 
 class MyTranscoding(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     my_file = models.ForeignKey(
         MyFile,
         on_delete=models.SET_NULL,

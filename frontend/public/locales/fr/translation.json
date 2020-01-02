@@ -19,21 +19,23 @@
         "are-you-sure": "Êtes-vous sûr?",
         "no": "Non",
         "yes": "Oui",
-        "no-data-alert": "Rien à montrer. Aucun contenu correspondant à cette page."
+        "no-data-alert": "Rien à montrer. Aucun contenu correspondant à cette page.",
+        "invalid-email": "E-mail non valable"
     },
 
     "login": {
         "login": "Connexion",
-        "welcome-text": "Code your occupational database according to a standardized classification scheme. Procode is a tool that supports your work by using advanced machine learning algorithms based on a large dataset of previuos codings",
+        "welcome-text": "Mener codage de vos données selon un nomenclature d'occupation ou secteur économique. Procode est un outil qui utilise un algorithme de l'apprentissage machine établis sur une grande base de données précedante.",
         "register": "Nouveau utilisateur",
         "title": "Connexion",
         "username": "Nom d'utilisateur",
         "password": "Mot de passe",
         "sign-up": {
-            "title": "New user",
+            "title": "Nouveau utilisateur",
             "email": "E-mail",
-            "password": "Password",
-            "password2": "Repeat password"
+            "password": "Mot de passe",
+            "password2": "Répetez mot de passe",
+            "message-success": "Inscrit avec succès"
         }
     },
 
@@ -65,21 +67,22 @@
         "coding": "Codage",
         "transcoding": "Transcodage",
         "my-files": "Mes fichiers",
-        "history": "Histoire"
+        "history": "Historique"
     },
 
     "coding": {
-        "help-text": "Find a classification code for a selected classification scheme, entered data and selected coding level. The level usually (not always!) corresponds to the number of digits in a classification code.",
+        "help-text": "Trouver un code/titre pour le nomenclature sélectionné qui correspond à la déscription entrée et le niveau sélectioné. Le niveua souvant (pas toujours) correspond au nombre de chiffres du code de nomenclature.",
         "page-title": "Codage",
         "button-title": "Lancer codage",
         "results": {
-            "dont-agree": "None of the results correspond to the entered criteria",
+            "dont-agree": "Aucun résultat correspond aux critères entrées",
             "send-feedback-btn": "Envoyer",
-            "feedback-modal-title": "Selection of the right code/title",
-            "no-response-msg": "Please specify the correct result",
-            "feedback-sent-msg": "Thank you for your feedback",
-            "feedback-info": "The field below lists all codes/titles for the corresponding classification scheme. Please specify which of them describes best the entered (searched) data",
-            "feedback-text": "To help Procode become smarter, please specify which of the provided results is correct. If none is correct, then select the last option and click on the submit button below."
+            "feedback-modal-title": "Sélection de code/titre",
+            "no-response-msg": "Merci de choisir un résultat correct",
+            "feedback-sent-msg": "Merci pour votre réponse",
+            "feedback-info": "Le champ ci-dessous contien tous codes/titres qui correspondent au nomenclature. Merci de sélectionner quel entre eux décrit le mieux les critères entrées.",
+            "feedback-text": "Afin d'améliorer Procoded, merci de choisir le résultat qui est plus correct. Si aucun résultat est correct, choisissez la dernière option est appuyez sur 'envoyer'.",
+            "error-no-lang": "La langue sélectionnée n'est pas disponible pour ce nomenclature"
         },
         "search": {
             "input-placeholder": "Déscription",
@@ -90,32 +93,32 @@
             "text": "Entrée"
         },
         "file": {
-            "modal-title": "File coding/transcoding",
-            "coding": "Coding",
-            "transcoding": "Transcoding",
+            "modal-title": "Codage/Transcodage de fichier",
+            "coding": "Codage",
+            "transcoding": "Transcodage",
             "variables": "Variable",
-            "variable-help": "The selected file for coding may have included multiple columns. Select the one containing the data for coding/transcoding",
-            "modal-ok-text": "Run"
+            "variable-help": "Le fichier sélectionné pour codage peut contenir plusieur collones. Choisissez la collone qui contient les données pour codage/transcodage.",
+            "modal-ok-text": "Lancer"
         }
     },
 
 
     "files": {
-        "page-title" : "My files",
-        "no-data-tag": "The file is empty",
-        "file-size": "File size:",
-        "no-dscr": "No description",
-        "modal-editing-title": "Edit data entry",
+        "page-title" : "Mes fichiers",
+        "no-data-tag": "Le fichier est vide",
+        "file-size": "Taille de fichier",
+        "no-dscr": "Aucun déscription",
+        "modal-editing-title": "Réviser données",
         "results": {
-            "page-title": "Coding results",
-            "page-title-trans": "Transcoding results",
-            "column-input": "Input text",
+            "page-title": "Résultats de codage",
+            "page-title-trans": "Résultats de transcodage",
+            "column-input": "Texte entrée",
             "column-code": "Code",
-            "column-title": "Title",
-            "column-scheme": "Classification scheme",
-            "column-edit": "Edit result",
-            "modal-title": "Improve predicted results",
-            "modal-obtained-results": "Predicted codes/titles"
+            "column-title": "Titre",
+            "column-scheme": "Nomenclature",
+            "column-edit": "Corriger résultats",
+            "modal-title": "Ameliorer résultats",
+            "modal-obtained-results": "Attribuer code/titre"
         }
     },
 
@@ -133,10 +136,10 @@
 
 
     "history": {
-        "page-title": "History",
-        "file": "File name",
-        "coded-in": "Coded for",
-        "transcoded-in": "Transcoded into"
+        "page-title": "Histoire",
+        "file": "Nom de fichier",
+        "coded-in": "Codé pour",
+        "transcoded-in": "Transcodé à"
     },
 
     "security": {

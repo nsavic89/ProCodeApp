@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Drawer, Form, Button, Input } from 'antd';
+import { Drawer, Form, Button, Input, message } from 'antd';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 
 
 const styling = {
@@ -35,6 +36,24 @@ function RegisterForm (props) {
     const [state, setState] = useState({});
     const { getFieldDecorator } = props.form;
     const { t } = useTranslation();
+
+
+    // sign-up new user
+    const handleSubmit = e => {
+        e.preventDefault();
+        props.form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                axios.post(
+                    `${process.env.REACT_APP_API_URL}/sign-up/`,
+                    values
+                ).then(
+                    () => message.success(t('login.sign-up.message-success'))
+                ).catch(
+                    () => message.error(t('messages.request-failed'))
+                )
+            }
+        })
+    }
 
     return(
         <div style={styling.wrapper}>
@@ -80,6 +99,9 @@ function RegisterForm (props) {
                                 {
                                     required: true,
                                     message: t('messages.field-obligatory')
+                                }, {
+                                    type: "email",
+                                    message: t('messages.invalid-email')
                                 }
                             ]
                         })(
@@ -98,7 +120,7 @@ function RegisterForm (props) {
                                 }
                             ]
                         })(
-                            <Input style={styling.input} />
+                            <Input style={styling.input} type="password" />
                         ) }
                     </Form.Item>
 
@@ -113,11 +135,15 @@ function RegisterForm (props) {
                                 }
                             ]
                         })(
-                            <Input style={styling.input} />
+                            <Input style={styling.input} type="password" />
                         ) }
                     </Form.Item>
 
-                    <Button type="primary" style={styling.submitBtn}>
+                    <Button
+                        type="primary"
+                        style={styling.submitBtn}
+                        onClick={handleSubmit}
+                    >
                         { t('login.register') }
                     </Button>
                 </Form>

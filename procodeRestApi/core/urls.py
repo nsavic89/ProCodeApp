@@ -1,6 +1,11 @@
 from rest_framework import routers
 from .views import *
 from django.urls import path, include
+from .user_views import sign_up
+from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework_jwt.views import verify_jwt_token
+from rest_framework_jwt.views import refresh_jwt_token
+
 
 core_router = routers.DefaultRouter()
 
@@ -32,5 +37,11 @@ urlpatterns = [
     path('scheme-upload/', SchemeUploadView.as_view()),
     path('data-upload/', DataUploadView.as_view()),
     path('translation-upload/', TranslationUploadView.as_view()),
-    path('my-file-upload/', MyFileUploadView.as_view())
+    path('my-file-upload/', MyFileUploadView.as_view()),
+
+    # user sign-up
+    path('sign-up/', sign_up),
+    path('api-token-auth/', obtain_jwt_token),
+    path('api-token-verify/', verify_jwt_token),
+    path('api-token-refresh/', refresh_jwt_token)
 ]

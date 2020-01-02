@@ -42,6 +42,17 @@ INSTALLED_APPS = [
     'core'
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -57,6 +68,26 @@ CORS_ORIGIN_WHITELIST = [
     "http://www.pro-code.ch",
     "http://localhost:3000"
 ]
+
+ 
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'POST',
+    'PUT',
+]
+ 
+CORS_ALLOW_HEADERS = [
+    'authorization',
+    'content-type',
+    'x-csrftoken',
+    'x-requested-with',
+    'Pragma'
+]
+
+JWT_AUTH = {
+    'JWT_ALLOW_REFRESH': True
+}
 
 ROOT_URLCONF = 'procodeRestApi.urls'
 

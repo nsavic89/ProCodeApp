@@ -19,7 +19,8 @@
         "are-you-sure": "Are you sure?",
         "no": "No",
         "yes": "Yes",
-        "no-data-alert": "Nothing to show. You have no data that matches purpose of this page."
+        "no-data-alert": "Nothing to show. You have no data that matches purpose of this page.",
+        "invalid-email": "Not valid e-mail"
     },
 
     "login": {
@@ -29,11 +30,13 @@
         "title": "Login page",
         "username": "Username",
         "password": "Password",
+        "message-login-failed": "Failed! Check username or/and password",
         "sign-up": {
             "title": "New user",
             "email": "E-mail",
             "password": "Password",
-            "password2": "Repeat password"
+            "password2": "Repeat password",
+            "message-success": "Successfully registered"
         }
     },
 
@@ -79,7 +82,8 @@
             "no-response-msg": "Please specify the correct result",
             "feedback-sent-msg": "Thank you for your feedback",
             "feedback-info": "The field below lists all codes/titles for the corresponding classification scheme. Please specify which of them describes best the entered (searched) data",
-            "feedback-text": "To help Procode become smarter, please specify which of the provided results is correct. If none is correct, then select the last option and click on the submit button below."
+            "feedback-text": "To help Procode become smarter, please specify which of the provided results is correct. If none is correct, then select the last option and click on the submit button below.",
+            "error-no-lang": "The selected language is not supported for this classification scheme"
         },
         "search": {
             "input-placeholder": "Textual description",
@@ -124,6 +128,7 @@
         "help-text": "Transcoding or translation between different classification schemes is performed on this page. Simply select the starting scheme, desired code/title for transcoding and a target scheme. The results will appear immediately below the fields.",
         "starting-scheme": "Transcoding from",
         "classification": "Code/title",
+        "button-title": "Run transcoding",
         "end-scheme": "Transcode to",
         "error": {
             "no-content-204": "Procode failed to transcode the selected input code to the destination scheme. This is probably due to the missing transcoding rule between the two classification schemes."

@@ -78,7 +78,11 @@ function Results(props) {
 
             axios.post(
                 `${process.env.REACT_APP_API_URL}/data/`,
-                obj
+                obj,
+                { headers: {
+                    Pragma: "no-cache",
+                    Authorization: 'JWT ' + localStorage.getItem('token')
+                }}
             ).then(
                 () => {
                     // if modal open

@@ -41,7 +41,11 @@ function MyFileUpload(props) {
                 // first create file in db
                 axios.post(
                     `${process.env.REACT_APP_API_URL}/my-file/`,
-                    values
+                    values,
+                    {headers: {
+                        Pragma: "no-cache",
+                        Authorization: 'JWT ' + localStorage.getItem('token')
+                    }}
                 ).then(
                     res => {
                         // now upload excel file
@@ -52,7 +56,11 @@ function MyFileUpload(props) {
                         axios.post(
                             `${process.env.REACT_APP_API_URL}/my-file-upload/`,
                             formData,
-                            { headers: {'content-type': 'multipart/form-data'}}
+                            { headers: {
+                                'content-type': 'multipart/form-data',
+                                Pragma: "no-cache",
+                                Authorization: 'JWT ' + localStorage.getItem('token')
+                            }}
                         ).then(
                             () => {
                                 message.success(t('messages.request-success'));

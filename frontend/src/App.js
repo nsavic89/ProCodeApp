@@ -12,10 +12,11 @@ function App() {
             <Suspense fallback="loading">
                 <Switch>
                     <Route exact path="/login" component={Login} />
-                
+                        
                     <UserDataContextProvider>
                         <Route path="/" component={Main} />
                     </UserDataContextProvider>
+                    
                 </Switch>
             </Suspense>
         </BrowserRouter>

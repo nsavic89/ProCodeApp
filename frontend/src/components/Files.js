@@ -51,7 +51,11 @@ function Files(props) {
     // delete file when requested
     const handleDelete = id => {
         axios.delete(
-            `${process.env.REACT_APP_API_URL}/my-file/${id}/`
+            `${process.env.REACT_APP_API_URL}/my-file/${id}/`,
+            {headers: {
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+            }}
         ).then(
             () => {
                 message.warning( t('messages.data-deleted') );

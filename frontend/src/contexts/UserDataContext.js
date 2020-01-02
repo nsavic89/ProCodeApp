@@ -15,11 +15,35 @@ function UserDataContextProvider (props) {
 
     useEffect(() => {
         setState({ loaded: false });
-        
-        const promise1 = axios.get(`${process.env.REACT_APP_API_URL}/scheme/`);
-        const promise2 = axios.get(`${process.env.REACT_APP_API_URL}/my-file/`);
-        const promise3 = axios.get(`${process.env.REACT_APP_API_URL}/my-coding/`);
-        const promise4 = axios.get(`${process.env.REACT_APP_API_URL}/my-transcoding/`);
+
+        const promise1 = axios.get(
+            `${process.env.REACT_APP_API_URL}/scheme/`,
+            {headers: {
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+            }}
+        );
+        const promise2 = axios.get(
+            `${process.env.REACT_APP_API_URL}/my-file/`,
+            {headers: {
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+            }}
+        );
+        const promise3 = axios.get(
+            `${process.env.REACT_APP_API_URL}/my-coding/`,
+            {headers: {
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+            }}
+        );
+        const promise4 = axios.get(
+            `${process.env.REACT_APP_API_URL}/my-transcoding/`,
+            {headers: {
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+            }}
+        );
 
         Promise.all([promise1, promise2, promise3, promise4])
             .then(

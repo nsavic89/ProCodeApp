@@ -56,7 +56,11 @@ function Transcoding(props) {
 
                 axios.post(
                     `${process.env.REACT_APP_API_URL}/my-transcoding/`,
-                    {...values, "my_file": ""}
+                    {...values, "my_file": ""},
+                    { headers: {
+                        Pragma: "no-cache",
+                        Authorization: 'JWT ' + localStorage.getItem('token')
+                    }}
                 ).then(
                     res => {
                         if (res.status === 204) {

@@ -65,7 +65,11 @@ function FileDataView(props) {
     // delete data in file
     const handleDelete = id => {
         axios.delete(
-            `${process.env.REACT_APP_API_URL}/my-data/${id}/`
+            `${process.env.REACT_APP_API_URL}/my-data/${id}/`,
+            {headers: {
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+            }}
         ).then(
             () => {
                 message.warning(t('messages.data-deleted'));
@@ -130,7 +134,11 @@ function FileDataView(props) {
                 axios({
                     url: url,
                     method: method,
-                    data: data
+                    data: data,
+                    headers: {
+                        Pragma: "no-cache",
+                        Authorization: 'JWT ' + localStorage.getItem('token')
+                    }
                 }).then(
                     () => {
                         if (state.editing) {

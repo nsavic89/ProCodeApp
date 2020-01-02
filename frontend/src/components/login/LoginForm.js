@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import { useTranslation } from 'react-i18next';
-
+import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 
 const styling = {
     form: {
@@ -37,8 +38,32 @@ function LoginForm(props) {
         )
     }
 
+    // login
+    const handleLogin = e => {
+        e.preventDefault();
+        props.form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                axios.post(
+                    `${process.env.REACT_APP_API_URL}/api-token-auth/`,
+                    values
+                ).then(
+                    res => {
+                        localStorage.setItem('token', res.data.token);
+                        props.history.push('/');
+                    }
+                ).catch(
+                    () => message.error(t('login.message-login-failed'))
+                )
+            }
+        })
+    }
+
     return (
-        <Form style={styling.form}>
+        <Form
+            style={styling.form}
+            onSubmit={handleLogin}
+            onKeyDown={e => { if (e.key === "Enter") { handleLogin(e) } } }
+        >
             <Form.Item>
                 { getFieldDecorator('username', {
                     rules: [
@@ -60,13 +85,22 @@ function LoginForm(props) {
                         }
                     ]
                 }) (
-                    <Input size="large" placeholder={ t('login.password') } style={styling.input} />
+                    <Input
+                        size="large"
+                        placeholder={ t('login.password') }
+                        style={styling.input}
+                        type="password"
+                    />
                 ) }
             </Form.Item>
-            <Button type="primary" style={styling.submit}>
+            <Button
+                type="primary"
+                style={styling.submit}
+                onClick={handleLogin}
+            >
                 {t('general.submit')}
             </Button>
         </Form>
     )
 }
-export default Form.create()( LoginForm );
+export default withRouter(Form.create()( LoginForm ));

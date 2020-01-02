@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.decorators import api_view, renderer_classes, permission_classes
 from drf_renderer_xlsx.renderers import XLSXRenderer
 from rest_framework.parsers import MultiPartParser, FormParser
 from .models import *
@@ -76,7 +76,6 @@ class UploadView(APIView):
 
         # data decoded from ms excel
         data = self.data_list
-
         # foreign key in the given model
         # for classification, e.g., we must know scheme
         if self.parent is not None:
@@ -86,14 +85,14 @@ class UploadView(APIView):
             # which is now decoded in self.data_list
             for e in data:
                 e[self.parent] = parent_id
-            
+
         # now serialization and saving
         data_serialized = self.model_serializer(data=data, many=True)
-
+        
         if data_serialized.is_valid():
             data_serialized.save()
             return Response(data_serialized.data, status=status.HTTP_201_CREATED)
-            
+
         # if something wrong
         print(data_serialized.errors)
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -321,6 +320,12 @@ class MyFileViewSet(viewsets.ModelViewSet):
     queryset = MyFile.objects.all()
     serializer_class = MyFileSerializer
 
+    def list(self, request):
+        self.queryset = MyFile.objects.filter(
+            user = request.user
+        )
+        return super().list(request)
+
 class MyDataViewSet(viewsets.ModelViewSet):
     queryset = MyData.objects.all()
     serializer_class = MyDataSerializer
@@ -332,6 +337,7 @@ class MyFileUploadView(UploadView):
     model_serializer = MyDataSerializer
     parent = 'my_file'
     run_read_excel = False
+
     # field names defined in parent field variables
     variables = ['var1', 'var2', 'var3', 'var4', 'var5']
 
@@ -349,6 +355,12 @@ class MyFileUploadView(UploadView):
 class MyCodingViewSet(viewsets.ModelViewSet):
     queryset = MyCoding.objects.all()
     serializer_class = MyCodingSerializer
+
+    def list(self, request):
+        self.queryset = MyCoding.objects.filter(
+            user = request.user
+        )
+        return super().list(request)
 
     def update(self, request, pk):
         coding = MyCoding.objects.get(pk=pk)
@@ -374,16 +386,32 @@ class MyCodingViewSet(viewsets.ModelViewSet):
         level = request.data['level']
         my_file = None
         
+        if 'my_file' in request.data:
+            file_id = request.data['my_file']
+            my_file = MyFile.objects.get(pk=file_id)
+            lng = my_file.lng
+        else:
+            lng = request.data['lng']
+
+        # error handling -----------------------------
+        # if scheme has no titles for a given language
+        first_clsf = Classification.objects.filter(
+            scheme=scheme
+        )[0]
+
+        first_clsf_ser = ClassificationSerializer(first_clsf)
+        titleLabel = 'title' if lng == 'en' else 'title_' + lng
+
+        if first_clsf_ser.data[titleLabel] == '':
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        # --------------------------------------------
+        
         # if coding file
         # then text (given a variable) is in my_file
         if 'my_file' in request.data:
             text = []
-            pk = request.data['my_file']
             var = request.data['variable']
-
-            # get MyFile and language
-            my_file = MyFile.objects.get(pk=pk)
-            lng = my_file.lng
 
             # filter texts of my_file
             my_data = MyData.objects.filter(my_file=my_file.id)
@@ -395,16 +423,15 @@ class MyCodingViewSet(viewsets.ModelViewSet):
             # for one my_file several schemes may be validated
             # prvent the same my_file with multiple the same schemes
             myCoding = MyCoding.objects.filter(
-                my_file=request.data['my_file'],
-                scheme=request.data['scheme']
+                my_file=my_file.id,
+                scheme=scheme
                 )
-            print(myCoding)
+
             for cod in myCoding:
                 cod.delete()
 
         else:
             text = [ request.data['text'] ]
-            lng = request.data['lng']
       
         # run CNB and get codes
         res = run_cnb(text, lng, level, scheme)
@@ -419,7 +446,8 @@ class MyCodingViewSet(viewsets.ModelViewSet):
                 my_file=my_file,
                 scheme=Scheme.objects.get(pk=scheme),
                 text=txt,
-                lng=lng
+                lng=lng,
+                user=request.user
             )
             my_coding.save()
             output = Classification.objects.get(
@@ -429,27 +457,16 @@ class MyCodingViewSet(viewsets.ModelViewSet):
             my_coding.output.add(output)
     
         return Response(res, status=status.HTTP_200_OK)
-    
-# if deleting coding of files
-# then we delete all codings for a given file
-@api_view(['DELETE'])
-def delete_file_coding(request, pk):
-    coding = MyCoding.objects.filter(my_file=pk)
-    for c in coding:
-        c.delete()
-    return Response(status=status.HTTP_200_OK)
-
-@api_view(['DELETE'])
-def delete_file_transcoding(request, pk):
-    coding = MyTranscoding.objects.filter(my_file=pk)
-    for c in coding:
-        c.delete()
-    return Response(status=status.HTTP_200_OK)
-
 
 class MyTranscodingViewSet(viewsets.ModelViewSet):
     queryset = MyTranscoding.objects.all()
     serializer_class = MyTranscodingSerializer
+
+    def list(self, request):
+        self.queryset = MyTranscoding.objects.filter(
+            user = request.user
+        )
+        return super().list(request)
 
     def create(self, request):
         my_file = None
@@ -486,7 +503,8 @@ class MyTranscodingViewSet(viewsets.ModelViewSet):
                 my_transcoding = MyTranscoding(
                     my_file=my_file,
                     starting=starting_id,
-                    end_scheme=end_scheme
+                    end_scheme=end_scheme,
+                    user=request.user
                 )
 
                 # for files -> if the coding to the same scheme already performed
@@ -494,7 +512,8 @@ class MyTranscodingViewSet(viewsets.ModelViewSet):
                 existing = MyTranscoding.objects.filter(
                     my_file=my_file,
                     starting=starting_id,
-                    end_scheme=end_scheme
+                    end_scheme=end_scheme,
+                    user=request.user
                 )
                 for e in existing:
                     e.delete()
@@ -517,12 +536,31 @@ class MyTranscodingViewSet(viewsets.ModelViewSet):
         # if file transcoded
         else:
             return Response(status=status.HTTP_201_CREATED)
-            
+
+
+# if deleting coding of files
+# then we delete all codings for a given file
+@api_view(['DELETE'])
+def delete_file_coding(request, pk):
+    coding = MyCoding.objects.filter(my_file=pk)
+    for c in coding:
+        c.delete()
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+def delete_file_transcoding(request, pk):
+    coding = MyTranscoding.objects.filter(my_file=pk)
+    for c in coding:
+        c.delete()
+    return Response(status=status.HTTP_200_OK)
+
+
 
 # download xlsx files for history of coding or transcoding
 # pk is primary key for file
 @api_view(['GET'])
 @renderer_classes([ XLSXRenderer ])
+@permission_classes([ permissions.AllowAny ])
 def download_coding(request, pk):
 
     data = MyCoding.objects.filter(my_file=pk)
@@ -569,6 +607,7 @@ def download_coding(request, pk):
 
 @api_view(['GET'])
 @renderer_classes([ XLSXRenderer ])
+@permission_classes([ permissions.AllowAny ])
 def download_transcoding(request, pk):
     data = MyTranscoding.objects.filter(my_file=pk)
     data_list = []

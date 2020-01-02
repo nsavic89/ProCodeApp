@@ -10,6 +10,7 @@ import CodingResults from '../components/files/CodingResults';
 import History from '../components/History';
 import TranscodingResults from '../components/files/TranscodingResults';
 import FileDataView from '../components/files/FileDataView';
+import withAuth from '../hoc/withAuth';
 
 // Main view for all components for end-user
 // layout with header and sider
@@ -83,4 +84,4 @@ function Main() {
         </Layout>
     )
 }
-export default Main;
+export default withAuth( Main );

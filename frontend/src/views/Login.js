@@ -5,11 +5,13 @@ import Logo from '../media/logo_dark.png';
 import ProfessionsImgs from '../media/login_imgs.png';
 import LoginForm from '../components/login/LoginForm';
 import RegisterForm from '../components/login/RegisterForm';
+import Animation from '../media/animation.gif';
+import withAuth from '../hoc/withAuth';
 
 
 const styling = {
     wrapper: {
-        background: "rgb(250,250,250)",
+        background: "rgb(240,240,240)",
         height: "100vh",
         textAlign: "center",
         color: "#333"
@@ -40,6 +42,10 @@ const styling = {
         paddingTop: 50,
         opacity: 0.8
     },
+    animation: {
+        height: 300,
+        marginTop: 50
+    },
     welcomeText: {
         marginTop: 75,
         fontSize: 18,
@@ -48,15 +54,19 @@ const styling = {
 }
 
 
-function Login() {
+function Login(props) {
     const { t, i18n } = useTranslation();
+
+    if (props.isAuth) {
+        props.history.push('/');
+    }
 
     return(
         <div style={styling.wrapper}>
             <Row style={styling.header} type="flex" justify="space-between">
                 <Col>
                 {
-                    [ "de", "fr", "en", "it" ].map(
+                    [ "ge", "fr", "en", "it" ].map(
                         item => (
                             <Button
                                 style={styling.lngBtn}
@@ -92,6 +102,7 @@ function Login() {
                 </Col>
 
                 <Col md={{ span: 8 }} xs={{span: 0}}>
+                    <img src={Animation} alt="" style={styling.animation} />
                 </Col>
             </Row>
 
@@ -102,4 +113,4 @@ function Login() {
     )
 }
 
-export default Form.create()( Login );
+export default withAuth( Form.create()( Login ) );

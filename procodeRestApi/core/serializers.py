@@ -100,6 +100,10 @@ class MyDataSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class MyFileSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+        )
+        
     LANG = [
         ('en', 'English'),
         ('ge', 'German'),
@@ -123,9 +127,12 @@ class MyFileUploadSerializer(serializers.Serializer):
 
 
 
+
 # Coding and transcoding
 class MyCodingSerializer(serializers.ModelSerializer):
-
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+        )
     output = ClassificationSerializer(read_only=True, many=True)
     variable = serializers.CharField(
         write_only=True,
@@ -158,11 +165,14 @@ class MyCodingSerializer(serializers.ModelSerializer):
             'scheme',
             'level',
             'lng',
-            'output'
+            'output',
+            'user'
         ]    
         
 class MyTranscodingSerializer(serializers.ModelSerializer):
-
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+        )
     variable = serializers.CharField(write_only=True)
     starting = ClassificationSerializer(read_only=True)
     end_scheme = serializers.PrimaryKeyRelatedField(
@@ -178,7 +188,8 @@ class MyTranscodingSerializer(serializers.ModelSerializer):
             'variable',
             'starting',
             'end_scheme',
-            'output'
+            'output',
+            'user'
         ]
 
 # serializers for download

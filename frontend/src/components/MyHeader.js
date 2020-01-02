@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Icon, Button, Dropdown, Menu, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import MyFileUpload from './MyFileUpload';
-import { Link } from 'react-router-dom';
 import CodingFileForm from './files/CodingFileForm';
 import Language from './Language';
 import Security from './Security';
+import { withRouter } from 'react-router-dom';
 
 const styling = {
     userButton: {
@@ -18,12 +18,18 @@ const styling = {
 // header includes a search bar
 // to search for a file to code/transcode
 // and user menu with settings logout options
-function MyHeader () {
+function MyHeader (props) {
 
     const { t } = useTranslation();
     const [state, setState] = useState({
         file: false
     });
+
+    // logout | delete localstorage
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        props.history.push('/login');
+    }
 
     // overlay menu for dropdown user icon
     const menu = (
@@ -48,10 +54,10 @@ function MyHeader () {
                 <Icon type="lock" /> {t("header.security")}
             </Menu.Item>
 
-            <Menu.Item>
-                <Link to="/login">
-                    <Icon type="logout" /> {t("header.logout")}
-                </Link>
+            <Menu.Item onClick={() => handleLogout()}>
+                <Icon 
+                    type="logout" 
+                /> {t("header.logout")}
             </Menu.Item>
         </Menu>
     )
@@ -101,4 +107,4 @@ function MyHeader () {
         </div>
     )
 }
-export default MyHeader;
+export default withRouter(MyHeader);
