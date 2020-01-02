@@ -350,6 +350,21 @@ class MyCodingViewSet(viewsets.ModelViewSet):
     queryset = MyCoding.objects.all()
     serializer_class = MyCodingSerializer
 
+    def update(self, request, pk):
+        coding = MyCoding.objects.get(pk=pk)
+        coding.output.set([])
+
+        output = request.data['output']
+        
+        for out in output:
+            clsf = Classification.objects.get(pk=out)
+            coding.output.add(clsf)
+            
+        coding.save()
+
+        coding_ser = MyCodingSerializer(coding)
+        return Response(coding_ser.data, status=status.HTTP_200_OK)
+
     def create(self, request):
         # Runs the CNB algorithm from predictions
         # for a single or array of texts returns
@@ -438,6 +453,9 @@ class MyTranscodingViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         my_file = None
+        end_scheme_id = request.data['end_scheme']
+        end_scheme = Scheme.objects.get(pk=end_scheme_id)
+
         # starting codes
         starting = []
 
@@ -457,16 +475,30 @@ class MyTranscodingViewSet(viewsets.ModelViewSet):
 
         # transcode codes
         my_transcoding = None
+
         for code in starting:
             try:
                 starting_id = Classification.objects.get(
                     code=code,
                     scheme=request.data['scheme']
                 )
-                output = Translation.objects.get(
-                    starting=starting_id).output.all()
-        
-                my_transcoding = MyTranscoding(my_file=my_file, starting=starting_id)
+                output = Translation.objects.get(starting=starting_id).output.all()
+                my_transcoding = MyTranscoding(
+                    my_file=my_file,
+                    starting=starting_id,
+                    end_scheme=end_scheme
+                )
+
+                # for files -> if the coding to the same scheme already performed
+                # we need to delete them to avoid duplications
+                existing = MyTranscoding.objects.filter(
+                    my_file=my_file,
+                    starting=starting_id,
+                    end_scheme=end_scheme
+                )
+                for e in existing:
+                    e.delete()
+
                 my_transcoding.save()
 
                 for out in output:
@@ -544,10 +576,17 @@ def download_transcoding(request, pk):
     for d in data:
         obj = {
             "starting_scheme": d.starting.scheme.name,
-            "starting_code": d.starting.code,
-            "starting_title": "x",
-            "end_scheme": "x"
+            "starting_code": d.starting.code
         }
+
+        if d.my_file.lng == "ge":
+            obj['starting_title'] = d.starting.title_ge
+        elif d.my_file.lng == "fr":
+            obj['starting_title'] = d.starting.title_fr
+        elif d.my_file.lng == "it":
+            obj['starting_title'] = d.starting.title_it
+        else:
+            obj['starting_title'] = d.starting.title
         
         codes = []
         titles = []
@@ -566,7 +605,8 @@ def download_transcoding(request, pk):
 
         obj["end_code"] = ','.join(codes) if len(codes) > 0 else "-"
         obj["end_title"] = ','.join(titles) if len(titles) > 0 else "-"
- 
+        obj['end_scheme'] = d.end_scheme.name
+
         data_list.append(obj)
 
     # now serializer data list

@@ -71,6 +71,7 @@
     "coding": {
         "help-text": "Find a classification code for a selected classification scheme, entered data and selected coding level. The level usually (not always!) corresponds to the number of digits in a classification code.",
         "page-title": "Coding",
+        "button-title": "Run coding",
         "results": {
             "dont-agree": "None of the results correspond to the entered criteria",
             "send-feedback-btn": "Submit",
@@ -111,7 +112,10 @@
             "column-input": "Input text",
             "column-code": "Code",
             "column-title": "Title",
-            "column-scheme": "Classification scheme"
+            "column-scheme": "Classification scheme",
+            "column-edit": "Edit result",
+            "modal-title": "Improve predicted results",
+            "modal-obtained-results": "Predicted codes/titles"
         }
     },
 

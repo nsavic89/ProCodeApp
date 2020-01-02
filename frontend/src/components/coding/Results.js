@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Tag, Radio, Button, Modal, message, Alert } from 'antd';
+import { Tag, Radio, Button, Modal, message, Alert, Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { Loading } from '../Loading';
 import SchemeTree from './SchemeTree';
@@ -103,91 +103,92 @@ function Results(props) {
     // when selected shows confirm button
     // once feedback sent -> disable radios
     return (
-        <div style={styling.wrapper}>
-            <Radio.Group 
-                onChange={ e => 
-                    setState({...state, response: e.target.value}) 
-                }
-            >
-                {/* codes/titles received from the server */}
-                {
-                    props.results.map(
-                        item => (
-                            <Radio
-                                key={ item.code }
-                                style={ styling.radio }
-                                value={ item.code }
-                                disabled={ state.radioDisabled }
-                            >
-                                <Tag color="#52c41a" style={styling.tag}>
-                                    { item.code }
-                                </Tag> <span>
-                                    { item.title }
-                                </span>
-                            </Radio>
+        <Row style={styling.wrapper}>
+            <Col md={{ offset: 4, span: 18 }}>
+                <Radio.Group 
+                    onChange={ e => 
+                        setState({...state, response: e.target.value}) 
+                    }
+                >
+                    {/* codes/titles received from the server */}
+                    {
+                        props.results.map(
+                            item => (
+                                <Radio
+                                    key={ item.code }
+                                    style={ styling.radio }
+                                    value={ item.code }
+                                    disabled={ state.radioDisabled }
+                                >
+                                    <Tag color="#52c41a" style={styling.tag}>
+                                        { item.code }
+                                    </Tag> <span>
+                                        { item.title }
+                                    </span>
+                                </Radio>
+                            )
                         )
-                    )
-                }
+                    }
 
-                {/* final radio is always 'none result' */}
-                <Radio 
-                    style={{
-                        ...styling.radio,
-                        color: "#f5222d"
-                    }}
-                    value="none"
-                    disabled={ state.radioDisabled }
-                >
-                    { t('coding.results.dont-agree') }
-                </Radio>
-            </Radio.Group>
+                    {/* final radio is always 'none result' */}
+                    <Radio 
+                        style={{
+                            ...styling.radio,
+                            color: "#f5222d"
+                        }}
+                        value="none"
+                        disabled={ state.radioDisabled }
+                    >
+                        { t('coding.results.dont-agree') }
+                    </Radio>
+                </Radio.Group>
 
-            {/* 
-                after a coding is done, end-user is invited
-                to send feedback on the accuracy of prediction
+                {/* 
+                    after a coding is done, end-user is invited
+                    to send feedback on the accuracy of prediction
 
-                -> if none of the responses is correct, the end-
-                user is asked to select one code/title from the
-                full list corresponding to the selected scheme
-            */}
-            <div style={styling.feedback}>
+                    -> if none of the responses is correct, the end-
+                    user is asked to select one code/title from the
+                    full list corresponding to the selected scheme
+                */}
+                <div style={styling.feedback}>
 
-                <Alert
-                    type="info"
-                    message={ t('coding.results.feedback-text') }
-                    showIcon
-                    style={styling.feedbackText}
-                />
-
-                <Button
-                    type="primary"
-                    onClick={ handleSubmit }
-                    disabled={ state.radioDisabled }
-                >
-                    { t('coding.results.send-feedback-btn') }
-                </Button>
-
-                <Modal
-                    title={ t('coding.results.feedback-modal-title') }
-                    visible={state.visible}
-                    onCancel={() => setState({...state, visible: false})}
-                    onOk={handleSubmit}
-                >
                     <Alert
                         type="info"
-                        message={ t('coding.results.feedback-info') }
+                        message={ t('coding.results.feedback-text') }
                         showIcon
+                        style={styling.feedbackText}
                     />
-                    <br />
-                    <SchemeTree
-                        scheme={props.scheme}
-                        titleLabel={props.titleLabel}
-                        onChange={val => setState({...state, response: val })}
-                    />
-                </Modal>
-            </div>
 
-        </div>
+                    <Button
+                        type="primary"
+                        onClick={ handleSubmit }
+                        disabled={ state.radioDisabled }
+                    >
+                        { t('coding.results.send-feedback-btn') }
+                    </Button>
+
+                    <Modal
+                        title={ t('coding.results.feedback-modal-title') }
+                        visible={state.visible}
+                        onCancel={() => setState({...state, visible: false})}
+                        onOk={handleSubmit}
+                    >
+                        <Alert
+                            type="info"
+                            message={ t('coding.results.feedback-info') }
+                            showIcon
+                        />
+                        <br />
+                        <SchemeTree
+                            scheme={props.scheme}
+                            titleLabel={props.titleLabel}
+                            onChange={val => setState({...state, response: val })}
+                        />
+                    </Modal>
+                </div>
+            </Col>
+        </Row>
     )
 }
 export default Results;

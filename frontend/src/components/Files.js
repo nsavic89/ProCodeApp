@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
-import { message, Row, Col, Popconfirm, Icon, Card, Alert, Tag } from 'antd';
+import { message, Row, Col, Popconfirm, Icon, Card, Alert, Tag, Statistic } from 'antd';
 import { Loading } from './Loading';
 import { UserDataContext } from '../contexts/UserDataContext';
 
@@ -32,12 +32,6 @@ const styling = {
         height: 50,
         marginTop: 10,
         color: "#bfbfbf"
-    },
-    dataSize: {
-        fontSize: 28,
-        fontWeight: 700,
-        textAlign: "right",
-        color: "#52c41a"
     }
 }
 
@@ -143,11 +137,11 @@ function Files(props) {
                                             <Tag color="#f5222d">
                                                 { t('files.no-data.tag') }
                                             </Tag> 
-                                            : <div>{ t('files.file-size') }
-                                                <div style={styling.dataSize}>
-                                                    {item['my_data'].length}
-                                                </div>
-                                            </div>
+                                            : <Statistic 
+                                                title={t('files.file-size')}
+                                                value={item['my_data'].length}
+                                                prefix={<Icon type="dashboard" />} 
+                                            />
                                     }</div>          
                                 </Card>
                             </Col>

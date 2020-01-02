@@ -188,6 +188,10 @@ class MyTranscoding(models.Model):
         on_delete=models.CASCADE
         )
     lng = models.CharField(max_length=2)
+    end_scheme=models.ForeignKey(
+        Scheme,
+        on_delete=models.CASCADE
+    )
     output = models.ManyToManyField(
         Classification,
         related_name="my_trans_output")

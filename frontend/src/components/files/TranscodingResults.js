@@ -49,19 +49,19 @@ function TranscodingResults(props) {
     // columns for table below
     const columns = [
         {
-            title: startingScheme,
+            title: '',
             dataIndex: 'starting',
             key: 'starting'
         }, {
-            title: '',
+            title: startingScheme,
             dataIndex: 'startingTitle',
             key: 'startingTitle'
         }, {
-            title: endScheme,
+            title: '',
             dataIndex: 'end',
             key: 'end'
         }, {
-            title: '',
+            title: endScheme,
             dataIndex: 'endTitle',
             key: 'endTitle'
         }
@@ -104,7 +104,7 @@ function TranscodingResults(props) {
                     style={styling.downloadBtn}
                     onClick={() => window.open(url)}
                 >
-                    <Icon type="file-excel"/> {t('general.download')}
+                    <Icon type="download"/> {t('general.download')}
                 </button>
             </div>
             <Table

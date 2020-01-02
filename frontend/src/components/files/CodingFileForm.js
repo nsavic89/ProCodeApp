@@ -280,7 +280,7 @@ function CodingFileForm(props) {
                     {...formItemLayout}
                     labelAlign="left"
                 >
-                    {getFieldDecorator('scheme2', {
+                    {getFieldDecorator('end_scheme', {
                         rules: [
                             {
                                 required: true,

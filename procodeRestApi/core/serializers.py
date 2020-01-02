@@ -106,7 +106,7 @@ class MyFileSerializer(serializers.ModelSerializer):
         ('fr', 'French'),
         ('it', 'Italian')
     ]
-
+    date = serializers.DateField(format="%d-%m-%Y", read_only=True)
     lng = serializers.ChoiceField(
         choices=LANG, label="Language")
 

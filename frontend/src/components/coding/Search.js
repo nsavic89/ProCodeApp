@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { UserDataContext } from '../../contexts/UserDataContext';
 import {
     Form,
     Input,
     Select,
     Radio,
     message,
-    Alert
+    Alert,
+    Button,
+    Icon
 } from 'antd';
 import axios from 'axios';
 
@@ -36,7 +39,7 @@ const formItemLayout = {
 // enter raw data and run predictions
 // will call my-coding url on api rest
 function Search(props) {
-
+    const context = useContext(UserDataContext)
     const { t, i18n } = useTranslation();
     const { getFieldDecorator } = props.form;
     const [state, setState] = useState({});
@@ -148,10 +151,10 @@ function Search(props) {
                         style={ styling.select }
                         onChange={val => setState({
                             ...state, 
-                            scheme: props.schemes.find(o => o.id === val) 
+                            scheme: context.schemes.find(o => o.id === val) 
                         })}
                     >
-                        { props.schemes.map(
+                        { context.schemes.map(
                             item => (
                                 <Select.Option value={item.id} key={item.id}>
                                     { item.name }
@@ -178,7 +181,7 @@ function Search(props) {
                     })(
                         state.scheme ? 
                         <Radio.Group  buttonStyle="solid">
-                            { state.scheme.levels.map(
+                            { JSON.parse(state.scheme.levels).map(
                                 (item, inx) => 
                                     <Radio.Button value={item} key={inx} style={styling.radio}>
                                         { item }
@@ -212,6 +215,17 @@ function Search(props) {
                         onSearch={(val, e) => handleSubmit(e)}
                     />
                 ) }
+            </Form.Item>
+
+            <Form.Item
+                    wrapperCol={{md: {offset: 4}}}
+                >
+                    <Button 
+                        type="primary"
+                        onClick={handleSubmit}
+                    >
+                        <Icon type="play-circle" /> { t('coding.button-title') }
+                    </Button>
             </Form.Item>
         </Form>
     )
