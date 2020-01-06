@@ -62,6 +62,21 @@ class SchemeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Scheme
         fields = '__all__'
+
+# only schemes serializer
+class SchemeOnlySerializer(serializers.ModelSerializer):
+    CHOICES = [
+        ('O', 'Occupations'),
+        ('E', 'Economic sectors')
+    ]
+
+    stype = serializers.ChoiceField(
+        choices=CHOICES,
+        label = "Scheme type"
+    )
+    class Meta:
+        model = Scheme
+        fields = '__all__'
         
 
 

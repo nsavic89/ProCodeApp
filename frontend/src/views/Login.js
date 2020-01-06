@@ -7,14 +7,16 @@ import LoginForm from '../components/login/LoginForm';
 import RegisterForm from '../components/login/RegisterForm';
 import Animation from '../media/animation.gif';
 import withAuth from '../hoc/withAuth';
+import LogoUnisante from '../media/logo_unisante.png';
 
 
 const styling = {
     wrapper: {
-        background: "rgb(240,240,240)",
-        height: "100vh",
+        background: "#f5f5f5" ,
+        height: "88vh",
         textAlign: "center",
-        color: "#333"
+        color: "#333",
+        minHeight: 650
     },
     header: {
         width: "100%",
@@ -22,13 +24,15 @@ const styling = {
         paddingTop: 12,
         paddingLeft: 25,
         paddingRight: 25,
-        background: "white",
-        borderBottom: "1px solid silver"
+        background: "rgb(30,30,40)",
+        borderBottom: "1px solid silver",
+        color: "white"
     },
     lngBtn: {
         margin: 2,
-        color: "#333",
-        boxShadow: "none"
+        color: "white",
+        boxShadow: "none",
+        border: "none"
     },
     logoDiv: {
         textAlign: "center",
@@ -40,16 +44,29 @@ const styling = {
     profImgs: {
         height: 300,
         paddingTop: 50,
-        opacity: 0.8
+        opacity: 0.7
     },
     animation: {
         height: 300,
         marginTop: 50
     },
     welcomeText: {
-        marginTop: 75,
-        fontSize: 18,
-        padding: 50
+        padding: "15vh 100px",
+        textAlign: "center",
+        fontSize: 20,
+        fontWeight: 500,
+        background: "#f5f5f5",
+        color: "#333"
+    },
+    logoUni: {
+        height: 50
+    },
+    footer: {
+        padding: 25,
+        textAlign: "center",
+        height: "12vh",
+        paddingTop: 25,
+        minHeight: 100
     }
 }
 
@@ -62,53 +79,58 @@ function Login(props) {
     }
 
     return(
-        <div style={styling.wrapper}>
-            <Row style={styling.header} type="flex" justify="space-between">
-                <Col>
-                {
-                    [ "ge", "fr", "en", "it" ].map(
-                        item => (
-                            <Button
-                                style={styling.lngBtn}
-                                size="small"
-                                key={item}
-                                ghost
-                                onClick={() => i18n.changeLanguage(item)}
-                            >{item}</Button>
+        <div>
+            <div style={styling.wrapper}>
+                <Row style={styling.header} type="flex" justify="space-between">
+                    <Col>
+                    {
+                        [ "ge", "fr", "en", "it" ].map(
+                            item => (
+                                <Button
+                                    style={styling.lngBtn}
+                                    size="small"
+                                    key={item}
+                                    ghost
+                                    onClick={() => i18n.changeLanguage(item)}
+                                >{item}</Button>
+                            )
                         )
-                    )
-                }
-                </Col>
+                    }
+                    </Col>
 
-                <Col>
-                    { t('login.title') }
-                </Col>
-            </Row>
+                    <Col>
+                        { t('login.title') }
+                    </Col>
+                </Row>
 
-            <Row type="flex" justify="space-around">
-                <Col md={{ span: 8 }} xs={{span: 0}}>
-                    <img src={ProfessionsImgs} alt="" style={styling.profImgs} />
-                </Col>
+                <Row type="flex" justify="space-around">
+                    <Col md={{ span: 8 }} xs={{span: 0}}>
+                        <img src={ProfessionsImgs} alt="" style={styling.profImgs} />
+                    </Col>
 
-                <Col md={{ span: 8 }} xs={{span: 24}}>
-                    <div style={styling.logoDiv}>
-                        <img src={Logo} alt="" style={styling.logo} />
-                    </div>
+                    <Col md={{ span: 8 }} xs={{span: 24}}>
+                        <div style={styling.logoDiv}>
+                            <img src={Logo} alt="" style={styling.logo} />
+                        </div>
 
-                    <div>
-                        <LoginForm />
-                        <RegisterForm />
-                    </div>
-                </Col>
+                        <div>
+                            <LoginForm />
+                            <RegisterForm />
+                        </div>
+                    </Col>
 
-                <Col md={{ span: 8 }} xs={{span: 0}}>
-                    <img src={Animation} alt="" style={styling.animation} />
-                </Col>
-            </Row>
-
-            <div style={styling.welcomeText}>
-                { t('login.welcome-text') }
+                    <Col md={{ span: 8 }} xs={{span: 0}}>
+                        <img src={Animation} alt="" style={styling.animation} />
+                    </Col>
+                </Row>
+                <div style={styling.welcomeText}>
+                    { t('login.welcome-text') }
+                </div>
             </div>
+
+            <footer style={styling.footer}>
+                <img src={LogoUnisante} alt="" style={styling.logoUni} />
+            </footer>
         </div>
     )
 }
