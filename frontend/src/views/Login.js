@@ -13,10 +13,10 @@ import LogoUnisante from '../media/logo_unisante.png';
 const styling = {
     wrapper: {
         background: "#f5f5f5" ,
-        height: "88vh",
+        height: "100vh",
         textAlign: "center",
         color: "#333",
-        minHeight: 650
+        minHeight: 750
     },
     header: {
         width: "100%",
@@ -51,35 +51,21 @@ const styling = {
         marginTop: 50
     },
     welcomeText: {
-<<<<<<< HEAD
-        marginTop: 75,
-        fontSize: 18,
-        padding: 50
-    },
-    underTestingAlert: {
-        position: "absolute",
-        top: 0,
-        width: "50%",
-        marginLeft: "25%",
-        paddingTop: 5
-=======
-        padding: "15vh 100px",
+        padding: "10vh 50px",
         textAlign: "center",
         fontSize: 20,
         fontWeight: 500,
-        background: "#f5f5f5",
         color: "#333"
     },
     logoUni: {
         height: 50
     },
-    footer: {
-        padding: 25,
-        textAlign: "center",
-        height: "12vh",
-        paddingTop: 25,
-        minHeight: 100
->>>>>>> b733b4f19e1d8d6c219b0f87189708b7c0863b2e
+    underTestingAlert: {
+        width: "60%",
+        position: "fixed",
+        top: 7,
+        marginLeft: "20%",
+        textAlign: "center"
     }
 }
 
@@ -92,8 +78,7 @@ function Login(props) {
     }
 
     return(
-        <div>
-            <div style={styling.wrapper}>
+        <div style={styling.wrapper}>
                 <Row style={styling.header} type="flex" justify="space-between">
                     <Col>
                     {
@@ -139,9 +124,11 @@ function Login(props) {
                 <div style={styling.welcomeText}>
                     { t('login.welcome-text') }
                 </div>
+
+                <div style={styling.logoDiv}>
+                <img src={LogoUnisante} alt="" style={styling.logoUni} />
             </div>
 
-<<<<<<< HEAD
             <div style={styling.underTestingAlert}>
                 <Alert
                     type="error"
@@ -149,12 +136,7 @@ function Login(props) {
                     message="Procode is under testing...This will be finished by the January 10th or before..."
                 />
             </div>
-=======
-            <footer style={styling.footer}>
-                <img src={LogoUnisante} alt="" style={styling.logoUni} />
-            </footer>
->>>>>>> b733b4f19e1d8d6c219b0f87189708b7c0863b2e
-        </div>
+        </div> 
     )
 }
 

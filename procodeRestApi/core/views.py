@@ -249,7 +249,10 @@ class DataUploadView(UploadView):
 
             run = my_clsf.parent != 'root'
             while run:
-                new_e = e
+                new_e = {}
+                for key in e:
+                    new_e[key] = e[key]
+
                 new_clsf = Classification.objects.get(
                     scheme=scheme,
                     code=my_clsf.parent
@@ -259,7 +262,7 @@ class DataUploadView(UploadView):
                 new_data_list.append(new_e)
                 my_clsf = new_clsf
 
-                run = new_clsf.parent != 'root'             
+                run = new_clsf.parent != 'root'  
 
         self.data_list = new_data_list
         return super().post(request)
