@@ -91,7 +91,7 @@ class UploadView(APIView):
         
         if data_serialized.is_valid():
             data_serialized.save()
-            return Response(data_serialized.data, status=status.HTTP_201_CREATED)
+            return Response("CREATED", status=status.HTTP_201_CREATED)
 
         # if something wrong
         print(data_serialized.errors)
@@ -226,15 +226,42 @@ class DataUploadView(UploadView):
 
             # try to identify classification object based on code
             try:
-                code = Classification.objects.get(
+                code_id = Classification.objects.get(
                             scheme=scheme,
                             code=e['code']
                         ).id
-                e['code'] = code
+                e['code'] = code_id
+
             except:
                 e['code'] = ''
                 print("Classification instance not found for provided code")
-        
+
+        # remove those fields with code == 'xxx'
+        self.data_list = [e for e in self.data_list if e['code'] != '' and e['text'] != '']
+
+        # get levels and create copies of this data for lower levels
+        # this saves time to predicting part
+        new_data_list = []
+        for e in self.data_list:
+            my_clsf = Classification.objects.get(pk=e['code'])
+            e['level'] = my_clsf.level
+            new_data_list.append(e)
+
+            run = my_clsf.parent != 'root'
+            while run:
+                new_e = e
+                new_clsf = Classification.objects.get(
+                    scheme=scheme,
+                    code=my_clsf.parent
+                )
+                new_e['code'] = new_clsf.id
+                new_e['level'] = new_clsf.level 
+                new_data_list.append(new_e)
+                my_clsf = new_clsf
+
+                run = new_clsf.parent != 'root'             
+
+        self.data_list = new_data_list
         return super().post(request)
 
 
@@ -299,6 +326,11 @@ class SchemeViewSet(viewsets.ModelViewSet):
         scheme_ser = SchemeSerializer(scheme)
         scheme_ser.data['level'] = 3
         return Response(scheme_ser.data, status=status.HTTP_200_OK)
+
+# schemes without classifications
+class SchemeOnlyViewSet(viewsets.ModelViewSet):
+    queryset = Scheme.objects.all()
+    serializer_class = SchemeOnlySerializer
 
 class ClassificationViewSet(viewsets.ModelViewSet):
     queryset = Classification.objects.all()

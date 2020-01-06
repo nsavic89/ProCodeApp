@@ -95,6 +95,7 @@ class Data(models.Model):
     text = models.CharField(max_length=255)
     tokens = models.CharField(max_length=255)
     lng = models.CharField(max_length=2)
+    level = models.CharField(max_length=1)
 
     # get tokens for self.text
     def set_tokens(self):

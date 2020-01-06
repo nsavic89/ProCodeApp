@@ -17,7 +17,9 @@ class SchemeUploadSerializer(serializers.Serializer):
 
 # Machine learning data for a scheme upload from Excel
 class DataUploadSerializer(serializers.Serializer):
-    scheme = serializers.CharField()
+    scheme = serializers.PrimaryKeyRelatedField(
+            queryset=Scheme.objects.all()
+        )
     excel = serializers.FileField(label="MS Excel file")
 
     LANG = [
@@ -57,6 +59,21 @@ class SchemeSerializer(serializers.ModelSerializer):
         label = "Scheme type"
     )
     classification = ClassificationSerializer(read_only=True, many=True)
+    class Meta:
+        model = Scheme
+        fields = '__all__'
+
+# only schemes serializer
+class SchemeOnlySerializer(serializers.ModelSerializer):
+    CHOICES = [
+        ('O', 'Occupations'),
+        ('E', 'Economic sectors')
+    ]
+
+    stype = serializers.ChoiceField(
+        choices=CHOICES,
+        label = "Scheme type"
+    )
     class Meta:
         model = Scheme
         fields = '__all__'
