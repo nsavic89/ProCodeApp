@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Row, Col } from 'antd';
+import { Form, Button, Row, Col, Alert } from 'antd';
 import { useTranslation } from 'react-i18next';
 import Logo from '../media/logo_dark.png';
 import ProfessionsImgs from '../media/login_imgs.png';
@@ -50,6 +50,13 @@ const styling = {
         marginTop: 75,
         fontSize: 18,
         padding: 50
+    },
+    underTestingAlert: {
+        position: "absolute",
+        top: 0,
+        width: "50%",
+        marginLeft: "25%",
+        paddingTop: 5
     }
 }
 
@@ -108,6 +115,14 @@ function Login(props) {
 
             <div style={styling.welcomeText}>
                 { t('login.welcome-text') }
+            </div>
+
+            <div style={styling.underTestingAlert}>
+                <Alert
+                    type="error"
+                    showIcon
+                    message="Procode is under testing...This will be finished by the January 10th or before..."
+                />
             </div>
         </div>
     )
