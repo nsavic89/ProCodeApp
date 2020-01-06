@@ -91,7 +91,7 @@ class UploadView(APIView):
         
         if data_serialized.is_valid():
             data_serialized.save()
-            return Response(data_serialized.data, status=status.HTTP_201_CREATED)
+            return Response("CREATED", status=status.HTTP_201_CREATED)
 
         # if something wrong
         print(data_serialized.errors)
