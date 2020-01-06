@@ -17,7 +17,9 @@ class SchemeUploadSerializer(serializers.Serializer):
 
 # Machine learning data for a scheme upload from Excel
 class DataUploadSerializer(serializers.Serializer):
-    scheme = serializers.CharField()
+    scheme = serializers.PrimaryKeyRelatedField(
+            queryset=Scheme.objects.all()
+        )
     excel = serializers.FileField(label="MS Excel file")
 
     LANG = [

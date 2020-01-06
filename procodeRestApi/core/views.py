@@ -226,15 +226,19 @@ class DataUploadView(UploadView):
 
             # try to identify classification object based on code
             try:
-                code = Classification.objects.get(
+                code_id = Classification.objects.get(
                             scheme=scheme,
                             code=e['code']
                         ).id
-                e['code'] = code
+                e['code'] = code_id
             except:
                 e['code'] = ''
                 print("Classification instance not found for provided code")
-        
+
+        # remove those fields with code == 'xxx'
+        self.data_list = [e for e in self.data_list if e['code'] != '' and e['text'] != '']
+        print(self.data_list)
+
         return super().post(request)
 
 
