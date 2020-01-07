@@ -5,4 +5,4 @@ db.sqlite3
 /venv
 .vscode
 node_modules
-settings.py
+setting.py
