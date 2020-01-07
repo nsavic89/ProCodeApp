@@ -24,7 +24,7 @@
 
     "login": {
         "login": "Anmelden",
-        "welcome-text": "Code your occupational database according to a standardized classification scheme. Procode is a tool that supports your work by using advanced machine learning algorithms based on a large dataset of previuos codings",
+        "welcome-text": "Kodieren Ihre Berufdaten je nach national oder international Standardklassifikation der Berufe. Procode verwendet die maschinelles Lernen um zu die richigen Kode übertragen.",
         "register": "Sich anmelden",
         "title": "Anmeldung",
         "username": "Benutzer",
@@ -45,10 +45,10 @@
     },
 
     "header": {
-        "search-placeholder": "Code or transcode an uploaded file",
-        "security": "Security",
-        "language": "Language",
-        "logout": "Logout"
+        "search-placeholder": "Kodierung oder Transcodierung die Hochladen Datei",
+        "security": "Sicherheit",
+        "language": "Sprache",
+        "logout": "Abmeldung"
     },
 
     "file-upload": {
@@ -60,88 +60,86 @@
         "file": "MS Excel (.xlsx)"
     },
 
-    
     "sider": {
         "coding": "Kodierung",
         "transcoding": "Transkodierung",
         "my-files": "Meine Dateien",
-        "history": "Verlauf"
+        "history": "Historie"
     },
 
     "coding": {
-        "help-text": "Find a classification code for a selected classification scheme, entered data and selected coding level. The level usually (not always!) corresponds to the number of digits in a classification code.",
-        "page-title": "Coding",
-        "button-title": "Run coding",
+        "help-text": "Suchen Sie einen Klassifizierungscode für ein ausgewähltes Klassifizierung der Berufe, die eingegebenen Daten und die ausgewählte Codierungspräzision. Die Präzision entspricht in der Regel (nicht immer!) der Anzahl der Stellen eines Klassifizierungscodes.",
+        "page-title": "Codierung",
+        "button-title": "Codierung ausführen",
         "results": {
-            "dont-agree": "None of the results correspond to the entered criteria",
-            "send-feedback-btn": "Submit",
-            "feedback-modal-title": "Selection of the right code/title",
-            "no-response-msg": "Please specify the correct result",
-            "feedback-sent-msg": "Thank you for your feedback",
-            "feedback-info": "The field below lists all codes/titles for the corresponding classification scheme. Please specify which of them describes best the entered (searched) data",
-            "feedback-text": "To help Procode become smarter, please specify which of the provided results is correct. If none is correct, then select the last option and click on the submit button below."
+            "dont-agree": "Keines der Ergebnisse entspricht den eingegebenen Kriterien",
+            "send-feedback-btn": "Absenden",
+            "feedback-modal-title": "Auswahl des richtigen Codes/Titels",
+            "no-response-msg": "Bitte geben Sie das richtige Ergebnis an",
+            "feedback-sent-msg": "Vielen Dank für Ihr Feedback",
+            "feedback-info": "Das Feld darunter listet alle Codes/Titel für die entsprechende Klassifikation auf. Bitte geben Sie an, welcher davon die eingegebenen (gesuchten) Daten am besten beschreibt",
+            "feedback-text": "Um Procode intelligenter zu machen, geben Sie bitte an, welches der gelieferten Ergebnisse korrekt ist. Wenn keine Ergebnisse korrekt ist, dann wählen Sie die letzte Option und klicken Sie auf den Button 'Senden'."
         },
         "search": {
             "input-placeholder": "Beschreibung",
-            "level": "Niveau",
-            "alert-select-scheme": "Level not available before classification scheme is selected",
-            "scheme-placeholder": "Wählen Sie aus bitte",
-            "scheme": "Classification:",
-            "text": "Input"
+            "level": "Präzision",
+            "alert-select-scheme": "Präzision vor Auswahl die Klassifikation nicht verfügbar",
+            "scheme-placeholder": "Bitte wählen Sie",
+            "scheme": "Klassifikation:",
+            "text": "Eingabe"
         },
         "file": {
             "modal-title": "File coding/transcoding",
             "coding": "Coding",
             "transcoding": "Transcoding",
             "variables": "Variable",
-            "variable-help": "The selected file for coding may have included multiple columns. Select the one containing the data for coding/transcoding",
-            "modal-ok-text": "Run"
+            "variable-help": "Die für die Codierung ausgewählte Datei kann mehrere Spalten enthalten haben. Wählen Sie denjenigen aus, der die Daten für die Kodierung/Transkodierung enthält",
+            "modal-ok-text": "Ausführen"
         }
     },
 
-
     "files": {
-        "page-title" : "My files",
-        "no-data-tag": "The file is empty",
-        "file-size": "File size:",
-        "no-dscr": "No description",
-        "modal-editing-title": "Edit data entry",
+        "page-title" : "Meine Datei",
+        "no-data-tag": "Datei ist leer",
+        "file-size": "Datengröße:",
+        "no-dscr": "Keine Beschreibung",
+        "modal-editing-title": "Daten bearbeiten",
         "results": {
-            "page-title": "Coding results",
-            "page-title-trans": "Transcoding results",
-            "column-input": "Input text",
+            "page-title": "Codierungsergebnisse",
+            "page-title-trans": "Transcodierungsergebnisse",
+            "column-input": "Eingabetext",
             "column-code": "Code",
-            "column-title": "Title",
-            "column-scheme": "Classification scheme",
-            "column-edit": "Edit result",
-            "modal-title": "Improve predicted results",
-            "modal-obtained-results": "Predicted codes/titles"
+            "column-title": "Titel",
+            "column-scheme": "Standardklassifikation",
+            "column-edit": "Ergebnisse bearbeiten",
+            "modal-title": "Ergebnisse verbessern",
+            "modal-obtained-results": "Ergebnisse"
         }
     },
 
     "transcoding": {
-        "page-title": "Transcoding",
-        "help-text": "Transcoding or translation between different classification schemes is performed on this page. Simply select the starting scheme, desired code/title for transcoding and a target scheme. The results will appear immediately below the fields.",
+        "page-title": "Transcodierung",
+        "help-text": "Transcodierung zwischen zwei Standardklassifikation der Berufe. Wählen Sie nur anfahrend Standardklassifikation, Code/Titel für die Transcodierung und Endklassifikation.",
         "starting-scheme": "Transcoding from",
-        "classification": "Code/title",
-        "end-scheme": "Transcode to",
+        "classification": "Code/Titel",
+        "end-scheme": "Transcodierung zu",
         "error": {
-            "no-content-204": "Procode failed to transcode the selected input code to the destination scheme. This is probably due to the missing transcoding rule between the two classification schemes."
+            "no-content-204": "Transcodierung nicht möglich. Wahrscheinlich, dieser Transcodierungregel ist nicht zwischen diese zwei Klassifikationen erstellt."
         }
     },
 
 
     "history": {
-        "page-title": "History",
-        "file": "File name",
-        "coded-in": "Coded for",
-        "transcoded-in": "Transcoded into"
+        "page-title": "Historie",
+        "file": "Name von Datei",
+        "coded-in": "Kodiert für",
+        "transcoded-in": "Transcodierung zu"
     },
 
     "security": {
-        "title": "Change password",
-        "old-pw": "Old password",
-        "new-pw": "New password",
-        "new-pw2": "New password (confirmation)"
+        "title": "Kennwortänderung",
+        "old-pw": "Altes Kennwort",
+        "new-pw": "Neues Kennwort",
+        "new-pw2": "Neues Kennwort (wiederholen)"
     }
 }
