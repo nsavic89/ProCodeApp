@@ -321,6 +321,7 @@ function CodingFileForm(props) {
             onCancel={ props.onCancel }
             okText={ t('coding.file.modal-ok-text') }
             onOk={handleSubmit}
+            cancelText={ t('general.cancel' )}
         >
             <Radio.Group
                 style={styling.radio}

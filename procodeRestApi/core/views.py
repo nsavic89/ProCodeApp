@@ -231,14 +231,40 @@ class DataUploadView(UploadView):
                             code=e['code']
                         ).id
                 e['code'] = code_id
+
             except:
                 e['code'] = ''
                 print("Classification instance not found for provided code")
 
         # remove those fields with code == 'xxx'
         self.data_list = [e for e in self.data_list if e['code'] != '' and e['text'] != '']
-        print(self.data_list)
 
+        # get levels and create copies of this data for lower levels
+        # this saves time to predicting part
+        new_data_list = []
+        for e in self.data_list:
+            my_clsf = Classification.objects.get(pk=e['code'])
+            e['level'] = my_clsf.level
+            new_data_list.append(e)
+
+            run = my_clsf.parent != 'root'
+            while run:
+                new_e = {}
+                for key in e:
+                    new_e[key] = e[key]
+
+                new_clsf = Classification.objects.get(
+                    scheme=scheme,
+                    code=my_clsf.parent
+                )
+                new_e['code'] = new_clsf.id
+                new_e['level'] = new_clsf.level 
+                new_data_list.append(new_e)
+                my_clsf = new_clsf
+
+                run = new_clsf.parent != 'root'  
+
+        self.data_list = new_data_list
         return super().post(request)
 
 
@@ -268,7 +294,7 @@ class TranslationUploadView(UploadView):
 
                 output_cls = []
                 output_list = e['output'].split(",")
-                print(output_list)
+                
                 for out in output_list:
                     try:
                         out = Classification.objects.get(
@@ -292,6 +318,54 @@ class TranslationUploadView(UploadView):
         return super().post(request)
 
 
+# Use scheme titles as texts for data
+class SchemeAsData(APIView):
+    serializer_class = SchemeAsDataSerializer
+
+    def post(self, request):
+        scheme = request.data['scheme']
+        lng = request.data['lng']
+        titleLabel = 'title' if lng == 'en' else 'title_' + lng
+
+        clsf_list = Classification.objects.filter(scheme=scheme)
+        data_list = []
+
+        for clsf in clsf_list:
+
+            isRoot = clsf.parent == 'root'
+            next_clsf = clsf
+            next_clsf_ser = ClassificationSerializer(next_clsf)
+
+            while True:
+                
+                data_list.append({
+                    "scheme": scheme,
+                    "text": next_clsf_ser.data[titleLabel],
+                    "level": next_clsf.level,
+                    "lng": lng,
+                    "code": next_clsf.pk
+                })
+
+                # if next is root then break loop
+                if isRoot == True:
+                    break
+                
+                # create next iteration
+                next_clsf = Classification.objects.get(
+                    scheme=scheme,
+                    code=next_clsf.parent
+                )
+                isRoot = next_clsf.parent == 'root'
+            
+        data_list_ser = DataSerializer(data=data_list, many=True)
+
+        if data_list_ser.is_valid():
+            data_list_ser.save()
+            return Response("OK", status=status.HTTP_200_OK)
+            
+        return Response(status=status.HTTP_401_BAD_REQUEST)
+
+
 # Viewsets -------------------------------------------
 
 class SchemeViewSet(viewsets.ModelViewSet):
@@ -303,6 +377,11 @@ class SchemeViewSet(viewsets.ModelViewSet):
         scheme_ser = SchemeSerializer(scheme)
         scheme_ser.data['level'] = 3
         return Response(scheme_ser.data, status=status.HTTP_200_OK)
+
+# schemes without classifications
+class SchemeOnlyViewSet(viewsets.ModelViewSet):
+    queryset = Scheme.objects.all()
+    serializer_class = SchemeOnlySerializer
 
 class ClassificationViewSet(viewsets.ModelViewSet):
     queryset = Classification.objects.all()

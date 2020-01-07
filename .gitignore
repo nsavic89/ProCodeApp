@@ -5,4 +5,7 @@ db.sqlite3
 /venv
 .vscode
 node_modules
+<<<<<<< HEAD
 setting.py
+=======
+>>>>>>> 33afeea3f33934d96dfafd599a6252c5c32b2733

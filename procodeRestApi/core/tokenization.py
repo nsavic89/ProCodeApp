@@ -42,6 +42,7 @@ def get_tokens(text, lng):
 
     # sometimes '-' is between two words in text
     text = text.replace('-', ' ')
+    text = text.lower()
 
     # tokenization -> list of tokens 
     tokens = word_tokenize(text)

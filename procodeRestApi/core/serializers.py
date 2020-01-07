@@ -15,6 +15,22 @@ class SchemeUploadSerializer(serializers.Serializer):
         )
     excel = serializers.FileField(label="MS Excel file")
 
+# when scheme is imported, we can convert its names to data
+# and then use this data as the training dataset for ML
+class SchemeAsDataSerializer(serializers.Serializer):
+    scheme = serializers.PrimaryKeyRelatedField(
+            queryset=Scheme.objects.all()
+        )
+    LANG = [
+        ('en', 'English'),
+        ('ge', 'German'),
+        ('fr', 'French'),
+        ('it', 'Italian')
+    ]
+
+    lng = serializers.ChoiceField(
+        choices=LANG, label="Language")
+
 # Machine learning data for a scheme upload from Excel
 class DataUploadSerializer(serializers.Serializer):
     scheme = serializers.PrimaryKeyRelatedField(
@@ -59,6 +75,21 @@ class SchemeSerializer(serializers.ModelSerializer):
         label = "Scheme type"
     )
     classification = ClassificationSerializer(read_only=True, many=True)
+    class Meta:
+        model = Scheme
+        fields = '__all__'
+
+# only schemes serializer
+class SchemeOnlySerializer(serializers.ModelSerializer):
+    CHOICES = [
+        ('O', 'Occupations'),
+        ('E', 'Economic sectors')
+    ]
+
+    stype = serializers.ChoiceField(
+        choices=CHOICES,
+        label = "Scheme type"
+    )
     class Meta:
         model = Scheme
         fields = '__all__'

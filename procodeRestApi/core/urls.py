@@ -11,6 +11,7 @@ core_router = routers.DefaultRouter()
 
 # admin end-points -----------------------------------
 core_router.register(r'scheme', SchemeViewSet)
+core_router.register(r'scheme-only', SchemeOnlyViewSet)
 core_router.register(r'classification', ClassificationViewSet)
 core_router.register(r'translation', TranslationViewSet)
 core_router.register(r'data', DataViewSet)
@@ -38,6 +39,9 @@ urlpatterns = [
     path('data-upload/', DataUploadView.as_view()),
     path('translation-upload/', TranslationUploadView.as_view()),
     path('my-file-upload/', MyFileUploadView.as_view()),
+
+    # use scheme as ML data
+    path('scheme-as-data/', SchemeAsData.as_view()),
 
     # user sign-up
     path('sign-up/', sign_up),

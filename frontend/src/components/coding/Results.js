@@ -28,6 +28,9 @@ const styling = {
     },
     feedbackText: {
         marginBottom: 15
+    },
+    submitBtn: {
+        marginBottom: 50
     }
 }
 
@@ -168,6 +171,7 @@ function Results(props) {
                         type="primary"
                         onClick={ handleSubmit }
                         disabled={ state.radioDisabled }
+                        style={styling.submitBtn}
                     >
                         { t('coding.results.send-feedback-btn') }
                     </Button>
