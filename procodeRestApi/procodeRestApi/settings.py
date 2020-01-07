@@ -12,9 +12,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1ch4_gwrc%#1cv#hgldl=f_y(628hti1w(an1i=)!m=#97t7(w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['api.pro-code.ch']
 
 
 # Application definition
@@ -53,9 +53,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/django_cache',
+        'TIMEOUT': 14400
+    }
+}
+
 CORS_ORIGIN_WHITELIST = [
-    "http://www.pro-code.ch",
-    "http://localhost:3000"
+    "http://www.pro-code.ch"
 ]
 
  
@@ -104,8 +112,12 @@ WSGI_APPLICATION = 'procodeRestApi.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+       	'NAME': 'procode_db',
+	'USER': 'nenad',
+	'PASSWORD': 'Procode-2020',
+	'HOST': '',
+	'PORT': ''
     }
 }
 
