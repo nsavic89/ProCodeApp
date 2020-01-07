@@ -40,6 +40,9 @@ urlpatterns = [
     path('translation-upload/', TranslationUploadView.as_view()),
     path('my-file-upload/', MyFileUploadView.as_view()),
 
+    # use scheme as ML data
+    path('scheme-as-data/', SchemeAsData.as_view()),
+
     # user sign-up
     path('sign-up/', sign_up),
     path('api-token-auth/', obtain_jwt_token),

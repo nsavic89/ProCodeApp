@@ -294,7 +294,7 @@ class TranslationUploadView(UploadView):
 
                 output_cls = []
                 output_list = e['output'].split(",")
-                print(output_list)
+                
                 for out in output_list:
                     try:
                         out = Classification.objects.get(
@@ -316,6 +316,54 @@ class TranslationUploadView(UploadView):
             
         self.data_list = new_data_list
         return super().post(request)
+
+
+# Use scheme titles as texts for data
+class SchemeAsData(APIView):
+    serializer_class = SchemeAsDataSerializer
+
+    def post(self, request):
+        scheme = request.data['scheme']
+        lng = request.data['lng']
+        titleLabel = 'title' if lng == 'en' else 'title_' + lng
+
+        clsf_list = Classification.objects.filter(scheme=scheme)
+        data_list = []
+
+        for clsf in clsf_list:
+
+            isRoot = clsf.parent == 'root'
+            next_clsf = clsf
+            next_clsf_ser = ClassificationSerializer(next_clsf)
+
+            while True:
+                
+                data_list.append({
+                    "scheme": scheme,
+                    "text": next_clsf_ser.data[titleLabel],
+                    "level": next_clsf.level,
+                    "lng": lng,
+                    "code": next_clsf.pk
+                })
+
+                # if next is root then break loop
+                if isRoot == True:
+                    break
+                
+                # create next iteration
+                next_clsf = Classification.objects.get(
+                    scheme=scheme,
+                    code=next_clsf.parent
+                )
+                isRoot = next_clsf.parent == 'root'
+            
+        data_list_ser = DataSerializer(data=data_list, many=True)
+
+        if data_list_ser.is_valid():
+            data_list_ser.save()
+            return Response("OK", status=status.HTTP_200_OK)
+            
+        return Response(status=status.HTTP_401_BAD_REQUEST)
 
 
 # Viewsets -------------------------------------------
