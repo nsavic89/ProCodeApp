@@ -82,7 +82,9 @@ function Coding () {
             </div>
 
             <div>
-                <Dictionary visible={state.dictVisible} />
+                <Dictionary 
+                    visible={state.dictVisible}
+                />
             </div>
         </div>
     )
