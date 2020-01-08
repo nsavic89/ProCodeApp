@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 
 const styling = {
     radio: {
-        display: 'block',
-        height: 45
     },
     flag: {
         height: 18
@@ -37,12 +35,12 @@ function Language (props) {
             >{
                 ['ge', 'fr', 'it', 'en'].map(
                     item => (
-                        <Radio value={item} key={item} style={styling.radio}>
+                        <Radio.Button value={item} key={item} style={styling.radio}>
                             <img 
                                 style={styling.flag}
                                 src={require(`../media/${item}.png`)} alt="" 
                             /> { t(`langs.${item}`) } 
-                        </Radio>
+                        </Radio.Button>
                     )
                 )
             }</Radio.Group>

@@ -536,12 +536,18 @@ class MyCodingViewSet(viewsets.ModelViewSet):
                 user=request.user
             )
             my_coding.save()
-            output = Classification.objects.get(
-                scheme=Scheme.objects.get(pk=scheme),
-                code=res[text.index(txt)])
+            
+            # because output might be '-' 
+            # and has no corresponding code in db
+            try:
+                output = Classification.objects.get(
+                    scheme=Scheme.objects.get(pk=scheme),
+                    code=res[text.index(txt)]
+                )
+                my_coding.output.add(output)
+            except:
+                continue
      
-            my_coding.output.add(output)
-    
         return Response(res, status=status.HTTP_200_OK)
 
 class MyTranscodingViewSet(viewsets.ModelViewSet):

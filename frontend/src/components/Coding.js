@@ -1,23 +1,54 @@
-import React, { useState, useContext } from 'react';
-import Search from './coding/Search';
-import Results from './coding/Results';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Tooltip, Icon, } from 'antd';
-import { Loading } from './Loading';
-import { UserDataContext } from '../contexts/UserDataContext';
-import Dictionary from './coding/Dictionary';
+import CodingForm from './coding/CodingForm';
+import { Tooltip, Icon } from 'antd';
+import CodingResults from './coding/CodingResults';
 
-// basically coding view
-// includes coding form with classification scheme, search input
-// provides results of coding and allows sending of feedback
-// -> data collection from end-users
 
+
+// Coding view
 const styling = {
     codingForm: {
-        marginTop: 35
+        marginTop: 50
     }
 }
 
+
+function Coding() {
+    const { t } = useTranslation();
+    const [state, setState] = useState({});
+
+    
+    return (
+        <div>
+            <h2>
+                {t('coding.page-title')}
+            </h2>
+
+            <div className="help">
+                <Tooltip title={ t('coding.help-text' )} placement="left">
+                    <Icon type="question-circle"  /> { t('general.help' )}
+                </Tooltip>
+            </div>
+
+            <div style={styling.codingForm}>
+                <CodingForm
+                    getValues={values => setState({ values : values })}
+                />
+            </div>
+
+            <div>
+                <CodingResults />
+            </div>
+        </div>
+    )
+}
+
+
+export default Coding;
+
+
+/*
 function Coding () {
     const { t } = useTranslation();
     const [state, setState] = useState({
@@ -88,5 +119,4 @@ function Coding () {
             </div>
         </div>
     )
-}
-export default Coding;
+}*/

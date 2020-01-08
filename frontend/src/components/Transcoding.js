@@ -244,7 +244,7 @@ function Transcoding(props) {
                         type="primary"
                         onClick={handleSubmit}
                     >
-                        { t('transcoding.button-title') }
+                        <Icon type="play-circle" /> { t('transcoding.button-title') }
                     </Button>
                 </Form.Item>
             </Form>
