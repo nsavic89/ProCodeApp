@@ -7,7 +7,8 @@
         "language": "Language",
         "created-date": "Created",
         "add-new-btn": "New entry",
-        "download": "Download"
+        "download": "Download",
+        "delete": "Delete"
     },
 
     "messages": {
@@ -76,14 +77,17 @@
         "page-title": "Coding",
         "button-title": "Run coding",
         "results": {
-            "dont-agree": "None of the results correspond to the entered criteria",
+            "dont-agree": "The result(s) is (are) not correct",
             "send-feedback-btn": "Submit",
             "feedback-modal-title": "Selection of the right code/title",
             "no-response-msg": "Please specify the correct result",
             "feedback-sent-msg": "Thank you for your feedback",
             "feedback-info": "The field below lists all codes/titles for the corresponding classification scheme. Please specify which of them describes best the entered (searched) data",
             "feedback-text": "To help Procode become smarter, please specify which of the provided results is correct. If none is correct, then select the last option and click on the submit button below.",
-            "error-no-lang": "The selected language is not supported for this classification scheme"
+            "error-no-lang": "The selected language is not supported for this classification scheme",
+            "no-code-obtained": "Procode failed to get results for entered criteria. Please check the spelling and try again or press on 'Run algorithm II'",
+            "alorithm-2-info": "Algorithm II will explore possibility to find synonym(s) of the entered criteria and re-run prediction",
+            "algorithm-2-btn": "Run algorithm II"
         },
         "search": {
             "input-placeholder": "Textual description",
@@ -147,6 +151,7 @@
         "title": "Change password",
         "old-pw": "Old password",
         "new-pw": "New password",
-        "new-pw2": "New password (confirmation)"
+        "new-pw2": "New password (confirmation)",
+        "success": "Password updated"
     }
 }

@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { Menu, Icon, Layout } from 'antd';
 import Logo from '../media/logo_light.png';
 import LogoSm from '../media/logo_light_small.png';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 
 // sider of the main view
 // buttons for coding / transcoding / my files
-function MySider () {
+function MySider (props) {
 
     const { t } = useTranslation();
     const [collapsed, setCollapsed] = useState(
@@ -70,7 +70,7 @@ function MySider () {
             link: "/history"
         }
     ]
-
+    
     return (
         <Layout.Sider
             breakpoint="md"
@@ -92,12 +92,13 @@ function MySider () {
             <Menu
                 theme="dark"
                 style={ styling.menu }
+                selectedKeys={[props.location.pathname]}
             >
                 {
                     elements.map(
                         item => (
                             <Menu.Item
-                                key={item.value}
+                                key={item.link}
                                 style={styling.menuItem}
                             >
                                 <Link to={item.link}>
@@ -111,4 +112,4 @@ function MySider () {
         </Layout.Sider>
     )
 }
-export default MySider;
+export default withRouter( MySider );

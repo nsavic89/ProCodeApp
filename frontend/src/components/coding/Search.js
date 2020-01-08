@@ -28,6 +28,11 @@ const styling = {
         minWidth: 75
     },
     errorNoLang: {
+    },
+    schemeDtlsDiv: {
+        paddingTop: 5,
+        marginBottom: 15,
+        color: "#bfbfbf"
     }
 }
 
@@ -152,6 +157,7 @@ function Search(props) {
                 label={ t('coding.search.scheme' )}
                 {...formItemLayout}
                 labelAlign="left"
+                style={{ marginBottom: 0 }}
             >
                 { getFieldDecorator('scheme', {
                     rules: [
@@ -179,37 +185,41 @@ function Search(props) {
                 )}
             </Form.Item>
 
-            {   // only when a scheme is selected -> levels are shown
-                
-                <Form.Item
-                    label={ t('coding.search.level') }
-                    {...formItemLayout}
-                    labelAlign="left"
-                >
-                    { getFieldDecorator('level', {
-                        rules: [
-                            {
-                                required: true,
-                                message: t('messages.field-obligatory')
-                            }
-                        ],
-                    })(
-                        state.scheme ? 
-                        <Radio.Group  buttonStyle="solid">
-                            { JSON.parse(state.scheme.levels).map(
-                                (item, inx) => 
-                                    <Radio.Button value={item} key={inx} style={styling.radio}>
-                                        { item }
-                                    </Radio.Button>
-                            ) }
-                        </Radio.Group>
-                        : <Alert
-                            type="info"
-                            message={ t('coding.search.alert-select-scheme') }
-                        />
-                    ) }
-                </Form.Item>
+            {
+                state.scheme ?
+                <Col md={{ offset: 4 }} style={styling.schemeDtlsDiv}>
+                    { state.scheme.dscr } ({ state.scheme.year })
+                </Col>: <div style={{ marginTop: 20 }}></div>
             }
+
+            <Form.Item
+                label={ t('coding.search.level') }
+                {...formItemLayout}
+                labelAlign="left"
+            >
+                { getFieldDecorator('level', {
+                    rules: [
+                        {
+                            required: true,
+                            message: t('messages.field-obligatory')
+                        }
+                    ],
+                })(
+                    state.scheme ? 
+                    <Radio.Group  buttonStyle="solid">
+                        { JSON.parse(state.scheme.levels).map(
+                            (item, inx) => 
+                                <Radio.Button value={item} key={inx} style={styling.radio}>
+                                    { item }
+                                </Radio.Button>
+                        ) }
+                    </Radio.Group>
+                    : <Alert
+                        type="info"
+                        message={ t('coding.search.alert-select-scheme') }
+                    />
+                ) }
+            </Form.Item>
 
             <Form.Item
                 label={ t('coding.search.text' )}

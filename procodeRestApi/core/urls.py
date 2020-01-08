@@ -1,7 +1,7 @@
 from rest_framework import routers
 from .views import *
 from django.urls import path, include
-from .user_views import sign_up
+from .user_views import sign_up, pw_change
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework_jwt.views import verify_jwt_token
 from rest_framework_jwt.views import refresh_jwt_token
@@ -45,6 +45,7 @@ urlpatterns = [
 
     # user sign-up
     path('sign-up/', sign_up),
+    path('pw-change/', pw_change),
     path('api-token-auth/', obtain_jwt_token),
     path('api-token-verify/', verify_jwt_token),
     path('api-token-refresh/', refresh_jwt_token)

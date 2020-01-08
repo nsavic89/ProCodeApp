@@ -7,7 +7,8 @@
         "language": "Language",
         "created-date": "Created",
         "add-new-btn": "New entry",
-        "download": "Download"
+        "download": "Download",
+        "delete": "Delete"
     },
 
     "messages": {
@@ -76,7 +77,7 @@
         "page-title": "Coding",
         "button-title": "Run coding",
         "results": {
-            "dont-agree": "None of the results correspond to the entered criteria",
+            "dont-agree": "The result(s) is (are) not correct",
             "send-feedback-btn": "Submit",
             "feedback-modal-title": "Selection of the right code/title",
             "no-response-msg": "Please specify the correct result",
@@ -147,6 +148,7 @@
         "title": "Change password",
         "old-pw": "Old password",
         "new-pw": "New password",
-        "new-pw2": "New password (confirmation)"
+        "new-pw2": "New password (confirmation)",
+        "success": "Password changed"
     }
 }

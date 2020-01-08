@@ -7,7 +7,8 @@
         "language": "Langue",
         "created-date": "Crée",
         "add-new-btn": "Nouveau",
-        "download": "Télécharger"
+        "download": "Télécharger",
+        "delete": "Supprimer"
     },
 
     "messages": {
@@ -75,13 +76,13 @@
         "page-title": "Codage",
         "button-title": "Lancer codage",
         "results": {
-            "dont-agree": "Aucun résultat correspond aux critères entrées",
+            "dont-agree": "Le(s) résultat(s) n'est (ne sont) pas correct(s)",
             "send-feedback-btn": "Envoyer",
             "feedback-modal-title": "Sélection de code/titre",
             "no-response-msg": "Merci de choisir un résultat correct",
             "feedback-sent-msg": "Merci pour votre réponse",
             "feedback-info": "Le champ ci-dessous contien tous codes/titres qui correspondent au nomenclature. Merci de sélectionner quel entre eux décrit le mieux les critères entrées.",
-            "feedback-text": "Afin d'améliorer Procoded, merci de choisir le résultat qui est plus correct. Si aucun résultat est correct, choisissez la dernière option est appuyez sur 'envoyer'.",
+            "feedback-text": "Afin d'améliorer Procode, merci de choisir le résultat qui est plus correct. Si aucun résultat est correct, choisissez la dernière option est appuyez sur 'envoyer'.",
             "error-no-lang": "La langue sélectionnée n'est pas disponible pour ce nomenclature"
         },
         "search": {
@@ -136,7 +137,7 @@
 
 
     "history": {
-        "page-title": "Histoire",
+        "page-title": "Historique",
         "file": "Nom de fichier",
         "coded-in": "Codé pour",
         "transcoded-in": "Transcodé à"
@@ -146,6 +147,7 @@
         "title": "Changement de mot de passe",
         "old-pw": "Ancien mot de passe",
         "new-pw": "Nouveau mot de passe",
-        "new-pw2": "Nouveau mot de passe (confirmer)"
+        "new-pw2": "Nouveau mot de passe (confirmer)",
+        "success": "Mot de passe changé avec succès"
     }
 }

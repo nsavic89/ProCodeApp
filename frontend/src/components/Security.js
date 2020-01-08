@@ -1,6 +1,7 @@
 import React from 'react';
-import { Modal, Form, Input, Icon } from 'antd';
+import { Modal, Form, Input, Icon, message } from 'antd';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 
 
 // change password
@@ -8,12 +9,33 @@ function Security(props) {
     const {t} = useTranslation();
     const {getFieldDecorator} = props.form;
 
+    const handleSubmit = e => {
+        e.preventDefault();
+        props.form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                axios.post(
+                    `${process.env.REACT_APP_API_URL}/pw-change/`,
+                    values,
+                    {headers: {
+                        Pragma: "no-cache",
+                        Authorization: 'JWT ' + localStorage.getItem('token')
+                    }}
+                ).then(
+                    () => message.success(t('security.success'))
+                ).catch(
+                    () => message.error(t('messages.request-failed'))
+                )
+            }
+        });     
+    }
+
     return(
         <Modal
             visible={props.visible}
             onCancel={props.onCancel}
             title={ t('security.title') }
             okText={ t('general.submit') }
+            onOk={handleSubmit}
         >
             <Form>
                 <Form.Item>

@@ -92,6 +92,7 @@ class Data(models.Model):
         Classification,
         on_delete=models.CASCADE
     )
+    code_str = models.CharField(max_length=25)
     text = models.CharField(max_length=255)
     tokens = models.CharField(max_length=255)
     lng = models.CharField(max_length=2)
@@ -101,8 +102,12 @@ class Data(models.Model):
     def set_tokens(self):
         self.tokens = get_tokens(self.text, self.lng)
 
+    def set_code_str(self):
+        self.code_str = self.code.code
+
     def save(self, *args, **kwargs):
         self.set_tokens()
+        self.set_code_str()
         super(Data, self).save(*args, **kwargs)
 
 

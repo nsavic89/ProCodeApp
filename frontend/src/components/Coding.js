@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Tooltip, Icon, } from 'antd';
 import { Loading } from './Loading';
 import { UserDataContext } from '../contexts/UserDataContext';
+import Dictionary from './coding/Dictionary';
 
 // basically coding view
 // includes coding form with classification scheme, search input
@@ -19,13 +20,21 @@ const styling = {
 
 function Coding () {
     const { t } = useTranslation();
-    const [state, setState] = useState({});
+    const [state, setState] = useState({
+        dictVisible: false
+    });
     const context = useContext(UserDataContext);
     
     // search component returns results (codes)
     const updateState = (results, status, scheme, titleLabel, values) => {
         // status === true -> coding started
         // renders spinner in results
+        let dictVisible = false;
+        if (results) {
+            if (results[0].code === "-") {
+                dictVisible = true
+            }
+        }
 
         setState({
             ...state, 
@@ -34,7 +43,8 @@ function Coding () {
             scheme: scheme,
             titleLabel: titleLabel,
             text: values ? values.text : "",
-            lng: values ? values.lng : ""
+            lng: values ? values.lng : "",
+            dictVisible: dictVisible
         })
     }
 
@@ -69,6 +79,10 @@ function Coding () {
                     text={state.text}
                     lng={state.lng}
                 />
+            </div>
+
+            <div>
+                <Dictionary visible={state.dictVisible} />
             </div>
         </div>
     )

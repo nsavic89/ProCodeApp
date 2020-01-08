@@ -16,12 +16,13 @@ const scaling = {
 
 const styling = {
     deleteIcon: { color: "#f5222d" },
-    codedIn: { marginTop: 15 },
+    codedIn: { marginTop: 5 },
     codedFile: { paddingLeft: 15, marginTop: 5 },
-    codedSchemes: { paddingLeft: 15, marginTop: 5 },
+    codedSchemes: { paddingLeft: 5, marginTop: 5 },
     files: {marginTop: 25},
     views: {textAlign: "right", marginBottom: 25},
-    viewsBtn: {border: "none", borderRadius: 2}
+    viewsBtn: {border: "none", borderRadius: 2},
+    headStyle: {background: "#f5f5f5", color: "#8c8c8c"}
 }
 
 
@@ -130,6 +131,10 @@ function History(props) {
                 item => (
                     <Col key={item.fileID.toString()} {...scaling}>
                         <Card
+                            headStyle={styling.headStyle}
+                            title={ <span>
+                                    <Icon type="file" /> {context.files.find(o => o.id === item.fileID).name}
+                                </span>}
                             actions={[
                                 <Icon 
                                     type="search"
@@ -151,27 +156,21 @@ function History(props) {
                                 </Popconfirm>
                             ]}
                         >
-                            <span>{ t('history.file') }: </span>
-                            <div style={styling.codedFile}>
-                                <Tag>
-                                    { context.files.find(o => o.id === item.fileID).name }
-                                </Tag>
-                            </div>
-
                             {/* file coded for following schemes */}
                             <div style={styling.codedIn}>
                                 { t('history.coded-in') }:
-                            </div>
+                            
                             {
                                 item.schemes.map(
                                     scheme => 
-                                        <div key={scheme.toString()} style={styling.codedSchemes}>
-                                            <Tag>
+                                        <span key={scheme.toString()} style={styling.codedSchemes}>
+                                            <Tag color="#1890ff">
                                                 { context.schemes.find(o => o.id === scheme).name }
                                             </Tag>
-                                        </div>
+                                        </span>
                                 )
                             }
+                            </div>
                         </Card>
                     </Col>
                     )

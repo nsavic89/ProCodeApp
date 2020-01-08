@@ -223,6 +223,7 @@ class DataUploadView(UploadView):
 
             # set language based on request.data
             e['lng'] = request.data['lng']
+            e['code_str'] = 'x'
 
             # try to identify classification object based on code
             try:
@@ -343,7 +344,8 @@ class SchemeAsData(APIView):
                     "text": next_clsf_ser.data[titleLabel],
                     "level": next_clsf.level,
                     "lng": lng,
-                    "code": next_clsf.pk
+                    "code": next_clsf.pk,
+                    "code_str": "x"
                 })
 
                 # if next is root then break loop
@@ -356,13 +358,14 @@ class SchemeAsData(APIView):
                     code=next_clsf.parent
                 )
                 isRoot = next_clsf.parent == 'root'
-            
+
         data_list_ser = DataSerializer(data=data_list, many=True)
 
         if data_list_ser.is_valid():
             data_list_ser.save()
             return Response("OK", status=status.HTTP_200_OK)
-            
+        
+        print(data_list_ser.errors)
         return Response(status=status.HTTP_401_BAD_REQUEST)
 
 

@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import serializers, status, permissions
 from rest_framework.response import Response
-
+from django.contrib.auth import authenticate
 # user serializers and views 
 
 
@@ -35,4 +35,19 @@ def sign_up(request):
         user.save()
         return Response(user.data, status=status.HTTP_201_CREATED)
     
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def pw_change(request):
+    user = authenticate(
+        username=request.user,
+        password=request.data["old_pw"]
+    )
+
+    if user is not None:
+        user.set_password(request.data['new_pw'])
+        user.save()
+        return Response(status=status.HTTP_200_OK)
+
     return Response(status=status.HTTP_400_BAD_REQUEST)

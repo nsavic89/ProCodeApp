@@ -11,6 +11,8 @@ import History from '../components/History';
 import TranscodingResults from '../components/files/TranscodingResults';
 import FileDataView from '../components/files/FileDataView';
 import withAuth from '../hoc/withAuth';
+import UniLogo from '../media/logo_unisante.png';
+
 
 // Main view for all components for end-user
 // layout with header and sider
@@ -28,12 +30,16 @@ function Main() {
         content: {
             background: "white",
             minHeight: 500,
-            height: "85vh",
+            height: "88vh",
             overflow: "auto",
             padding: 24
         },
         footer: {
             textAlign: "center"
+        },
+        uniLogo: {
+            height: 50,
+            marginTop: 25
         }
     }
     return(
@@ -74,10 +80,10 @@ function Main() {
                         <strong>Nenad Savic</strong>
                     </div>
                     <div><br/>
-                        <Icon type="mail" /> <a href="mailto: nenad@nedisa.com">nenad@nedisa.com</a>
+                        <Icon type="mail" /> <a href="mailto: nenad.savic@unisante.ch">nenad.savic@unisante.ch</a>
                     </div>
                     <div>
-                        <Icon type="phone" /> +41 78 860 57 80
+                        <img src={UniLogo} alt="" style={styling.uniLogo}/>
                     </div>
                 </Layout.Footer>
             </Layout>

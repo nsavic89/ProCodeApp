@@ -12,9 +12,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1ch4_gwrc%#1cv#hgldl=f_y(628hti1w(an1i=)!m=#97t7(w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['api.pro-code.ch']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -63,7 +63,7 @@ CACHES = {
 }
 
 CORS_ORIGIN_WHITELIST = [
-    "http://www.pro-code.ch"
+    "http://localhost:3000"
 ]
 
  
@@ -110,7 +110,7 @@ WSGI_APPLICATION = 'procodeRestApi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
        	'NAME': 'procode_db',
@@ -118,6 +118,12 @@ DATABASES = {
 	'PASSWORD': 'Procode-2020',
 	'HOST': '',
 	'PORT': ''
+    }
+}"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
     }
 }
 

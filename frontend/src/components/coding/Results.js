@@ -51,6 +51,12 @@ function Results(props) {
         return (<div>{ Loading }</div>);
     }
 
+    if (props.results) {
+        if (props.results[0].code === "-") {
+            return <div />
+        }
+    }
+
     // page just mounted
     // coding has not started and no results yet -> nothing
     if (!props.results) {

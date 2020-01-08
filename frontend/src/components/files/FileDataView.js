@@ -1,14 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { UserDataContext } from '../../contexts/UserDataContext';
 import { Loading } from '../Loading';
-import { Icon, Table, Button, Popconfirm, message, Modal, Form, Input } from 'antd';
+import { Icon, Table, Button, Popconfirm, message, Modal, Form, Input, Alert } from 'antd';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import CodingFileForm from './CodingFileForm';
 
 
 const styling = {
     addNewBtn: {
-        marginTop: 25
+        marginTop: 25,
+        marginRight: 5,
     },
     table: {
         marginTop: 15
@@ -39,7 +41,51 @@ function FileDataView(props) {
         )
     }
 
+    // handle file delete
+    const handleFileDelete = () => {
+        axios.delete(
+            `${process.env.REACT_APP_API_URL}/my-file/${fileID}`,
+            {headers: {
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+            }}
+        ).then(
+            () => {
+                message.warning(t("messages.data-deleted"));
+                setState({
+                    fileDeleted: true
+                });
+                context.refreshData();
+            }
+        ).catch(
+            () => message.error(t('messages.request-failed'))
+        )
+    }
+
+    // if file is deleted
+    if (state.fileDeleted) {
+        return (
+            <div>
+                <Alert
+                    message={t('messages.no-data-alert')}
+                    type="warning"
+                    showIcon
+                />
+            </div>
+        )
+    }
+
     const myFile = context.files.find(o => o.id === fileID);
+    if (!myFile) {
+        return (
+            <div>
+                <Alert
+                    message={t('messages.no-data-alert')}
+                    type="warning"
+                    showIcon
+                />
+            </div>)
+    }
 
     // create columns and datasource
     const variables = JSON.parse(myFile.variables);
@@ -98,6 +144,7 @@ function FileDataView(props) {
                 >
                     <Icon type="edit" />
                 </Button>
+                {/* delete button */}
                 <Popconfirm
                     title={t('messages.are-you-sure')}
                     onConfirm={() => handleDelete(dataSource[i].id)}
@@ -179,6 +226,28 @@ function FileDataView(props) {
                 <Icon type="plus" /> { t('general.add-new-btn') }
             </Button>
 
+            <Button
+                style={styling.addNewBtn}
+                type="primary"
+                onClick={() => setState({ file: fileID })}
+            >
+                <Icon type="fire" /> { t('sider.coding') } / { t('sider.transcoding') }
+            </Button>
+
+            {/* delete file */}
+            <Popconfirm
+                title={t('messages.are-you-sure')}
+                onConfirm={handleFileDelete}
+                okText={t('messages.yes')}
+                cancelText={t('messages.no')}
+            >
+                <Button
+                    type="danger"
+                >
+                    <Icon type="delete" /> { t('general.delete') }
+                </Button>
+            </Popconfirm>
+
             <Table 
                 style={styling.table}
                 columns={columns}
@@ -219,6 +288,12 @@ function FileDataView(props) {
                     )}
                 </Form>
             </Modal>
+
+            {/* modal for coding/transcoding */}
+            <CodingFileForm
+                file={state.file}
+                onCancel={() => setState({ file: false })}
+            />
         </div>
     )
 }

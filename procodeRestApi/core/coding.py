@@ -17,18 +17,10 @@ def run_cnb(text, lng, level, scheme):
     """
     level = int(level)
 
-    # first check if data is in cache
-    codes = cache.get('{}_{}_{}_{}'.format('codes', scheme, lng, level))
-    titles = cache.get('{}_{}_{}_{}'.format('titles', scheme, lng, level))
-
-    # otherwise load from db
-    if codes is None or titles is None:
-        data = Data.objects.filter(scheme=scheme, lng=lng, level=level)
-        codes = [d.code.code for d in data]
-        titles = [d.tokens for d in data]
-
-        cache.set('{}_{}_{}_{}'.format('codes', scheme, lng, level), codes)
-        cache.set('{}_{}_{}_{}'.format('titles', scheme, lng, level), titles)
+    # data load
+    data = Data.objects.filter(scheme=scheme, lng=lng, level=level)
+    codes = [d.code_str for d in data]
+    titles = [d.tokens for d in data]
 
     # the actual CNB code starts here -------------------
     # First step -> tf-idf 
@@ -46,5 +38,14 @@ def run_cnb(text, lng, level, scheme):
     text_tokenized = [ get_tokens(t, lng) for t in text ]
     text_tf = tf.transform(text_tokenized)
     output = classifier.predict(text_tf)
+
+    # check probabilities 
+    probs = classifier.predict_log_proba(text_tf)
+    diff = [max(p)-min(p) for p in probs]
+
+    # assign '-' as code for those with prop == 0
+    for i in range(0, len(diff)):
+        if diff[i] == 0:
+            output[i] = '-'
     
     return output

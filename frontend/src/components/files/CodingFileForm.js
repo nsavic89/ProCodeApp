@@ -31,7 +31,7 @@ function CodingFileForm(props) {
     const { t } = useTranslation();
     const context = useContext(UserDataContext);
     const [state, setState] = useState({
-        radio: "c"
+        radio: 'c'
     })
 
     if (!context.loaded || !props.file) {
@@ -80,7 +80,6 @@ function CodingFileForm(props) {
             })
         } else {
             props.form.validateFieldsAndScroll((err, values) => {
-                console.log(values)
                 if (!err) { 
                     axios.post(
                         `${process.env.REACT_APP_API_URL}/my-transcoding/`,

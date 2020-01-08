@@ -1,9 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { message, Row, Col, Popconfirm, Icon, Card, Alert, Tag, Statistic } from 'antd';
 import { Loading } from './Loading';
 import { UserDataContext } from '../contexts/UserDataContext';
+import CodingFileForm from '../components/files/CodingFileForm';
+
 
 const styling = {
     pageHeader: {
@@ -47,6 +49,7 @@ const scaling = {
 function Files(props) {
     const { t } = useTranslation();
     const context = useContext(UserDataContext);
+    const [state, setState] = useState({file: null})
 
     // delete file when requested
     const handleDelete = id => {
@@ -76,6 +79,9 @@ function Files(props) {
     if (context.files.length === 0) {
         return(
             <div>
+                <h2 style={styling.pageHeader}>
+                    { t('files.page-title') }
+                </h2>
                 <Alert
                     type="warning"
                     message={ t('messages.no-data-alert') }
@@ -116,7 +122,14 @@ function Files(props) {
                                         <Icon 
                                             type="search"
                                             key="data" 
-                                            onClick={() => props.history.push(`my-files/file=${item.id}`)}/>
+                                            onClick={() => props.history.push(`my-files/file=${item.id}`)}/>,
+                                        <Icon 
+                                            type="fire"
+                                            key="data" 
+                                            onClick={() => setState({
+                                                file: item.id,
+                                                codingView: "c"
+                                            })}/>
                                     ]}
                                     title={<div><Icon 
                                         style={styling.iconFolder}
@@ -153,6 +166,12 @@ function Files(props) {
                     )
                 }
             </Row>
+
+            {/* modal for coding/transcoding */}
+            <CodingFileForm
+                file={state.file}
+                onCancel={() => setState({ file: false })}
+            />
         </div>
     )
 }
