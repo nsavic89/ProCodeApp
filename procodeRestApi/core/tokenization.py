@@ -12,11 +12,12 @@
 """
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+from nltk.corpus import wordnet as wn
 from nltk.stem import PorterStemmer
 import string
 
 
-def get_tokens(text, lng):
+def get_tokens(text, lng, do_stem=True, do_join=True):
 
     if text == '':
         return ''
@@ -50,11 +51,36 @@ def get_tokens(text, lng):
     # filter unwanted tokens
     tokens = [tk for tk in tokens if tk not in unwanted]
 
-    # to get root for tokens in text
-    ps = PorterStemmer()
-    tokens = [ps.stem(tk) for tk in tokens]
+    if do_stem == True:
+        # to get root for tokens in text
+        ps = PorterStemmer()
+        tokens = [ps.stem(tk) for tk in tokens]
 
     # returned value is not a list but string
     # we save as such in Data model
-    text_refined = ' '.join(tokens)
-    return text_refined
+    if do_join == True:
+        text_refined = ' '.join(tokens)
+        return text_refined
+
+    return tokens
+
+
+def get_definitions(text, lng):
+
+    if lng not in ['en', 'fr', 'it', 'ge']:
+        return ''
+
+    # for wornet the lang values are different from above
+    lang_dict = {
+        'en': 'eng',
+        'fr': 'fra',
+        'it': 'ita'
+    }
+
+    syn = wn.synsets(text, lang=lang_dict[lng])
+
+    if len(syn) == 0:
+        return ""
+    
+    syn = syn[0]
+    return syn.definition()

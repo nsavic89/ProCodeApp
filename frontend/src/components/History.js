@@ -51,6 +51,10 @@ function History(props) {
         }
         axios.delete(
             url,
+            {headers: {
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+            }}
         ).then(
             () => {
                 message.warning( t('messages.data-deleted') );

@@ -17,8 +17,7 @@ function MySider (props) {
 
     const styling = {
         sider: {
-            minHeight: 500,
-            height: "100vh",
+            minHeight: 850,
             background: "#32363c"
         },
         trigger: {

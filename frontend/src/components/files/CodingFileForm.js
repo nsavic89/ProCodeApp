@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { UserDataContext } from '../../contexts/UserDataContext';
 import {
-    Form, Select, Modal, Radio, Alert, Icon, Tooltip, message
+    Form, Select, Modal, Radio, Alert, Icon, Tooltip, message, Checkbox
 } from 'antd';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
@@ -21,6 +21,11 @@ const formItemLayout = {
     wrapperCol: {
         md: {span: 16}
     }
+}
+
+const formItemTailedLayout = {
+    wrapperCol:
+        {md: {span: 17, offset: 7}}
 }
 
 // coding/transcoding (based on radio selection) of entire files
@@ -211,6 +216,20 @@ function CodingFileForm(props) {
                             message={ t('coding.search.alert-select-scheme') }
                         />
                 }
+                <Form.Item
+                    {...formItemTailedLayout}
+                    labelAlign="left"
+                >
+                    { getFieldDecorator("dict", {
+                        initialValue: false
+                    })(
+                        <Checkbox>
+                            <Tooltip title={t('coding.search.dict-tooltip')}>
+                                <Icon type="question-circle" />
+                            </Tooltip> {t('coding.file.dict')}
+                        </Checkbox>
+                    ) }
+                </Form.Item>
             </Form>
         )
     }

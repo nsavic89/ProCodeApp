@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import CodingForm from './coding/CodingForm';
-import { Tooltip, Icon } from 'antd';
+import { Tooltip, Icon, message, Modal, Alert, Col, Row } from 'antd';
 import CodingResults from './coding/CodingResults';
-
+import axios from 'axios';
+import { Loading } from './Loading';
+import Feedback from './coding/Feedback';
+import SchemeTree from './coding/SchemeTree';
+import { UserDataContext } from '../contexts/UserDataContext';
 
 
 // Coding view
@@ -15,10 +19,95 @@ const styling = {
 
 
 function Coding() {
+    const context = useContext(UserDataContext);
     const { t } = useTranslation();
-    const [state, setState] = useState({});
+    const [state, setState] = useState({
+        values: {}
+    });
 
-    
+    // get predictions
+    const handleSubmit = (values) => {
+        setState({
+            ...state,
+            running: true
+        })
+
+        axios.post(
+            `${process.env.REACT_APP_API_URL}/my-coding/`,
+            values,
+            {headers: {
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+            }}
+        ).then(
+            res => {
+                if (res.status === 204) {
+                    setState({
+                        ...state,
+                        noLangAlert: true
+                    })
+                } else {
+                    setState({
+                        running: false,
+                        values: values,
+                        results: res.data,
+                        feedbackVisible: res.data[0] !== "-",
+                        feedbackSent: false,
+                        noResultAlert: res.data[0] === "-",
+                        noLangAlert: false
+                    })
+                }
+            }
+        ).catch(
+            () => {
+                message.error( t('messages.request-failed') );
+                setState({
+                    running: false,
+                    values: {},
+                    results: null,
+                    noLangAlert: false
+                })
+            }
+        )
+    }
+
+    // send feedback to server
+    const handleFeedback = code => {
+
+        let obj = {
+            scheme: state.values.scheme,
+            lng: state.values.lng,
+            text: state.values.text,
+            level: state.values.level,
+            "code_str": "x",
+            code: context.schemes
+                        .find(o => o.id === state.values.scheme)
+                        .classification
+                        .find(o => o.code === code).id
+        }
+
+        axios.post(
+            `${process.env.REACT_APP_API_URL}/data/`,
+            obj,
+            { headers: {
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+            }}
+        ).then(
+            () => {
+                message.success(t('coding.results.feedback-sent-msg'));
+                setState({
+                    ...state,
+                    feedbackSent: true,
+                    correctCode: null,
+                    feedback: true
+                })
+            }
+        ).catch(
+            () => message.error(t('messages.request-failed'))
+        )
+    }
+
     return (
         <div>
             <h2>
@@ -33,90 +122,81 @@ function Coding() {
 
             <div style={styling.codingForm}>
                 <CodingForm
-                    getValues={values => setState({ values : values })}
+                    getValues={ values => handleSubmit(values) }
                 />
             </div>
 
+            {/* spinner if state.running */}
+            {
+                state.running ?
+                <div>
+                    { Loading }
+                </div> 
+                : <CodingResults
+                    results={ state.results }
+                    scheme={ state.values.scheme }
+                />
+            }
+
+            {/* feedback if result is not None */}
             <div>
-                <CodingResults />
+                <Feedback
+                    disabled={state.feedbackSent}
+                    visible={state.feedbackVisible}
+                    handleFeedbackYes={ () => handleFeedback(state.results[0]) }
+                    handleFeedbackNo={ () => setState({...state, feedback: false}) }
+                />
             </div>
+
+            {/* scheme-tree when the result from feedback incorrect */}
+            <Modal
+                visible={state.feedback === false}
+                title={t('coding.results.feedback-modal-title')}
+                okText={t('general.submit')}
+                cancelText={t('general.cancel')}
+                onCancel={() => setState({...state, feedback: true})}
+                onOk={() => handleFeedback(state.correctCode)}
+            >
+                <SchemeTree
+                    scheme={ state.values.scheme }
+                    titleLabel={ 
+                        state.values.lng === 'en' ? 
+                        'title' : `title_${state.values.lng}`}
+                    onChange={value => setState({ ...state, correctCode: value })}
+                />
+            </Modal>
+
+            {/* if coding for not supported language for selected scheme */}
+            {
+                state.noLangAlert ?
+                <Row>
+                    <Col md={{ offset: 4, span: 16 }}>
+                        <Alert
+                            type="error"
+                            message={ t('coding.results.error-no-lang') }
+                            showIcon
+                        />
+                    </Col>
+                </Row> : <div />
+            }
+
+            {/* algorithm 2 -> if None is result */}
+            {
+                state.noResultAlert ?
+                <Row>
+                    <Col md={{ offset: 4 }}>
+                        <Alert
+                            type="warning"
+                            showIcon
+                            message={t('coding.results.no-result-alert')}
+                        />
+                    </Col>
+                </Row>
+                : <div />
+            }
         </div>
     )
 }
 
 
 export default Coding;
-
-
-/*
-function Coding () {
-    const { t } = useTranslation();
-    const [state, setState] = useState({
-        dictVisible: false
-    });
-    const context = useContext(UserDataContext);
-    
-    // search component returns results (codes)
-    const updateState = (results, status, scheme, titleLabel, values) => {
-        // status === true -> coding started
-        // renders spinner in results
-        let dictVisible = false;
-        if (results) {
-            if (results[0].code === "-") {
-                dictVisible = true
-            }
-        }
-
-        setState({
-            ...state, 
-            results: results,
-            coding: status,
-            scheme: scheme,
-            titleLabel: titleLabel,
-            text: values ? values.text : "",
-            lng: values ? values.lng : "",
-            dictVisible: dictVisible
-        })
-    }
-
-    return (
-        <div>
-            <h2>
-                {t('coding.page-title')}
-            </h2>
-            
-            <div className="help">
-                <Tooltip title={ t('coding.help-text' )} placement="left">
-                    <Icon type="question-circle"  /> { t('general.help' )}
-                </Tooltip>
-            </div>
-
-            <div style={ styling.codingForm }>
-                {
-                    context.loaded ? 
-                        <Search 
-                            updateParent={updateState}
-                        />
-                        : <div>{ Loading }</div>
-                }
-            </div>
-
-            <div>
-                <Results 
-                    results={state.results}
-                    coding={state.coding}
-                    scheme={state.scheme}
-                    titleLabel={state.titleLabel}
-                    text={state.text}
-                    lng={state.lng}
-                />
-            </div>
-
-            <div>
-                <Dictionary 
-                    visible={state.dictVisible}
-                />
-            </div>
-        </div>
-    )
-}*/

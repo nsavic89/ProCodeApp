@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { TreeSelect } from 'antd';
+import { UserDataContext } from '../../contexts/UserDataContext';
 
 
 const { TreeNode } = TreeSelect;
@@ -10,15 +11,26 @@ const { TreeNode } = TreeSelect;
 
 // Props required -> scheme, titleLabel
 function SchemeTree(props) {
+    const context = useContext(UserDataContext);
+
     if (!props.scheme) {
         return <div />;
+    }
+
+    let scheme = props.scheme;
+    if (typeof(scheme) !== 'object') {
+        try{
+            scheme = context.schemes.find(o => o.id === scheme);
+        }catch(e) {
+            console.log(e);
+        }
     }
 
     const nodes = () => {
         // here we create nodes
         let nodes = [];
-        let levels = props.scheme.levels;
-        let clsf = props.scheme.classification;
+        let levels = scheme.levels;
+        let clsf = scheme.classification;
 
         try{
             levels = JSON.parse(levels);

@@ -10,7 +10,9 @@ import {
     Alert,
     Button,
     Icon,
-    Col
+    Col,
+    Checkbox,
+    Tooltip
 } from 'antd';
 
 // css styling
@@ -39,6 +41,11 @@ const formItemLayout = {
         {md: {span: 16}},
     labelCol:
         {md: {span: 4}}
+}
+
+const formItemTailedLayout = {
+    wrapperCol:
+        {md: {span: 16, offset: 4}}
 }
 
 // Coding of occupations using CNB
@@ -209,6 +216,21 @@ function CodingForm(props) {
                             enterButton
                             onSearch={(val, e) => handleSubmit(e)}
                         />
+                    ) }
+                </Form.Item>
+
+                <Form.Item
+                    {...formItemTailedLayout}
+                    labelAlign="left"
+                >
+                    { getFieldDecorator("dict", {
+                        initialValue: false
+                    })(
+                        <Checkbox>
+                            <Tooltip title={t('coding.search.dict-tooltip')}>
+                                <Icon type="question-circle" />
+                            </Tooltip> {t('coding.search.dict')}
+                        </Checkbox>
                     ) }
                 </Form.Item>
 

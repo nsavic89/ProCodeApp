@@ -76,15 +76,15 @@
         "help-text": "Find a classification code for a selected classification scheme, entered data and selected coding level. The level usually (not always!) corresponds to the number of digits in a classification code.",
         "page-title": "Coding",
         "button-title": "Run coding",
+        "feedback-text": "Is the obtained code/title correct?",
+        "feedback-alert-info": "Your feedback will be used to improve the prediction power of the software",
         "results": {
-            "dont-agree": "The result(s) is (are) not correct",
-            "send-feedback-btn": "Submit",
             "feedback-modal-title": "Selection of the right code/title",
             "no-response-msg": "Please specify the correct result",
             "feedback-sent-msg": "Thank you for your feedback",
             "feedback-info": "The field below lists all codes/titles for the corresponding classification scheme. Please specify which of them describes best the entered (searched) data",
-            "feedback-text": "To help Procode become smarter, please specify which of the provided results is correct. If none is correct, then select the last option and click on the submit button below.",
-            "error-no-lang": "The selected language is not supported for this classification scheme"
+            "error-no-lang": "The selected language is not supported for this classification scheme",
+            "no-result-alert": "Procode failed to provide results. In the form above, allow the use of the alternative algorithm or check spelling of the entered criteria."
         },
         "search": {
             "input-placeholder": "Textual description",
@@ -92,7 +92,9 @@
             "alert-select-scheme": "Level not available before classification scheme is selected",
             "scheme-placeholder": "Please select",
             "scheme": "Classification:",
-            "text": "Input"
+            "text": "Input",
+            "dict": "Run (if required) the Procode's alternative algorithm",
+            "dict-tooltip": "This alorithm is used when the machine learning fails to provide code/title. The algorithm explores synonyms and definitions of entered criteria. Warning: this may take longer time."
         },
         "file": {
             "modal-title": "File coding/transcoding",
@@ -100,7 +102,9 @@
             "transcoding": "Transcoding",
             "variables": "Variable",
             "variable-help": "The selected file for coding may have included multiple columns. Select the one containing the data for coding/transcoding",
-            "modal-ok-text": "Run"
+            "modal-ok-text": "Run",
+            "dict": "Run alternative algorithm",
+            "scheme-tree-label": "Please specify the correct answer:"
         }
     },
 
@@ -120,7 +124,7 @@
             "column-scheme": "Classification scheme",
             "column-edit": "Edit result",
             "modal-title": "Improve predicted results",
-            "modal-obtained-results": "Predicted codes/titles"
+            "modal-obtained-results": "Predicted code/title"
         }
     },
 
@@ -149,6 +153,6 @@
         "old-pw": "Old password",
         "new-pw": "New password",
         "new-pw2": "New password (confirmation)",
-        "success": "Password changed"
+        "success": "Password updated"
     }
 }

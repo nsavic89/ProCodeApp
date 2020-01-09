@@ -25,7 +25,7 @@
 
     "login": {
         "login": "Anmelden",
-        "welcome-text": "Kodieren Ihre Berufdaten je nach national oder international Standardklassifikation der Berufe. Procode verwendet die maschinelles Lernen um zu die richigen Kode übertragen.",
+        "welcome-text": "Kodieren Sie Ihre Berufsdatenbank nach einem standardisierten Klassifikationsschema. Procode ist ein Werkzeug, das Ihre Arbeit durch den Einsatz von fortgeschrittenen maschinellen Lernalgorithmen unterstützt, die auf einem großen Datenbestand von Vorab-Codierungen basieren.",
         "register": "Sich anmelden",
         "title": "Anmeldung",
         "username": "Benutzer",
@@ -72,6 +72,8 @@
         "help-text": "Suchen Sie einen Klassifizierungscode für ein ausgewähltes Klassifizierung der Berufe, die eingegebenen Daten und die ausgewählte Codierungspräzision. Die Präzision entspricht in der Regel (nicht immer!) der Anzahl der Stellen eines Klassifizierungscodes.",
         "page-title": "Codierung",
         "button-title": "Codierung ausführen",
+        "feedback-text": "Ist der erhaltene Code/Titel korrekt?",
+        "feedback-alert-info": "Ihr Feedback wird verwendet, um die Vorhersagekraft der Software zu verbessern.",
         "results": {
             "dont-agree": "Keines der Ergebnisse entspricht den eingegebenen Kriterien",
             "send-feedback-btn": "Absenden",
@@ -79,7 +81,8 @@
             "no-response-msg": "Bitte geben Sie das richtige Ergebnis an",
             "feedback-sent-msg": "Vielen Dank für Ihr Feedback",
             "feedback-info": "Das Feld darunter listet alle Codes/Titel für die entsprechende Klassifikation auf. Bitte geben Sie an, welcher davon die eingegebenen (gesuchten) Daten am besten beschreibt",
-            "feedback-text": "Um Procode intelligenter zu machen, geben Sie bitte an, welches der gelieferten Ergebnisse korrekt ist. Wenn keine Ergebnisse korrekt ist, dann wählen Sie die letzte Option und klicken Sie auf den Button 'Senden'."
+            "feedback-text": "Um Procode intelligenter zu machen, geben Sie bitte an, welches der gelieferten Ergebnisse korrekt ist. Wenn keine Ergebnisse korrekt ist, dann wählen Sie die letzte Option und klicken Sie auf den Button 'Senden'.",
+            "no-result-alert": "Procode konnte keine Ergebnisse liefern. Erlauben Sie im obigen Formular die Verwendung des alternativen Algorithmus oder prüfen Sie die Rechtschreibung der eingegebenen Kriterien."
         },
         "search": {
             "input-placeholder": "Beschreibung",
@@ -87,7 +90,9 @@
             "alert-select-scheme": "Präzision vor Auswahl die Klassifikation nicht verfügbar",
             "scheme-placeholder": "Bitte wählen Sie",
             "scheme": "Klassifikation:",
-            "text": "Eingabe"
+            "text": "Eingabe",
+            "dict": "Führen Sie (falls erforderlich) den alternativen Algorithmus des Procodes aus",
+            "dict-tooltip": "Dieser Algorithmus wird verwendet, wenn das maschinelle Lernen keinen Code/Titel liefert. Der Algorithmus erforscht Synonyme und Definitionen der eingegebenen Kriterien. Warnung: dies kann länger dauern."
         },
         "file": {
             "modal-title": "File coding/transcoding",
@@ -95,7 +100,9 @@
             "transcoding": "Transcoding",
             "variables": "Variable",
             "variable-help": "Die für die Codierung ausgewählte Datei kann mehrere Spalten enthalten haben. Wählen Sie denjenigen aus, der die Daten für die Kodierung/Transkodierung enthält",
-            "modal-ok-text": "Ausführen"
+            "modal-ok-text": "Ausführen",
+            "dict": "Alternativer Algorithmus ausführen",
+            "scheme-tree-label": "Bitte geben Sie die richtige Antwort an:"
         }
     },
 

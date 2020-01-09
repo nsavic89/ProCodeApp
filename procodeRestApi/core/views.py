@@ -9,7 +9,7 @@ from .models import *
 from .serializers import *
 import xlrd
 import json
-from .coding import run_cnb
+from .coding import run_cnb, run_dict
 
 # General views ------------------------------------------
 # both administrator and end-users
@@ -471,6 +471,7 @@ class MyCodingViewSet(viewsets.ModelViewSet):
         scheme = request.data['scheme']
         level = request.data['level']
         my_file = None
+        do_run_dict = request.data['dict']
         
         if 'my_file' in request.data:
             file_id = request.data['my_file']
@@ -524,7 +525,7 @@ class MyCodingViewSet(viewsets.ModelViewSet):
       
         # because res is numpy array
         res = res.tolist()
-
+    
         # now save the resuts to db
         for txt in text:
 
@@ -544,11 +545,26 @@ class MyCodingViewSet(viewsets.ModelViewSet):
                     scheme=Scheme.objects.get(pk=scheme),
                     code=res[text.index(txt)]
                 )
+
                 my_coding.output.add(output)
+
             except:
-                continue
-     
+                if do_run_dict:
+                    res = run_dict([txt], lng, level, scheme)
+                    try:
+                        output = Classification.objects.get(
+                            scheme=Scheme.objects.get(pk=scheme),
+                            code=res[0]
+                        )
+                        my_coding.output.add(output)
+                    except:
+                        continue
+                else:
+                    continue
+
         return Response(res, status=status.HTTP_200_OK)
+
+
 
 class MyTranscodingViewSet(viewsets.ModelViewSet):
     queryset = MyTranscoding.objects.all()

@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { UserDataContext } from '../../contexts/UserDataContext';
 import { Loading } from '../Loading';
-import { Table, Icon, Button, Modal, Tag, Radio, Alert, message } from 'antd';
+import { Table, Icon, Button, Modal, Tag, message } from 'antd';
 import { useTranslation } from 'react-i18next';
-import SchemeTree from '../coding/SchemeTree';
 import axios from 'axios';
+import Feedback from '../coding/Feedback';
+import SchemeTree from '../coding/SchemeTree';
 
 
 const styling = {
@@ -21,17 +22,6 @@ const styling = {
         border: "none",
         boxShadow: "none"
     },
-    radioGroupHeader: {
-        color: "#cf1322",
-        marginBottom: 5,
-        fontWeight: 700
-    },
-    radioGroup: {
-        padding: 10,
-        border: "1px solid #cf1322",
-        borderRadius: 5,
-        width: "100%"
-    },
     radio: {
         display: 'block',
         height: '50px',
@@ -42,8 +32,9 @@ const styling = {
         wordWrap: "break-word",
         whiteSpace: "normal"
     },
-    radioNone: {
-        color: "#f5222d"
+    resultsHeader: {
+        marginBottom: 5,
+        fontWeight: 500
     },
     alert: {
         marginBottom: 15
@@ -54,6 +45,12 @@ const styling = {
         borderRadius: 5,
         marginTop: 25
     },
+    schemeTree: {
+        marginTop: 25
+    },
+    schemeTreeLabel: {
+        marginBottom: 5
+    }
 }
 
 
@@ -145,33 +142,31 @@ function CodingResults(props) {
         dataSource.push(obj);
     }
 
-    // handle scheme tree in modal change
-    // find classification object from context corresponding to the selected code
-    // and update myCoding outputs in state
-    const handleSchemeTreeChange = code => {
-        let myCoding = { ...state.myCoding };
-        let scheme = context.schemes.find(o => o.id === myCoding.scheme);
-        let clsf = scheme.classification.find(o => o.code === code);
-
-        // remove if already contained
-        myCoding.output = myCoding.output.filter(o => o.id !== clsf.id);
-        myCoding.output = [clsf];
-        setState({
-            ...state,
-            myCoding: myCoding,
-            radio: clsf.id
-        });
-    }
-    
     // handleSubmit
-    const handleSubmit = () => {
+    const handleSubmit = code => {
         const BASE_URL = process.env.REACT_APP_API_URL;
         let myCoding = {...state.myCoding};
+
+        let output_id = context.schemes
+                        .find(o => o.id === myCoding.scheme)
+                        .classification
+                        .find(o => o.code === code)
+                        .id;
+
+        let level = context.schemes
+                        .find(o => o.id === myCoding.scheme)
+                        .classification
+                        .find(o => o.code === code)
+                        .level;
 
         // update my coding
         const promise1 = axios.put(
             `${BASE_URL}/my-coding/${state.myCoding.id}/`,
-            {output: state.myCoding.output.map(o => o.id)}
+            {output: [output_id]},
+            {headers: {
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+            }}
         );
 
         // add data for machine learning
@@ -179,12 +174,18 @@ function CodingResults(props) {
             scheme: myCoding.scheme,
             lng: myCoding.lng,
             text: myCoding.text,
-            code: myCoding.output[0].id
+            code: output_id,
+            level: level,
+            "code_str": "x"
         }
 
         const promise2 = axios.post(
             `${BASE_URL}/data/`,
-            obj
+            obj,
+            {headers: {
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+            }}
         );
 
         Promise.all([promise1, promise2])
@@ -195,7 +196,7 @@ function CodingResults(props) {
                         myCoding: null,
                         visible: false
                     })
-                    message.success(t('messages.request-success'));
+                    message.success(t('coding.results.feedback-sent-msg'));
                     context.refreshData();
                 }
             )
@@ -207,6 +208,7 @@ function CodingResults(props) {
 
     // url for download of excel file   
     const url = `${process.env.REACT_APP_API_URL}/download-coding/${fileID}/`;
+
     return(
         <div>
             <h2>
@@ -235,9 +237,8 @@ function CodingResults(props) {
                 <Modal
                     visible={state.visible}
                     onCancel={() => setState({ visible: false, myCoding: null })}
-                    okText={t('general.submit')}
                     title={t('files.results.modal-title')}
-                    onOk={handleSubmit}
+                    onOk={() => handleSubmit(state.correctedCode)}
                 >
                     <div>
                         {t('files.results.column-input')}: <strong>
@@ -245,54 +246,43 @@ function CodingResults(props) {
                         </strong>
                     </div>
                     <br />
-                    <div style={styling.radioGroupHeader}>
+                    <div style={styling.resultsHeader}>
                         { t('files.results.modal-obtained-results') }:
                     </div>
 
-                    <Radio.Group 
-                        style={styling.radioGroup}
-                        onChange={e => setState({...state, radio:e.target.value})}
-                    >
-                        {
-                            state.myCoding.output.map(
-                                item => (
-                                    <Radio 
-                                        key={item.id}
-                                        value={item.id}
-                                        checked={state.radio === item.id}
-                                        style={styling.radio}
-                                    >
-                                        <Tag color="#52c41a">
-                                            { item.code }
-                                        </Tag> <span style={styling.title}>{
-                                            state.myCoding.lng === 'en' ? 
-                                                item.title 
-                                                : item[`title_${state.myCoding.lng}`]
-                                            }</span>
-                                    </Radio>
-                                )
-                            )
-                        }
-                        <Radio value="none" style={styling.radioNone}>
-                            {t('coding.results.dont-agree')}
-                        </Radio>
-                    </Radio.Group>
+                    <Tag color="#52c41a">
+                        { state.myCoding.output[0].code }
+                    </Tag> <span 
+                                style={styling.title}
+                            >{
+                                state.myCoding.lng === 'en' ? 
+                                state.myCoding.output[0].title 
+                                : state.myCoding.output[0][`title_${state.myCoding.lng}`]
+                            }
+                            </span>
+                    
+                    {/* feedback */}
+                    <Feedback
+                        visible={true}
+                        offset={0}
+                        span={24}
+                        handleFeedbackYes={() => handleSubmit(state.myCoding.output[0].code)}
+                        handleFeedbackNo={() => setState({...state, schemeTreeVisible: true})}
+                    />
 
+                    {/* tree if schemeTreeVisible */}
                     {
-                        state.radio === "none" ?
-                        <div style={styling.feedback}>
-                            <Alert
-                                style={styling.alert}
-                                type="info"
-                                message={t('coding.results.feedback-text')}
-                            />
-
-                            <SchemeTree 
-                                scheme={context.schemes.find(o => o.id === state.myCoding.scheme)}
-                                titleLabel={state.myCoding.lng === "en" ? "title": `title_${state.myCoding.lng}`}
-                                onChange={val => handleSchemeTreeChange(val)}
-                            />
-                        </div> : <div />
+                        state.schemeTreeVisible && state.myCoding ? 
+                            <div style={styling.schemeTree}>
+                                <div style={styling.schemeTreeLabel}>
+                                    { t('coding.file.scheme-tree-label') }
+                                </div>
+                                <SchemeTree
+                                    titleLabel={state.myCoding.lng === "en" ? "title" : `title_${state.myCoding.lng}`}
+                                    scheme={state.myCoding.scheme}
+                                    onChange={value => setState({...state, correctedCode: value})}
+                                />
+                            </div> : <div />
                     }
                 </Modal> : <div />
             }

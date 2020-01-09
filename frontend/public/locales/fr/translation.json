@@ -26,7 +26,7 @@
 
     "login": {
         "login": "Connexion",
-        "welcome-text": "Mener codage de vos données selon un nomenclature d'occupation ou secteur économique. Procode est un outil qui utilise un algorithme de l'apprentissage machine établis sur une grande base de données précedante.",
+        "welcome-text": "Codez votre base de données professionnelles selon un système de classification normalisé. Procode est un outil qui soutient votre travail en utilisant des algorithmes d'apprentissage machine avancés basés sur un large ensemble de données de codages antérieurs",
         "register": "Nouveau utilisateur",
         "title": "Connexion",
         "username": "Nom d'utilisateur",
@@ -48,14 +48,14 @@
     },
 
     "header": {
-        "search-placeholder": "Code or transcode an uploaded file",
+        "search-placeholder": "Codage/transcodage de fichier",
         "security": "Sécurité",
         "language": "Langue",
         "logout": "Déconnexion"
     },
 
     "file-upload": {
-        "upload-file-btn": "Télécharger un fichier",
+        "upload-file-btn": "Téléchargement de fichier",
         "title": "Téléchargement d'un nouveau fichier",
         "name": "Nom de fichier",
         "lng": "Langue",
@@ -75,6 +75,8 @@
         "help-text": "Trouver un code/titre pour le nomenclature sélectionné qui correspond à la déscription entrée et le niveau sélectioné. Le niveua souvant (pas toujours) correspond au nombre de chiffres du code de nomenclature.",
         "page-title": "Codage",
         "button-title": "Lancer codage",
+        "feedback-text": "Le code/titre obtenu est-il correct ?",
+        "feedback-alert-info": "Vos commentaires seront utilisés pour améliorer la puissance de prédiction du logiciel",
         "results": {
             "dont-agree": "Le(s) résultat(s) n'est (ne sont) pas correct(s)",
             "send-feedback-btn": "Envoyer",
@@ -83,7 +85,8 @@
             "feedback-sent-msg": "Merci pour votre réponse",
             "feedback-info": "Le champ ci-dessous contien tous codes/titres qui correspondent au nomenclature. Merci de sélectionner quel entre eux décrit le mieux les critères entrées.",
             "feedback-text": "Afin d'améliorer Procode, merci de choisir le résultat qui est plus correct. Si aucun résultat est correct, choisissez la dernière option est appuyez sur 'envoyer'.",
-            "error-no-lang": "La langue sélectionnée n'est pas disponible pour ce nomenclature"
+            "error-no-lang": "La langue sélectionnée n'est pas disponible pour ce nomenclature",
+            "no-result-alert": "Procode n'a pas fourni de résultats. Dans le formulaire ci-dessus, autoriser l'utilisation de l'algorithme alternatif ou vérifier l'orthographe des critères saisis."
         },
         "search": {
             "input-placeholder": "Déscription",
@@ -91,7 +94,9 @@
             "alert-select-scheme": "Niveau indisponible si aucune nomenclature sélectionnée",
             "scheme-placeholder": "Sélectionner une nomenclature",
             "scheme": "Nomenclature:",
-            "text": "Entrée"
+            "text": "Saisie de texte",
+            "dict": "Exécutez (si nécessaire) l'algorithme alternatif du Procode",
+            "dict-tooltip": "Cet alorithme est utilisé lorsque l'apprentissage machine ne parvient pas à fournir le code/titre. L'algorithme explore les synonymes et les définitions des critères entrés. Attention : cela peut prendre plus de temps."
         },
         "file": {
             "modal-title": "Codage/Transcodage de fichier",
@@ -99,7 +104,9 @@
             "transcoding": "Transcodage",
             "variables": "Variable",
             "variable-help": "Le fichier sélectionné pour codage peut contenir plusieur collones. Choisissez la collone qui contient les données pour codage/transcodage.",
-            "modal-ok-text": "Lancer"
+            "modal-ok-text": "Lancer",
+            "dict": "Exécution d'un algorithme alternatif",
+            "scheme-tree-label": "Veuillez préciser la bonne réponse :"
         }
     },
 

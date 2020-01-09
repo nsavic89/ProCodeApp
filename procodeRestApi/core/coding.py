@@ -6,7 +6,7 @@
 from .models import Data, Classification
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import ComplementNB
-from .tokenization import get_tokens
+from .tokenization import get_tokens, get_definitions
 from django.core.cache import cache
 import json, datetime
 
@@ -46,6 +46,27 @@ def run_cnb(text, lng, level, scheme):
     # assign '-' as code for those with prop == 0
     for i in range(0, len(diff)):
         if diff[i] == 0:
-            output[i] = '-'
+            output[i] = "-"
     
     return output
+
+
+def run_dict(text, lng, level, scheme):
+    """ if run_cnb fails to provide codes
+    we can try to generate synonyms for the list of words
+    and re-run CNB with new texts
+
+    input: list of texts | output: new text """
+    definitions = []
+
+    for txt in text:
+        tokens = get_tokens(txt, lng, do_stem=False, do_join=False)
+
+        tokens_def = ""
+        for token in tokens:
+            tokens_def = tokens_def + get_definitions(token, lng) + " "
+
+        definitions.append(tokens_def)
+        
+    res = run_cnb(definitions, "en", level, scheme)
+    return res

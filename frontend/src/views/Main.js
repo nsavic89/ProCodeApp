@@ -29,8 +29,7 @@ function Main() {
         },
         content: {
             background: "white",
-            minHeight: 500,
-            height: "88vh",
+            minHeight: 850,
             overflow: "auto",
             padding: 24
         },
