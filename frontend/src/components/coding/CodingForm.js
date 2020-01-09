@@ -56,6 +56,7 @@ function CodingForm(props) {
     const context = useContext(UserDataContext);
     const { t, i18n } = useTranslation();
     const { getFieldDecorator } = props.form;
+    const { getFieldValue } = props.form;
     const [ state, setState ] = useState({});
 
     const lng = i18n.language;
@@ -219,20 +220,24 @@ function CodingForm(props) {
                     ) }
                 </Form.Item>
 
-                <Form.Item
-                    {...formItemTailedLayout}
-                    labelAlign="left"
-                >
-                    { getFieldDecorator("dict", {
-                        initialValue: false
-                    })(
-                        <Checkbox>
-                            <Tooltip title={t('coding.search.dict-tooltip')}>
-                                <Icon type="question-circle" />
-                            </Tooltip> {t('coding.search.dict')}
-                        </Checkbox>
-                    ) }
-                </Form.Item>
+                {
+                    getFieldValue('lng') === "en" ?
+                        <Form.Item
+                            {...formItemTailedLayout}
+                            labelAlign="left"
+                        >
+                            { getFieldDecorator("dict", {
+                                initialValue: false
+                            })(
+                                <Checkbox>
+                                    <Tooltip title={t('coding.search.dict-tooltip')}>
+                                        <Icon type="question-circle" />
+                                    </Tooltip> {t('coding.search.dict')}
+                                </Checkbox>
+                            ) }
+                        </Form.Item>
+                        : <div />
+                }
 
                 <Form.Item
                         wrapperCol={{md: {offset: 4}}}

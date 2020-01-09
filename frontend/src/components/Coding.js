@@ -32,6 +32,10 @@ function Coding() {
             running: true
         })
 
+        if (!values.dict) {
+            values.dict = false;
+        }
+
         axios.post(
             `${process.env.REACT_APP_API_URL}/my-coding/`,
             values,
@@ -44,7 +48,10 @@ function Coding() {
                 if (res.status === 204) {
                     setState({
                         ...state,
-                        noLangAlert: true
+                        noLangAlert: true,
+                        results: null,
+                        feedbackSent: false,
+                        feedbackVisible: false
                     })
                 } else {
                     setState({
@@ -135,6 +142,9 @@ function Coding() {
                 : <CodingResults
                     results={ state.results }
                     scheme={ state.values.scheme }
+                    titleLabel={ 
+                        state.values.lng === 'en' ? 
+                        'title' : `title_${state.values.lng}`}
                 />
             }
 

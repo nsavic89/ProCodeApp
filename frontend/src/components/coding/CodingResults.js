@@ -36,7 +36,7 @@ function CodingResults(props) {
                     <Tag color="#52c41a">
                         { code }
                     </Tag> <span>
-                        { clsfList.find(o => o.code === code).title_fr }
+                        { clsfList.find(o => o.code === code)[props.titleLabel] }
                     </span>
                 </div>
             </Col>

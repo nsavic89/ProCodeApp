@@ -209,31 +209,10 @@ function CodingResults(props) {
     // url for download of excel file   
     const url = `${process.env.REACT_APP_API_URL}/download-coding/${fileID}/`;
 
-    return(
-        <div>
-            <h2>
-                { t('files.results.page-title') }
-            </h2>
-
-            <div style={styling.action}>
-                <button
-                    className="success-btn"
-                    style={styling.downloadBtn}
-                    onClick={() => window.open(url)}
-                >
-                    <Icon type="download"/> {t('general.download')}
-                </button>
-            </div>
-
-            <Table
-                style={styling.table}
-                columns={columns}
-                dataSource={dataSource}
-            />
-
-            {/* modal for editing of my codings */}
-            {
-                state.myCoding !== null ?
+    let modal = <div />;
+    if (state.myCoding !== null) {
+        if (state.myCoding.output.length === 0) {
+            modal = (
                 <Modal
                     visible={state.visible}
                     onCancel={() => setState({ visible: false, myCoding: null })}
@@ -246,20 +225,54 @@ function CodingResults(props) {
                         </strong>
                     </div>
                     <br />
-                    <div style={styling.resultsHeader}>
-                        { t('files.results.modal-obtained-results') }:
-                    </div>
 
-                    <Tag color="#52c41a">
-                        { state.myCoding.output[0].code }
-                    </Tag> <span 
-                                style={styling.title}
-                            >{
-                                state.myCoding.lng === 'en' ? 
-                                state.myCoding.output[0].title 
-                                : state.myCoding.output[0][`title_${state.myCoding.lng}`]
-                            }
-                            </span>
+                    {/* tree if schemeTreeVisible */}
+                    <div style={styling.schemeTreeLabel}>
+                        { t('coding.file.scheme-tree-label') }
+                    </div>
+                    
+                    <SchemeTree
+                        titleLabel={state.myCoding.lng === "en" ? "title" : `title_${state.myCoding.lng}`}
+                        scheme={state.myCoding.scheme}
+                        onChange={value => setState({...state, correctedCode: value})}
+                    />
+                </Modal>
+            )
+        } else {
+            modal = (
+                <Modal
+                    visible={state.visible}
+                    onCancel={() => setState({ visible: false, myCoding: null })}
+                    title={t('files.results.modal-title')}
+                    onOk={() => handleSubmit(state.correctedCode)}
+                >
+                    <div>
+                        {t('files.results.column-input')}: <strong>
+                            { state.myCoding.text }
+                        </strong>
+                    </div>
+                    <br />
+                    
+                    {/* if result is not '-' */}
+                    {
+                        state.myCoding.output[0].code !== '-' ?
+                        <div>
+                            <div style={styling.resultsHeader}>
+                                { t('files.results.modal-obtained-results') }:
+                            </div>
+
+                            <Tag color="#52c41a">
+                                { state.myCoding.output[0].code }
+                            </Tag> <span 
+                                        style={styling.title}
+                                    >{
+                                        state.myCoding.lng === 'en' ? 
+                                        state.myCoding.output[0].title 
+                                        : state.myCoding.output[0][`title_${state.myCoding.lng}`]
+                                    }
+                                </span>
+                        </div> :<div />
+                    }
                     
                     {/* feedback */}
                     <Feedback
@@ -284,8 +297,35 @@ function CodingResults(props) {
                                 />
                             </div> : <div />
                     }
-                </Modal> : <div />
-            }
+                </Modal>
+            )
+        }
+    }
+
+    return(
+        <div>
+            <h2>
+                { t('files.results.page-title') }
+            </h2>
+
+            <div style={styling.action}>
+                <button
+                    className="success-btn"
+                    style={styling.downloadBtn}
+                    onClick={() => window.open(url)}
+                >
+                    <Icon type="download"/> {t('general.download')}
+                </button>
+            </div>
+
+            <Table
+                style={styling.table}
+                columns={columns}
+                dataSource={dataSource}
+            />
+
+            {/* modal for editing of my codings */}
+            { modal }
         </div>
     )
 }
