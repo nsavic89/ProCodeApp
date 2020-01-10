@@ -12,7 +12,7 @@ import LogoUnisante from '../media/logo_unisante.png';
 
 const styling = {
     wrapper: {
-        background: "#f5f5f5" ,
+        background: "white" ,
         height: "100vh",
         textAlign: "center",
         color: "#333",

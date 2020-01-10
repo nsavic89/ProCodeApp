@@ -14,6 +14,9 @@ import { UserDataContext } from '../contexts/UserDataContext';
 const styling = {
     codingForm: {
         marginTop: 50
+    },
+    noResultAlert: {
+        marginTop: 5
     }
 }
 
@@ -193,8 +196,8 @@ function Coding() {
             {/* algorithm 2 -> if None is result */}
             {
                 state.noResultAlert ?
-                <Row>
-                    <Col md={{ offset: 4 }}>
+                <Row style={styling.noResultAlert}>
+                    <Col md={{ offset: 4, span: 16 }}>
                         <Alert
                             type="warning"
                             showIcon

@@ -77,10 +77,10 @@ def get_definitions(text, lng):
         'it': 'ita'
     }
 
-    syn = wn.synsets(text, lang=lang_dict[lng])
+    syns = wn.synsets(text, lang=lang_dict[lng])
 
-    if len(syn) == 0:
+    if len(syns) == 0:
         return ""
     
-    syn = syn[0]
-    return syn.definition()
+    syns = [syn.definition() for syn in syns]
+    return ' '.join(syns)

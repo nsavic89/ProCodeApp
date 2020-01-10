@@ -19,6 +19,10 @@ def run_cnb(text, lng, level, scheme):
 
     # data load
     data = Data.objects.filter(scheme=scheme, lng=lng, level=level)
+    if len(data) == 0:
+        output = ['-' for txt in text]
+        return output
+
     codes = [d.code_str for d in data]
     titles = [d.tokens for d in data]
 

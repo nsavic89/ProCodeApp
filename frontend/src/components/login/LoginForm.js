@@ -98,7 +98,7 @@ function LoginForm(props) {
                 style={styling.submit}
                 onClick={handleLogin}
             >
-                {t('general.submit')}
+                {t('login.login')}
             </Button>
         </Form>
     )
