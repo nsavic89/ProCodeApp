@@ -155,7 +155,7 @@ function CodingForm(props) {
                             { context.schemes.map(
                                 item => (
                                     <Select.Option value={item.id} key={item.id}>
-                                        { item.name }
+                                        { item.name } { item.year ? `(${ item.year })` : '' }
                                     </Select.Option>)
                             ) }
                         </Select>

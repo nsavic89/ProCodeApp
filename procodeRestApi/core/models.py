@@ -67,9 +67,34 @@ class Classification(models.Model):
 
         return '{}: {}'.format(self.code, self.title_ge)
 
+
+class TranslationFile(models.Model):
+    # translation file lists scheme pairs
+    # between which translation rules are defined
+    starting_scheme = models.ForeignKey(
+        Scheme,
+        related_name="starting_scheme",
+        on_delete=models.CASCADE
+    )
+    end_scheme = models.ForeignKey(
+        Scheme,
+        related_name="end_scheme",
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return '{} -> {}'.format(
+            self.starting_scheme.name,
+            self.end_scheme.name
+        )
+
 class Translation(models.Model):
     # translation between two classification entries
     # e.g. between ISCO and NOC
+    translation_file = models.ForeignKey(
+        TranslationFile,
+        on_delete=models.CASCADE
+    )
     starting = models.ForeignKey(
             Classification,
             related_name="starting",

@@ -51,6 +51,9 @@ class DataUploadSerializer(serializers.Serializer):
 # Translation upload
 class TranslationUploadSerializer(serializers.Serializer):
     excel = serializers.FileField(label="MS Excel file")
+    translation_file = serializers.PrimaryKeyRelatedField(
+            queryset=TranslationFile.objects.all()
+        )
     starting_scheme_id = serializers.PrimaryKeyRelatedField(
             queryset=Scheme.objects.all()
         )
@@ -95,7 +98,10 @@ class SchemeOnlySerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 
-
+class TranslationFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TranslationFile
+        fields = '__all__'
 
 class TranslationSerializer(serializers.ModelSerializer):
     class Meta:

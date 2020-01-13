@@ -170,7 +170,7 @@ function Transcoding(props) {
                                 context.schemes.map(
                                     item => (
                                         <Select.Option key={item.id} value={item.id}>
-                                            { item.name }
+                                            { item.name } { item.year ? `(${ item.year })` : '' }
                                         </Select.Option>
                                     )
                                 )
@@ -228,7 +228,7 @@ function Transcoding(props) {
                                 context.schemes.map(
                                     item => (
                                         <Select.Option key={item.id} value={item.id}>
-                                            { item.name }
+                                            { item.name } { item.year ? `(${ item.year })` : '' }
                                         </Select.Option>
                                     )
                                 )

@@ -276,7 +276,7 @@ class TranslationUploadView(UploadView):
     serializer_class = TranslationUploadSerializer
     model_serializer = TranslationSerializer
     run_read_excel = False
-    parent = None
+    parent = 'translation_file'
 
     def post(self, request):
         self.excel = request.data['excel']
@@ -291,7 +291,7 @@ class TranslationUploadView(UploadView):
                 starting_cls = Classification.objects.get(
                         scheme=starting_scheme_id,
                         code=e['starting']
-                    ).id 
+                    ).id                 
 
                 output_cls = []
                 output_list = e['output'].split(",")
@@ -305,16 +305,20 @@ class TranslationUploadView(UploadView):
                         output_cls.append(out)
                     except:
                         continue
-                    
-                new_data_list.append(
-                    {
-                        "starting": starting_cls,
-                        "output": output_cls
-                    }
-                )
+
+                if len( [0 for e in new_data_list if e['starting'] == starting_cls] ) == 0:
+                    if len(output_cls) != 0:
+                        new_data_list.append(
+                            {
+                                "starting": starting_cls,
+                                "output": output_cls
+                            }
+                        )
+
             except:
                 continue
-            
+        
+        print( len(new_data_list) )
         self.data_list = new_data_list
         return super().post(request)
 
@@ -389,6 +393,10 @@ class SchemeOnlyViewSet(viewsets.ModelViewSet):
 class ClassificationViewSet(viewsets.ModelViewSet):
     queryset = Classification.objects.all()
     serializer_class = ClassificationSerializer
+
+class TranslationFileViewSet(viewsets.ModelViewSet):
+    queryset = TranslationFile.objects.all()
+    serializer_class = TranslationFileSerializer
 
 class TranslationViewSet(viewsets.ModelViewSet):
     queryset = Translation.objects.all()
@@ -578,8 +586,24 @@ class MyTranscodingViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         my_file = None
+
+        starting_scheme_id = request.data['scheme']
+        starting_scheme = Scheme.objects.get(pk=starting_scheme_id)
+
         end_scheme_id = request.data['end_scheme']
         end_scheme = Scheme.objects.get(pk=end_scheme_id)
+
+        # check if translation between the two exists
+        try:
+            trans_file = TranslationFile.objects.get(
+                starting_scheme=starting_scheme_id,
+                end_scheme=end_scheme_id
+            )
+            translations = Translation.objects.filter(
+                translation_file=trans_file.id
+            )
+        except:
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
         # starting codes
         starting = []
@@ -607,14 +631,13 @@ class MyTranscodingViewSet(viewsets.ModelViewSet):
                     code=code,
                     scheme=request.data['scheme']
                 )
-                output = Translation.objects.get(starting=starting_id).output.all()
+                output = translations.get(starting=starting_id).output.all()
                 my_transcoding = MyTranscoding(
                     my_file=my_file,
                     starting=starting_id,
                     end_scheme=end_scheme,
                     user=request.user
                 )
-
                 # for files -> if the coding to the same scheme already performed
                 # we need to delete them to avoid duplications
                 existing = MyTranscoding.objects.filter(
@@ -625,13 +648,12 @@ class MyTranscodingViewSet(viewsets.ModelViewSet):
                 )
                 for e in existing:
                     e.delete()
-
                 my_transcoding.save()
-
                 for out in output:
                     my_transcoding.output.add(out)
             except:
                 continue
+         
             
         if request.data['my_file'] == '':
             # if transcoding failed
