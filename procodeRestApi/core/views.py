@@ -304,14 +304,11 @@ class TranslationUploadView(UploadView):
         for i in range(0, len(self.data_list)):
             try:
                 # first get id of starting code in starting scheme
-                print("starting code: {}".format(self.data_list[i]['starting']))
-
                 starting_id = Classification.objects.get(
                                 scheme=starting_scheme_id,
                                 code=self.data_list[i]['starting'],
                                 level=self.data_list[i]['level_starting']
                             ).id
-                print(starting_id)
 
                 # now we check if new_data_list already contains this id
                 # if so, we treat it as 1 -> N translation
@@ -329,7 +326,7 @@ class TranslationUploadView(UploadView):
                     new_data_list.append({ "starting": starting_id, "output": [output_id] })
                 else:
                     trans = new_data_list[ind]
-                    trans['output'] = trans['output'].append(output_id)
+                    trans['output'].append(output_id)
                     new_data_list[ind] = trans
 
             except:
