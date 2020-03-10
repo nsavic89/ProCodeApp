@@ -278,47 +278,63 @@ class TranslationUploadView(UploadView):
     run_read_excel = False
     parent = 'translation_file'
 
+    def get_index(self, data, id):
+        """
+            used for 1 -> N translations
+            checks whether id is already contained in data
+            if so, returns its index nr. -> used later to 
+            know where to append another output (translation code)
+        """
+        filtered = [ d for d in data if d['starting'] == id]
+        if len(filtered) == 0: return None
+
+        e = filtered[0]
+        ind = data.index(e)
+        return ind
+
+
     def post(self, request):
         self.excel = request.data['excel']
         self.read_excel()
 
         starting_scheme_id = self.request.data['starting_scheme_id']
         output_scheme_id = self.request.data['output_scheme_id']
-
         new_data_list = []
-        for e in self.data_list:
+
+        for i in range(0, len(self.data_list)):
             try:
-                starting_cls = Classification.objects.get(
-                        scheme=starting_scheme_id,
-                        code=e['starting']
-                    ).id                 
+                # first get id of starting code in starting scheme
+                print("starting code: {}".format(self.data_list[i]['starting']))
 
-                output_cls = []
-                output_list = e['output'].split(",")
-                
-                for out in output_list:
-                    try:
-                        out = Classification.objects.get(
-                            scheme=output_scheme_id,
-                            code=out
-                        ).id
-                        output_cls.append(out)
-                    except:
-                        continue
+                starting_id = Classification.objects.get(
+                                scheme=starting_scheme_id,
+                                code=self.data_list[i]['starting'],
+                                level=self.data_list[i]['level_starting']
+                            ).id
+                print(starting_id)
 
-                if len( [0 for e in new_data_list if e['starting'] == starting_cls] ) == 0:
-                    if len(output_cls) != 0:
-                        new_data_list.append(
-                            {
-                                "starting": starting_cls,
-                                "output": output_cls
-                            }
-                        )
+                # now we check if new_data_list already contains this id
+                # if so, we treat it as 1 -> N translation
+                # in other words we must append the corresponding output 
+                # to the same starting code in new_data_list
+                ind = self.get_index(new_data_list, starting_id)
+
+                output_id = Classification.objects.get(
+                                scheme=output_scheme_id,
+                                code=self.data_list[i]['output'],
+                                level=self.data_list[i]['level_output']
+                            ).id
+
+                if ind is None:
+                    new_data_list.append({ "starting": starting_id, "output": [output_id] })
+                else:
+                    trans = new_data_list[ind]
+                    trans['output'] = trans['output'].append(output_id)
+                    new_data_list[ind] = trans
 
             except:
                 continue
-        
-        print( len(new_data_list) )
+
         self.data_list = new_data_list
         return super().post(request)
 
