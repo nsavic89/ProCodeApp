@@ -21,7 +21,7 @@ class Scheme(models.Model):
         verbose_name="Description (optional)")  
 
     def __str__(self):
-        return self.name
+        return self.name + " " + self.year
 
 class Classification(models.Model):
     # one classification entry for Scheme
@@ -84,8 +84,8 @@ class TranslationFile(models.Model):
 
     def __str__(self):
         return '{} -> {}'.format(
-            self.starting_scheme.name,
-            self.end_scheme.name
+            self.starting_scheme.name + " " + self.starting_scheme.year,
+            self.end_scheme.name + " " + self.end_scheme.year
         )
 
 class Translation(models.Model):

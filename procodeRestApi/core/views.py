@@ -372,7 +372,8 @@ class SchemeAsData(APIView):
                 # create next iteration
                 next_clsf = Classification.objects.get(
                     scheme=scheme,
-                    code=next_clsf.parent
+                    code=next_clsf.parent,
+                    level=int(next_clsf.level)-1
                 )
                 isRoot = next_clsf.parent == 'root'
 

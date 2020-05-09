@@ -1,0 +1,158 @@
+{
+    "general": {
+        "help": "Aiuto",
+        "submit": "Invia",
+        "cancel": "Cancella",
+        "close": "Chiudi",
+        "language": "Lingua",
+        "created-date": "Creato",
+        "add-new-btn": "Nuova immissione",
+        "download": "Scarica",
+        "delete": "Annulla"
+    },
+
+    "messages": {
+        "field-obligatory": "Questo campo non può essere vuoto",
+        "request-failed": "Connessione fallita",
+        "request-success": "Aggiunto con successo",
+        "request-success-update": "Aggiornato con successo",
+        "data-deleted": "Dati cancellati",
+        "are-you-sure": "Sei sicuro?",
+        "no": "No",
+        "yes": "Sì",
+        "no-data-alert": "Niente da mostrare. Non avete dati che corrispondano allo scopo di questa pagina.",
+        "invalid-email": "E-mail non valida"
+    },
+
+    "login": {
+        "login": "Accedi",
+        "welcome-text": "Codificate il vostro database professionale secondo uno schema di classificazione standardizzato. Procode è uno strumento che aiuta il vostro lavoro utilizzando algoritmi avanzati di machine learning basati su un ampio dataset di codifiche precedenti",
+        "register": "Nuovo utente",
+        "title": "Pagina di accesso",
+        "username": "Nome utente",
+        "password": "Password",
+        "message-login-failed": "Fallito! Controlla il nome utente e/o la password",
+        "sign-up": {
+            "title": "Nuovo utente",
+            "email": "Email",
+            "password": "Password",
+            "password2": "Ripeti password",
+            "message-success": "Registrato con successo"
+        }
+    },
+
+    "langs": {
+        "en": "Inglese",
+        "ge": "Tedesco",
+        "fr": "Francese",
+        "it": "Italiano"
+    },
+
+    "header": {
+        "search-placeholder": "Codifica o transcodifica un file caricato",
+        "security": "Sicurezza",
+        "language": "Lingua",
+        "logout": "Logout"
+    },
+
+    "file-upload": {
+        "upload-file-btn": "Carica file",
+        "title": "Caricamento di nuovi file",
+        "name": "Nome del file",
+        "lng": "Lingua",
+        "dscr": "Descrizione",
+        "file": "MS Excel (.xlsx)"
+    },
+
+    
+    "sider": {
+        "coding": "Codifica",
+        "transcoding": "Transcodifica",
+        "my-files": "I miei file",
+        "history": "Storia"
+    },
+
+    "coding": {
+        "help-text": "Trova un codice di classificazione per lo schema di classificazione selezionato, i dati inseriti e il livello di codifica selezionato. Di solito (non sempre!) il livello di codifica corrisponde al numero di cifre del codice di classificazione.",
+        "page-title": "Codificazione",
+        "button-title": "Esegui codifica",
+        "feedback-text": "Il codice/titolo ottenuto è corretto?",
+        "feedback-alert-info": "Il vostro feedback sarà utilizzato per migliorare le capacità di predizione del software",
+        "results": {
+            "feedback-modal-title": "Selezione del codice/titolo giusto",
+            "no-response-msg": "Si prega di specificare il risultato corretto",
+            "feedback-sent-msg": "Grazie per il vostro feedback",
+            "feedback-info": "Il campo sottostante elenca tutti i codici/titoli per il corrispondente schema di classificazione. Si prega di specificare quale di essi descrive meglio i dati inseriti (ricercati)",
+            "error-no-lang": "La lingua selezionata non è supportata per questo schema di classificazione.",
+            "no-result-alert": "Procode non ha fornito risultati. Nel campo indicato sopra, consentire l'uso dell'algoritmo alternativo o controllare l'ortografia dei criteri inseriti."
+        },
+        "search": {
+            "input-placeholder": "Descrizione del testo",
+            "level": "Livello",
+            "alert-select-scheme": "Livello non disponibile prima della selezione dello schema di classificazione",
+            "scheme-placeholder": "Si prega di selezionare",
+            "scheme": "Classificazione:",
+            "text": "Input",
+            "dict": "Eseguire (se richiesto) l'algoritmo alternativo di Procode",
+            "dict-tooltip": "Questo algoritmo viene utilizzato quando IL machine learning non riesce a fornire un codice/titolo.L'algoritmo esplora i sinonimi e le definizioni dei criteri inseriti. Attenzione: questo può richiedere più tempo."
+        },
+        "file": {
+            "modal-title": "Codifica/transcodifica dei file",
+            "coding": "Codifica",
+            "transcoding": "Transcodifica",
+            "variables": "Variabile",
+            "variable-help": "Il file selezionato per la codifica può aver incluso più colonne. Selezionare quella contenente i dati per la codifica/trascodifica",
+            "modal-ok-text": "Esegui",
+            "dict": "Esegui l'algoritmo alternativo",
+            "scheme-tree-label": "Si prega di specificare la risposta corretta:"
+        }
+    },
+
+
+    "files": {
+        "page-title" : "I miei file",
+        "no-data-tag": "Il file è vuoto ",
+        "file-size": "Dimensione del file:",
+        "no-dscr": "Nessuna descrizione",
+        "modal-editing-title": "Modifica l'inserimento dei dati",
+        "results": {
+            "page-title": "Risultati della codifica",
+            "page-title-trans": "Risultati della transcodifica",
+            "column-input": "Testo di input",
+            "column-code": "Codice",
+            "column-title": "Titolo",
+            "column-scheme": "Schema di classificazione",
+            "column-edit": "Modifica risultato",
+            "modal-title": "Migliorare i risultati previsti",
+            "modal-obtained-results": "Codice/titolo previsto"
+        }
+    },
+
+    "transcoding": {
+        "page-title": "Transcodifica",
+        "help-text": "La transcodifica o la traduzione tra diversi schemi di classificazione viene eseguita su questa pagina. Basta selezionare lo schema di partenza, il codice/titolo desiderato per la transcodifica e uno schema di destinazione. I risultati appariranno immediatamente sotto i campi.",
+        "starting-scheme": "Transcodificare da",
+        "classification": "Codice/titolo",
+        "button-title": "Eseguire transcodifica",
+        "end-scheme": "Transcodificare in",
+        "error": {
+            "no-content-204": "Procode non è riuscito a transcodificare il codice di input selezionato nello schema di destinazione. QUESTO è probabilmente dovuto alla mancanza di una regola di transcodifica tra i due schemi di classificazione."
+        }
+    },
+
+
+    "history": {
+        "page-title": "Storia",
+        "file": "Nome del file",
+        "coded-in": "Codificato in",
+        "transcoded-in": "Transcodificato in"
+    },
+
+    "security": {
+        "title": "Cambia password",
+        "old-pw": "Vecchia password",
+        "new-pw": "Nuova password",
+        "new-pw2": "Nuova password (conferma)",
+        "success": "Password aggiornata"
+    }
+}
