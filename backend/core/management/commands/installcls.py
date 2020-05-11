@@ -5,7 +5,7 @@ from core.serializers import CodeSerializer
 import os, xlrd
 
 class Command(BaseCommand):
-    help = "This is help text"
+    help = "Installs classification placed in DATA/CLASSIFICATION"
 
     def add_arguments(self, parser):
         parser.add_argument('my_file', type=str)
