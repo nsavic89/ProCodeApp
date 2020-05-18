@@ -1,12 +1,14 @@
 from django.shortcuts import render, HttpResponse
 from rest_framework import viewsets
+from rest_framework.views import APIView
 from .models import (
     Classification,
     Code,
     TrainingDataFile,
     TrainingData,
     CrosswalkFile,
-    Crosswalk
+    Crosswalk,
+    SpellCorrection
 )
 from .serializers import (
     ClassificationSerializer,
@@ -14,7 +16,8 @@ from .serializers import (
     TrainingDataFileSerializer,
     TrainingDataSerializer,
     CrosswalkFileSerializer,
-    CrosswalkSerializer
+    CrosswalkSerializer,
+    SpellCorrectionSerializer
 )
 
 
@@ -43,3 +46,14 @@ class CrosswalkFileViewSet(viewsets.ModelViewSet):
 class CrosswalkViewSet(viewsets.ModelViewSet):
     queryset = Crosswalk.objects.all()
     serializer_class = CrosswalkSerializer
+
+class SpellCorrectionViewSet(viewsets.ModelViewSet):
+    queryset = SpellCorrection.objects.all()
+    serializer_class = SpellCorrectionSerializer
+
+# Coding view 
+# list of inputs (texts) coded using training data
+# returns codes 
+class CodingView(APIView):
+    def post(self, request):
+        pass

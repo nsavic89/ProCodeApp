@@ -27,17 +27,34 @@ class Code(models.Model):
 # if deleted, all underlying TrainingData are deleted
 class TrainingDataFile(models.Model):
     classification = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
     language = models.CharField(max_length=10)
+    date = models.DateField(auto_now_add=True)
     size = models.CharField(max_length=50)
+    info = models.CharField(max_length=255, blank=True)
 
 class TrainingData(models.Model):
     parent = models.ForeignKey(TrainingDataFile, on_delete=models.CASCADE)
     code = models.CharField(max_length=25)
+    level = models.IntegerField()
     text = models.CharField(max_length=255)
-    text_en = models.CharField(max_length=255, blank=True)
-    tokens = models.CharField(max_length=255)
-    tokens_en = models.CharField(max_length=255, blank=True)
 
+# determines which Training_Data_Files will be loaded
+# for a given classification scheme
+class CodingRules(models.Model):
+    classification = models.CharField(max_length=50)
+    input_lng = models.CharField(max_length=10)
+    td_file_lng = models.CharField(max_length=10)
+
+# Spell corrections defined by admin
+# sometimes pycheckspeller package results in misspelling
+# therefore we store every time the admin makes manual correction
+class SpellCorrection(models.Model):
+    language = models.CharField(max_length=2)
+    word = models.CharField(max_length=50)
+    correction = models.CharField(max_length=50)
+    # we must prevent two instances with same word and language
+    # this is defined in serializer. It includes a custom validation
 
 # CrosswalkFile contains only a list of transcoding rules between two classifications
 # For vice-versa, another file must be uploaded

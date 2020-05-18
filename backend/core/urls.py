@@ -6,7 +6,8 @@ from .views import (
     TrainingDataFileViewSet,
     TrainingDataViewSet,
     CrosswalkFileViewSet,
-    CrosswalkViewSet
+    CrosswalkViewSet,
+    SpellCorrectionViewSet
 )
 
 
@@ -17,6 +18,7 @@ router.register(r'training-data-file', TrainingDataFileViewSet)
 router.register(r'training-data', TrainingDataViewSet)
 router.register(r'crosswalk-file', CrosswalkFileViewSet)
 router.register(r'crosswalk', CrosswalkViewSet)
+router.register(r'spell-corrections', SpellCorrectionViewSet)
 
 
 urlpatterns = []
