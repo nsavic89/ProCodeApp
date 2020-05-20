@@ -8,7 +8,8 @@ from .models import (
     TrainingData,
     CrosswalkFile,
     Crosswalk,
-    SpellCorrection
+    SpellCorrection,
+    CodingRules
 )
 from .serializers import (
     ClassificationSerializer,
@@ -17,7 +18,8 @@ from .serializers import (
     TrainingDataSerializer,
     CrosswalkFileSerializer,
     CrosswalkSerializer,
-    SpellCorrectionSerializer
+    SpellCorrectionSerializer,
+    CodingRulesSerializer
 )
 
 
@@ -39,6 +41,10 @@ class TrainingDataViewSet(viewsets.ModelViewSet):
     queryset = TrainingData.objects.all()
     serializer_class = TrainingDataSerializer
 
+class CodingRulesViewSet(viewsets.ModelViewSet):
+    queryset = CodingRules.objects.all()
+    serializer_class = CodingRulesSerializer
+
 class CrosswalkFileViewSet(viewsets.ModelViewSet):
     queryset = CrosswalkFile.objects.all()
     serializer_class = CrosswalkFileSerializer
@@ -50,10 +56,3 @@ class CrosswalkViewSet(viewsets.ModelViewSet):
 class SpellCorrectionViewSet(viewsets.ModelViewSet):
     queryset = SpellCorrection.objects.all()
     serializer_class = SpellCorrectionSerializer
-
-# Coding view 
-# list of inputs (texts) coded using training data
-# returns codes 
-class CodingView(APIView):
-    def post(self, request):
-        pass

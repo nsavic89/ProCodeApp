@@ -7,7 +7,8 @@ from .views import (
     TrainingDataViewSet,
     CrosswalkFileViewSet,
     CrosswalkViewSet,
-    SpellCorrectionViewSet
+    SpellCorrectionViewSet,
+    CodingRulesViewSet
 )
 
 
@@ -16,6 +17,7 @@ router.register(r'classifications', ClassificationViewSet)
 router.register(r'codes', CodeViewSet)
 router.register(r'training-data-file', TrainingDataFileViewSet)
 router.register(r'training-data', TrainingDataViewSet)
+router.register(r'coding-rules', CodingRulesViewSet)
 router.register(r'crosswalk-file', CrosswalkFileViewSet)
 router.register(r'crosswalk', CrosswalkViewSet)
 router.register(r'spell-corrections', SpellCorrectionViewSet)

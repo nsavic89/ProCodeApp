@@ -69,4 +69,4 @@ class Crosswalk(models.Model):
     parent = models.ForeignKey(CrosswalkFile, on_delete=models.CASCADE)
     code_1 = models.CharField(max_length=25)
     code_2 = models.CharField(max_length=25)
-    recommended = models.IntegerField() # value from 1-100
+    prob = models.IntegerField() # value from 1-100

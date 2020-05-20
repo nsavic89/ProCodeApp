@@ -6,7 +6,8 @@ from .models import (
     TrainingData,
     CrosswalkFile,
     Crosswalk,
-    SpellCorrection
+    SpellCorrection,
+    CodingRules
 )
 
 
@@ -28,6 +29,11 @@ class TrainingDataFileSerializer(serializers.ModelSerializer):
 class TrainingDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = TrainingData
+        fields = '__all__'
+
+class CodingRulesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CodingRules
         fields = '__all__'
 
 class CrosswalkFileSerializer(serializers.ModelSerializer):
