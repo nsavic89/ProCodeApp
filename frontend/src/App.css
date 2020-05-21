@@ -1,0 +1,8 @@
+.my-sider {
+    height: 100vh;
+    min-height: 600px;
+}
+
+.my-content {
+    padding: 25px;
+}

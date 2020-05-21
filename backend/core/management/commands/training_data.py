@@ -413,7 +413,6 @@ class Command(BaseCommand):
         del texts[0]
 
         codes = [str(int(c)) if type(c) is float else str(c) for c in codes]
-
         data = []
         
         #len(codes)

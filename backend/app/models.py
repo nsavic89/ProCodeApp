@@ -10,13 +10,13 @@ class MyFile(models.Model):
     language = models.CharField(max_length=10)
     date = models.DateField(auto_now_add=True)
     info = models.CharField(max_length=255, blank=True)
-    variables = models.CharField(max_length=255)
+    variables = models.CharField(max_length=255, blank='[]')
     classifications = models.CharField(max_length=255, blank="[]")
 
 class MyFileData(models.Model):
     parent = models.ForeignKey(MyFile, on_delete=models.CASCADE)
-    data = models.TextField() # json form var: value
-    codes = models.CharField(max_length=255, default="[]")
+    data = models.TextField(default="{}") # json form var: value
+    codes = models.CharField(max_length=255, default="{}")
 
 # collects user data
 # every feedback will be later added to the training data

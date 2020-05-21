@@ -41,10 +41,12 @@ class TrainingData(models.Model):
 
 # determines which Training_Data_Files will be loaded
 # for a given classification scheme
+# if requested level for coding > max_level -> no coding permitted
 class CodingRules(models.Model):
     classification = models.CharField(max_length=50)
     input_lng = models.CharField(max_length=10)
     td_file_lng = models.CharField(max_length=10)
+    max_level = models.IntegerField(default=1)
 
 # Spell corrections defined by admin
 # sometimes pycheckspeller package results in misspelling
