@@ -66,4 +66,3 @@ class Command(BaseCommand):
 
         TrainingData.objects.bulk_create(converted_data)
         return
-

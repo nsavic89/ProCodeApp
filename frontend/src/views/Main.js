@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Layout,
-    Button
+    Button,
+    Col,
+    Row
 } from 'antd';
 import { 
     GlobalOutlined,
@@ -10,11 +12,12 @@ import {
     LogoutOutlined,
     FireOutlined,
     RetweetOutlined,
-    FolderOpenOutlined,
-    PropertySafetyFilled
+    FolderOpenOutlined
 } from '@ant-design/icons';
 import Coding from '../components/Coding';
-
+import Recoding from '../components/Recoding';
+import MyFiles from '../components/MyFiles';
+import '../css/main.css';
 
 /*
     Main view 
@@ -24,7 +27,7 @@ import Coding from '../components/Coding';
     - files
 */
 export default function Main(props) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [view, setView] = useState('coding');
 
     const styling = {
@@ -44,7 +47,9 @@ export default function Main(props) {
     // based on the value of state.view
     // determines which component is rendered
     const currentView = {
-        'coding': <Coding />
+        'coding': <Coding />,
+        'recoding': <Recoding />,
+        'myFiles': <MyFiles />
     }
 
     return (
@@ -62,7 +67,7 @@ export default function Main(props) {
                         <FireOutlined 
                             style={{
                                 ...styling.siderIcon,
-                                color: view == 'coding' ? "#1890ff" : ""
+                                color: view === 'coding' ? "#1890ff" : ""
                             }}
                         />
                         <div>{ t('coding') }</div>
@@ -71,16 +76,16 @@ export default function Main(props) {
                         <RetweetOutlined 
                             style={{
                                 ...styling.siderIcon,
-                                color: view == 'recoding' ? "#1890ff" : ""
+                                color: view === 'recoding' ? "#1890ff" : ""
                             }}
                         />
                         <div>{ t('recoding') }</div>
                     </Button>
-                    <Button style={styling.siderButton} onClick={() => setView('myFile')}>
+                    <Button style={styling.siderButton} onClick={() => setView('myFiles')}>
                         <FolderOpenOutlined
                             style={{
                                 ...styling.siderIcon,
-                                color: view == 'myFile' ? "#1890ff" : ""
+                                color: view === 'myFiles' ? "#1890ff" : ""
                             }}/>
                         <div>{ t('my-files') }</div>
                     </Button>
@@ -88,18 +93,28 @@ export default function Main(props) {
             </Layout.Sider>
 
             <Layout>
-                <Layout.Header style={{ background: "white", textAlign: "right" }}>
-                    <div>
-                        <Button style={{ margin: 5, border: 0 }}>
-                            <GlobalOutlined /> { t('language') }
-                        </Button>
-                        <Button style={{ margin: 5, border: 0 }}>
-                            <LockOutlined /> { t('security') }
-                        </Button>
-                        <Button danger style={{ margin: 5 }}>
-                            <LogoutOutlined />{ t('logout') }
-                        </Button>
-                    </div>
+                <Layout.Header style={{ background: "white" }}>
+                    <Row>
+                        <Col sm={{span: 12}}>
+                            <GlobalOutlined />
+                            {['ge', 'fr', 'it', 'en'].map(item => (
+                                <Button
+                                    key={item}
+                                    style={{border: "none", fontSize: 16, marginLeft: 5 }}
+                                    onClick={() => i18n.changeLanguage(item)}
+                                >{ item }
+                                </Button>
+                            ))}
+                        </Col>
+                        <Col sm={{span: 12}} style={{ textAlign: "right" }}>
+                            <Button style={{ margin: 5, border: 0 }}>
+                                <LockOutlined /> { t('security') }
+                            </Button>
+                            <Button danger style={{ margin: 5 }}>
+                                <LogoutOutlined />{ t('logout') }
+                            </Button>
+                        </Col>
+                    </Row>
                 </Layout.Header>
 
                 <Layout>

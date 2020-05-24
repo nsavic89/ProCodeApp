@@ -78,6 +78,9 @@ class Command(BaseCommand):
         self.stdout.write('Classification full name:')
         classification['name'] = input()
 
+        self.stdout.write('Short name:')
+        classification['short'] = input()
+
         self.stdout.write('Classification year:')
         classification['year'] = input()
 

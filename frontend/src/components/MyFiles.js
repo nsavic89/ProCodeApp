@@ -1,0 +1,309 @@
+import React, { useContext, useEffect, useState } from 'react';
+import { 
+    Button,
+    Spin,
+    Drawer,
+    Input,
+    Form,
+    Radio,
+    Upload,
+    Card,
+    Row,
+    Col
+} from 'antd';
+import { useTranslation } from 'react-i18next';
+import {
+    UploadOutlined,
+    DeleteTwoTone,
+    RetweetOutlined,
+    SearchOutlined,
+    FireOutlined,
+    DownloadOutlined
+} from '@ant-design/icons';
+import { UserContext } from '../contexts/UserContext';
+import axios from 'axios';
+import FileTable from './FileTable';
+import CodingDrawer from './CodingDrawer';
+
+
+export default function MyFiles() {
+    const { t } = useTranslation();
+    const context = useContext(UserContext);
+    const [ state, setState ] = useState({
+        fileList: []
+    });
+
+    // headers loads jwt token from localStorage
+    const headers = {
+        Pragma: "no-cache",
+        Authorization: 'JWT ' + localStorage.getItem('token')
+    }
+
+    // styling
+    let styling = {...context.styling};
+    styling.formItemLayout.wrapperCol.lg = {span: 16};
+    styling.tailItemLayout.wrapperCol.lg = {span: 16, offset: 6};
+
+    useEffect(() => {
+        // on load check if my files are loaded in context
+        // if not -> we must send axios request to load them
+        if (context.state.myfiles) {
+            console.log("Files loaded");
+            setState({ loaded: true });
+            return;
+        }
+
+        console.log("Loading files ->");
+        setState({loading: true})
+        axios.get(
+            `${context.API}/app/my-files/`,
+            { headers: headers })
+        .then(res => {
+                context.fun.updateData('myfiles', res.data);
+                setState({loading: false, loaded: true})
+            })
+        .catch(e => {
+            if(e.response) {
+                setState({
+                        error: e.response.status,
+                        loading: false
+                    })
+                }
+            })
+    }, [])
+
+    // if loading then spinner
+    if (state.loading) {
+        return (
+            <div style={{ marginTop: 150, textAlign: "center" }}>
+                <Spin tip={t('my-files-view.loading-files-spin')} />
+            </div>
+        )
+    }
+
+    // if we are editing already existing file
+    // state must include editing === true
+    if (state.editing) {
+        return (
+            <FileTable
+                myfile={state.editing}
+                onClose={() => setState({...state, editing: false})}
+            />
+        )
+    }
+
+    // submit http request
+    const handleSubmit = values => {
+        let formData = new FormData();
+        formData.append('excel', values.excel.file, 'excel');
+        formData.append('name', values.name);
+        formData.append('info', values.info);
+        formData.append('language', values.language);
+        formData.append('user', 1);
+
+        axios.post(
+            `${context.API}/app/my-files/`,
+            formData,
+            { headers: {
+                'content-type': 'multipart/form-data',
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+            }}
+        ).then(
+            res => console.log(res.data)
+        ).catch(e => console.log(e))
+    }
+
+    // handle upload button
+    const handleFileUpload = file => {
+        let fileList = [...file.fileList];
+        fileList = fileList.slice(-1);
+        setState({...state, fileList: fileList});
+    }
+
+    // uploading form
+    const UploadForm = (
+        <Form onFinish={handleSubmit}>
+            <Form.Item
+                {...styling.formItemLayout}
+                name="name"
+                label={t('my-files-view.upload-form.name')}
+                rules={[
+                    {
+                        required: true,
+                        message: t('messages.form.required')
+                    }
+                ]}
+            >
+                <Input />
+            </Form.Item>
+
+            <Form.Item
+                {...styling.formItemLayout}
+                name="language"
+                label={t('language')}
+                rules={[
+                    {
+                        required: true,
+                        message: t('messages.form.required')
+                    }
+                ]}
+            >
+                <Radio.Group>
+                    <Radio.Button value="ge">
+                        { t('languages.german') }
+                    </Radio.Button>
+                    <Radio.Button value="fr">
+                        { t('languages.french') }
+                    </Radio.Button>
+                    <Radio.Button value="it">
+                        { t('languages.italian') }
+                    </Radio.Button>
+                    <Radio.Button value="en">
+                        { t('languages.english') }
+                    </Radio.Button>
+                </Radio.Group>
+            </Form.Item>
+
+            <Form.Item
+                {...styling.formItemLayout}
+                name="info"
+                label={t('my-files-view.upload-form.info')}
+            >
+                <Input.TextArea />
+            </Form.Item>
+
+            <Form.Item
+                {...styling.formItemLayout}
+                name="excel"
+                label={t('my-files-view.upload-form.excel')}
+                rules={[
+                    {
+                        required: true,
+                        message: t('messages.form.required')
+                    }
+                ]}
+            >
+                <Upload 
+                    beforeUpload={() => false}
+                    fileList={state.fileList}
+                    onChange={handleFileUpload}
+                >
+                    <Button>
+                        <UploadOutlined /> {t('my-files-view.upload')}
+                    </Button>
+                </Upload>
+            </Form.Item>
+
+            <Form.Item
+                {...styling.tailItemLayout}
+            >
+                <Button 
+                    htmlType="submit" type="primary" 
+                    style={{ width: "100%" }}
+                >
+                    {t('submit')}
+                </Button>
+            </Form.Item>
+        </Form>
+    )
+
+    const cardScaling = {
+        xs: { span: 24 },
+        sm: { span: 12 },
+        md: { span: 8 },
+        lg: { span: 6 }
+    }
+    let FilesList = "";
+    if (state.loaded) {
+        FilesList = (
+            <Row gutter={16}>
+                {context.data.myfiles.map(
+                    item => (
+                        <Col {...cardScaling} style={{ marginTop: 25 }} key={item.id}>
+                            <Card
+                                style={{
+                                    borderRadius: 5,
+                                    boxShadow: "3px 3px 6px 3px #d9d9d9"
+                                }}
+                                cover={<img src={require('../media/cloud.png')} alt="" />}
+                                actions={[
+                                    <DeleteTwoTone twoToneColor="#f5222d" key="del" />,
+                                    <FireOutlined
+                                        key="code"
+                                        onClick={() => setState({...state, coding: item.id})} 
+                                    />,
+                                    <RetweetOutlined key="recode" />,
+                                    <SearchOutlined 
+                                        key="open"
+                                        onClick={() => setState({...state, editing: item.id})} 
+                                    />,
+                                    <DownloadOutlined key="download" />
+                                ]}
+                            >
+                                <h3>{item.name}</h3>
+                                <div>
+                                    <i>{item.info}</i>
+                                </div>
+                            </Card>
+                        </Col>
+                    )
+                )}
+            </Row>
+        )
+    }
+
+    return (
+        <div>
+
+            <div style={{ 
+                borderBottom: "1px solid rgb(220,220,220)",
+                paddingBottom: 5
+            }}>
+                <span style={{ fontSize: 24, fontWeight: 500 }}>
+                    { t('my-files') }
+                </span>
+
+                <Button 
+                    type="primary" 
+                    danger
+                    style={{ float: "right" }}
+                    onClick={ () => setState({...state, drawer: true}) }
+                >
+                    <UploadOutlined /> { t('my-files-view.upload') }
+                </Button>
+            </div>
+
+            <div>
+                { FilesList }
+            </div>
+            
+            {/* upload new file */}
+            <Drawer
+                title={t('my-files-view.drawer-title')}
+                placement="right"
+                visible={state.drawer}
+                onClose={() => setState({...state, drawer: false})}
+                width={550}
+            >
+                { UploadForm }
+            </Drawer>
+
+            {/* coding drawer */}
+            <CodingDrawer 
+                visible={state.coding && state.coding !== false}
+                onClose={() => setState({...state, coding: false})}
+                myfile={state.coding}
+                onCodingFinish={
+                    () => {
+                        let myfile = state.coding;
+                        setState({
+                            ...state,
+                            editing: myfile,
+                            coding: false
+                        })
+                    }}
+            />
+        </div>
+    )
+}

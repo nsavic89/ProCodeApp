@@ -362,7 +362,6 @@ class Command(BaseCommand):
                         code=child_of.code,
                         level=child_of.level
                     )
-                    print(td_obj.code)
                     
                     data.append(td_obj)
                     next_code = child_of

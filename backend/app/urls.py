@@ -4,7 +4,9 @@ from .views import (
     FeedbackView,
     MyFileViewSet,
     MyFileDataViewSet,
-    TranscodingView
+    TranscodingView,
+    CodesByCls,
+    FileDataByFileID
 )
 from rest_framework.routers import DefaultRouter
 
@@ -17,5 +19,7 @@ router.register(r'my-file-data', MyFileDataViewSet)
 urlpatterns = [
     path('coding/', CodingView.as_view()),
     path('feedback/', FeedbackView.as_view()),
-    path('transcoding/', TranscodingView.as_view())
+    path('transcoding/', TranscodingView.as_view()),
+    path('codes/ref=<reference>/', CodesByCls.as_view()),
+    path('file-data/pk=<int:pk>/', FileDataByFileID.as_view())
 ] + router.urls

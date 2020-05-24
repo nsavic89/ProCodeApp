@@ -5,6 +5,7 @@ from django.db import models
 class Classification(models.Model):
     reference = models.CharField(max_length=25)
     name = models.CharField(max_length=150)
+    short = models.CharField(max_length=25)
     year = models.CharField(max_length=4)
     type_of_cls = models.CharField(max_length=1, verbose_name="Type") # can take O or E
 

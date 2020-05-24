@@ -6,9 +6,6 @@ from .models import Feedback, MyFile, MyFileData
 import xlrd, json
 
 
-def get_cls_choices():
-    queryset = Classification.objects.all()
-    return [(c.reference, c.reference) for c in queryset]
 
 def get_lng_choices():
     choices = [
@@ -22,14 +19,15 @@ def get_lng_choices():
 # not a model serializer
 # just used for coding
 class CodingSerializer(serializers.Serializer):
-    classification = serializers.ChoiceField(choices=get_cls_choices())
+    classification = serializers.CharField()
     level = serializers.IntegerField()
     language = serializers.ChoiceField(choices=get_lng_choices(), required=False)
     my_input = serializers.CharField(required=False)
     my_file = serializers.IntegerField(required=False)
+    variable = serializers.CharField(required=False)
 
     def get_data(self):
-        # creates dictionary for coding function -> .coding.code
+        # creates arguments for coding function -> .coding.code
         # if no my_file value, it means simple single input coding
         # for a file, we must get the corresponding inputs from db
         
@@ -40,7 +38,19 @@ class CodingSerializer(serializers.Serializer):
                 'inputs': [self.data['my_input']],
                 'level': self.data['level']
             }
-        return False
+
+        # if file we must load texts from file
+        data = self.data
+        my_file = MyFile.objects.get(pk=data['my_file'])
+        my_data = MyFileData.objects.filter(parent=my_file)
+        inputs = [json.loads(o.data)[data['variable']] for o in my_data]
+        
+        return {
+            'lng': my_file.language,
+            'clsf': data['classification'],
+            'inputs': inputs,
+            'level': data['level']
+        }
 
 # my file serializer
 class MyFileSerializer(serializers.ModelSerializer):
@@ -92,9 +102,6 @@ class MyFileDataSerializer(serializers.ModelSerializer):
 
 
 class FeedbackSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True, 
-        default=serializers.CurrentUserDefault())
-
     class Meta:
         model = Feedback 
         fields = '__all__'
@@ -103,6 +110,6 @@ class FeedbackSerializer(serializers.ModelSerializer):
 # transcoding or recoding from classification 1 to classification 2
 class TranscodingSerializer(serializers.Serializer):
     my_file = serializers.CharField(required=False)
-    from_cls = serializers.ChoiceField(choices=get_cls_choices())
+    from_cls = serializers.CharField()
     from_code = serializers.CharField()
-    to_cls = serializers.ChoiceField(choices=get_cls_choices())
+    to_cls = serializers.CharField()

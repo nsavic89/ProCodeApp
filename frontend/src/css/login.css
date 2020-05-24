@@ -1,0 +1,44 @@
+.wrapper {
+    height: 100vh;
+    min-height: 600px;
+    background-color: rgb(10, 10, 10);
+}
+
+.lang-div { 
+    background-color: rgb(20,20,20);
+    border-bottom: 1px solid rgb(30, 30, 30);
+}
+
+.logo-div {
+    text-align: center;
+    padding-top: 15px;
+}
+
+.my-div-form {
+    width: 350px;
+    padding: 20px;
+    margin: auto;
+    margin-top: 15vh;
+    border: 1px solid rgb(80, 80, 80);
+    border-radius: 5px;
+    background-color: rgb(15, 15, 15);
+}
+
+.my-label {
+    color: rgb(185, 185, 185);
+    font-size: 16px;
+}
+
+.my-input input {
+    background-color: black;
+    color: white;
+}
+
+.ant-form-item-has-error .ant-input {
+    background-color: black !important;
+    color: white;
+}
+
+.unisante {
+    margin-top: 8vh;
+}
