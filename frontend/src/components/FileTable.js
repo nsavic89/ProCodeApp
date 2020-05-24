@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Button, Spin, Table, message, Drawer, Form, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeftOutlined, PlusCircleOutlined, WindowsFilled } from '@ant-design/icons';
+import { ArrowLeftOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
 

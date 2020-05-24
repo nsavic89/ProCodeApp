@@ -75,10 +75,15 @@ def code(inputs, clsf, lng, level):
     # training data file and training data
     # detect in which language the data should be
     try:
-        td_file_lng = CodingRules.objects.get(
+        rules = CodingRules.objects.get(
             classification=clsf,
             input_lng=lng
-        ).td_file_lng
+        )
+        max_level = rules.max_level
+        td_file_lng = rules.td_file_lng
+
+        if level > max_level:
+            level = max_level
 
         # get which levels are possible for the given classification
         classification = Classification.objects.get(reference=clsf)

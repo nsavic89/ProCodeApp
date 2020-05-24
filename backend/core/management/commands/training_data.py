@@ -415,7 +415,7 @@ class Command(BaseCommand):
         data = []
         
         #len(codes)
-        for i in range(0, 100):
+        for i in range(0, len(texts)):
             try:
                 text = texts[i].lower()
                 text = re.sub('[^a-zà-ÿ]', ' ', text)

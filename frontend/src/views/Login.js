@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
-    Form, Input, Button, Drawer
+    Form, Input, Button, Drawer, message
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 import '../css/login.css';
+import axios from 'axios';
+import { UserContext } from '../contexts/UserContext';
 
 /*
     Login and registration
@@ -12,6 +14,7 @@ import '../css/login.css';
 export default function Login() {
     const { t, i18n } = useTranslation();
     const [ state, setState ] = useState({ signUpDrawer: false });
+    const context = useContext(UserContext);
 
     const styling = {
         wrapperCol: {
@@ -35,10 +38,26 @@ export default function Login() {
         }
     }
 
+    // login
+    const handleLogin = values => {
+        axios.post(
+            `${context.API}/app/api-token-auth/`,
+            values
+        ).then(res => {
+                let token = res.data.token;
+                localStorage.setItem("token", token);
+                window.location.href="/";
+            }
+        ).catch(
+            () => message.error(t('messages.login-failed'))
+        )
+    }
+
     // login form 
     const LoginForm = (
-        <Form className="my-form">
+        <Form className="my-form" onFinish={handleLogin}>
             <Form.Item
+                name="username"
                 label={<span className="my-label">
                         {t('login-view.username')}
                     </span>}
@@ -53,6 +72,7 @@ export default function Login() {
             </Form.Item>
             <Form.Item
                 {...styling}
+                name="password"
                 labelAlign="left"
                 label={<span className="my-label">
                     {t('login-view.password')}
@@ -84,9 +104,15 @@ export default function Login() {
         </Form>
     )
 
+    const handleSignUp = values => {
+        axios.post(`${context.API}/app/sign-up/`, values)
+            .then(() => message.success(t('messages.sign-up-successful')))
+            .catch(() => message.error(t('messages.sign-up-failed')))
+    }
+
     // sign up form
     const SignUpForm = (
-        <Form {...styling} className="my-form">
+        <Form {...styling} className="my-form" onFinish={handleSignUp}>
             <Form.Item
                 name="first_name"
                 label={

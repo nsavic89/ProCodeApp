@@ -3,6 +3,7 @@ from core.models import Classification, Code
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Feedback, MyFile, MyFileData
+from django.contrib.auth.models import User
 import xlrd, json
 
 
@@ -111,5 +112,39 @@ class FeedbackSerializer(serializers.ModelSerializer):
 class TranscodingSerializer(serializers.Serializer):
     my_file = serializers.CharField(required=False)
     from_cls = serializers.CharField()
-    from_code = serializers.CharField()
+    from_code = serializers.CharField(required=False)
     to_cls = serializers.CharField()
+    variable = serializers.CharField(required=False)
+
+
+class ExcelSerializer(serializers.Serializer):
+    var1 = serializers.CharField(required=False)
+    var2 = serializers.CharField(required=False)
+    var3 = serializers.CharField(required=False)
+    var4 = serializers.CharField(required=False)
+    var5 = serializers.CharField(required=False)
+
+    code1 = serializers.CharField(required=False)
+    code2 = serializers.CharField(required=False)
+    code3 = serializers.CharField(required=False)
+    code4 = serializers.CharField(required=False)
+    code5 = serializers.CharField(required=False)
+
+
+# sign up
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def create(self, validated_data):
+        user = User.objects.create(
+            username=validated_data['username'],
+            email=validated_data['email']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user

@@ -9,7 +9,8 @@ import {
     Upload,
     Card,
     Row,
-    Col
+    Col,
+    message
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
@@ -24,6 +25,7 @@ import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
 import FileTable from './FileTable';
 import CodingDrawer from './CodingDrawer';
+import RecodingDrawer from './RecodingDrawer';
 
 
 export default function MyFiles() {
@@ -208,6 +210,25 @@ export default function MyFiles() {
         </Form>
     )
 
+    // delete file
+    const handleDeleteFile = pk => {
+        axios.delete(
+            `${context.API}/app/my-files/${pk}/`,
+            { headers: {
+                'content-type': 'multipart/form-data',
+                Pragma: "no-cache",
+                Authorization: 'JWT ' + localStorage.getItem('token')
+                }}
+            ).then(
+                () => {
+                    message.warning(t('messages.file-deleted-message'));
+                    let myfiles = [...context.data.myfiles];
+                    myfiles = myfiles.filter(o => o.id !== pk);
+                    context.fun.updateData('myfiles', myfiles);
+                }
+            ).catch(e => console.log(e))
+    }
+
     const cardScaling = {
         xs: { span: 24 },
         sm: { span: 12 },
@@ -228,17 +249,25 @@ export default function MyFiles() {
                                 }}
                                 cover={<img src={require('../media/cloud.png')} alt="" />}
                                 actions={[
-                                    <DeleteTwoTone twoToneColor="#f5222d" key="del" />,
+                                    <DeleteTwoTone 
+                                        twoToneColor="#f5222d" key="del"
+                                        onClick={() => handleDeleteFile(item.id)}
+                                    />,
                                     <FireOutlined
                                         key="code"
                                         onClick={() => setState({...state, coding: item.id})} 
                                     />,
-                                    <RetweetOutlined key="recode" />,
+                                    <RetweetOutlined
+                                        key="recode"
+                                        onClick={() => setState({...state, recoding: item.id})}
+                                    />,
                                     <SearchOutlined 
                                         key="open"
                                         onClick={() => setState({...state, editing: item.id})} 
                                     />,
-                                    <DownloadOutlined key="download" />
+                                    <DownloadOutlined key="download"
+                                        onClick={() => window.open(`${context.API}/app/download/pk=${item.id}/`)}
+                                    />
                                 ]}
                             >
                                 <h3>{item.name}</h3>
@@ -301,6 +330,22 @@ export default function MyFiles() {
                             ...state,
                             editing: myfile,
                             coding: false
+                        })
+                    }}
+            />
+
+            {/* transcodign drawer */}
+            <RecodingDrawer
+                visible={state.recoding && state.recoding !== false}
+                onClose={() => setState({...state, recoding: false})}
+                myfile={state.recoding}
+                onCodingFinish={
+                    () => {
+                        let myfile = state.recoding;
+                        setState({
+                            ...state,
+                            editing: myfile,
+                            recoding: false
                         })
                     }}
             />

@@ -4,7 +4,8 @@ from core.models import (
     Crosswalk,
     TrainingDataFile,
     TrainingData,
-    Classification
+    Classification,
+    Code
 )
 
 
@@ -21,7 +22,7 @@ class Command(BaseCommand):
     """
 
     def add_arguments(self, parser):
-        parser.add_argument('params', nargs=3, type=str)
+        parser.add_argument('params', nargs=2, type=str)
 
     def handle(self, *args, **options):
         trd_file = options['params'][0]
@@ -42,7 +43,7 @@ class Command(BaseCommand):
         # transcode save new file and the data
         classification = Classification.objects.get(reference=clsf)
         new_train_file = TrainingDataFile.objects.create(
-            classification=classification
+            classification=classification.reference,
             name=clsf + "_TR_FROM_" + train_file.name,
             language=train_file.language,
             info="Transcoded data from " + train_file.name
@@ -50,11 +51,12 @@ class Command(BaseCommand):
         converted_data = []
         for e in train:
             # take only those more probable
+            codes = crosswalk.filter(code_1=e.code)
             codes = [c.code_2 for c in codes if c.prob > 20 and c.code_1==e.code]
 
             for code in codes:
                 level = Code.objects.get(
-                    classification=classification, code=code).level
+                    parent=classification, code=code).level
 
                 obj = TrainingData(
                     parent=new_train_file,

@@ -1,54 +1,109 @@
 {
     "language": "Langue",
-    "security": "Security",
+    "security": "Sécurité",
     "logout": "Déconnexion",
     "coding": "Coder",
     "recoding": "Re-coder",
-    "my-files": "Mes fichers",
-    "please-wait": "Veuillez patienter...",
+    "my-files": "Mes fichiers",
+    "please-wait": "Veuillez pationter...",
     "back": "Retour",
     "yes": "Oui",
     "no": "Non",
     "submit": "Envoyer",
     "please-select": "Veuillez sélectionner",
     "login": "Connexion",
+    "delete": "Supprimer",
     
     "languages": {
-        "german": "German",
-        "french": "French",
-        "italian": "Italian",
-        "english": "English"
+        "german": "allemend",
+        "french": "français",
+        "italian": "italien",
+        "english": "anglais"
     },
     
     "messages": {
         "form": {
-            "required": "Ce champ est obligatoire"
+            "required": "Champ obligatoire",
+            "too-short": "Trop courte",
+            "passwords-not-match": "les mots de passe ne concordent pas",
+            "not-email": "Format de e-mail non valide"
         },
-        "sth-went-wrong": "Désolée! Quelque chose a mal tourné...",
-        "loading": "Loading"
+        "sth-went-wrong": "Désolé ! Quelque chose a mal tourné...",
+        "data-deleted-message": "Données supprimées avec succès",
+        "data-added-message": "Données ajoutées avec succès",
+        "loading": "Téléchargement...",
+        "no-codes-before-clsf-selected": "Aucun code au cas si aucune classification n'est sélectionnée",
+        "file-deleted-message": "Fichier supprimé",
+        "sign-up-successful": "Inscrit avec succès",
+        "sign-up-failed": "Inscription échouée",
+        "login-failed": "Utilisateur/mot de passe faux"
     },
 
     "login-view": {
         "username": "Utilisateur",
         "password": "Mot de passe",
-        "open-account": "Créer compte"
+        "open-account": "Ouvrir un compte",
+        "sign-up": "Sign-up form",
+        "first-name": "Prénom",
+        "last-name": "Nom",
+        "email": "E-mail",
+        "password2": "Confirmer le mot de passe",
+        "sign-up-button": "S'inscrire"
     },
     
     "coding-view": {
-        "classification": "Classification",
-        "level": "Code level",
-        "input": "Occupation/economic activity",
-        "button": "Run coding",
-        "alert-message": "Coding of occupational/economic activity data",
-        "alert-description": "Specify the language of the occupation/economic activity entry, the classification against which the entry will be coded and the desired level of prediction(s). The level input usually corresponds to the number of digits in a classificaiton code. Any arbitrary textual description can be entered in the last field which is coded.",
-        "level-info": "Not available if no classification selected",
-        "predicting-spin": "Running coding...",
-        "prediction-successful": "Coding finished successfully",
-        "new-prediction-button": "New coding",
+        "classification": "Nomenclature",
+        "level": "Niveau",
+        "input": "Profession/activité économique",
+        "button": "Lancer codage",
+        "alert-message": "Codage des données relatives aux activités professionnelles/économiques",
+        "alert-description": "Précisez la langue de l'entrée de la profession/activité économique, la nomenclature par rapport à laquelle l'entrée sera codée et le niveau de prédiction souhaité. Le niveau d'entrée correspond généralement au nombre de chiffres d'un code de classification. Toute description textuelle arbitraire peut être saisie dans le dernier champ.",
+        "level-info": "Pas disponible si aucune classification n'a été sélectionnée",
+        "predicting-spin": "Exécution du codage...",
+        "prediction-successful": "Codage terminé avec succès",
+        "new-prediction-button": "Nouveau codage",
         "feedback-alert-message": "Feedback",
-        "feedback-alert-description": "If possible, please specify below if the predicted code/title corresponds to the coded text.",
-        "feedback-question": "The classification code is correct?",
-        "feedback-submitted-message": "Thank you for your feedback!",
-        "codes-select": "Please specify which code/title matches best the coded text"
+        "feedback-alert-description": "Si possible, veuillez préciser ci-dessous si le code/titre prévu correspond au texte codé.",
+        "feedback-question": "Le code de la nomenclature est-il correct ?",
+        "feedback-submitted-message": "Merci pour votre contribution !",
+        "codes-select": "Veuillez préciser le code/titre qui correspond le mieux au texte codé"
+    },
+
+    "recoding-view": {
+        "from-classification": "Recoder de",
+        "end-classification": "Recoder à",
+        "code-title": "Code/Titre",
+        "alert-message": "Recodage entre deux nomenclature",
+        "alert-description": "Spécifier une nomenclature de départ et une nomenclature cible pour effectuer un recodage (ou transcodage) entre elles. Le résultat peut comprendre un ou plusieurs résultats classés selon leur probabilité.",
+        "button": "Lancer recodage",
+        "classification-2-crosswalk": "Aucun crosswalk défini à partir de la classification sélectionnéen",
+        "recoding-successful": "Recodage réussi",
+        "new-recoding-button": "Recommencer"
+    },
+
+    "my-files-view": {
+        "upload": "Téléchargement",
+        "loading-files-spin": "Téléchargement, veuillez patienter",
+        "drawer-title": "Télécharger un nouveau fichier",
+        "add-new": "Ajouter nouveau",
+        "upload-form": {
+            "name": "Nom",
+            "info": "Déscription",
+            "excel": "MS Excel"
+        }
+    },
+
+    "coding-drawer": {
+        "title": "Coder un fichier",
+        "info": "Précisez la nomenclature par rapport à laquelle le codage sera exécuté et un niveau de code souhaité.",
+        "variable": "Colonne"
+    },
+
+    "recoding-drawer": {
+        "title": "Recoding",
+        "from-cls": "Recoder de",
+        "to-cls": "Recoder à",
+        "info": "Précisez les nomenclatures entre lesquelles le recodage sera effectué. Il est également nécessaire de préciser quelle colonne du fichier contient les codes.",
+        "variable": "Colonne"
     }
 }

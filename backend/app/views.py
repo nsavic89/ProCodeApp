@@ -1,10 +1,16 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework import viewsets
 from .coding import code
 from .models import Feedback, MyFile, MyFileData
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.decorators import (
+    api_view,
+    renderer_classes,
+    permission_classes
+)
+from drf_renderer_xlsx.renderers import XLSXRenderer
 from core.models import (
     CrosswalkFile,
     Crosswalk,
@@ -17,7 +23,9 @@ from .serializers import (
     FeedbackSerializer,
     MyFileSerializer,
     MyFileDataSerializer,
-    TranscodingSerializer
+    TranscodingSerializer,
+    ExcelSerializer,
+    UserSerializer
 )
 import json
 
@@ -127,6 +135,55 @@ class TranscodingView(APIView):
             translations = crosswalk.filter(code_1=data_ser.data['from_code'])
             trans_codes = [trans.code_2 for trans in translations]
             return Response(trans_codes, status.HTTP_200_OK)
+        
+        # if file
+        data = data_ser.data 
+        cls_1 = data['from_cls']
+        cls_2 = data['to_cls']
+
+        crosswalk_file = CrosswalkFile.objects.get(
+            classification_1=cls_1,
+            classification_2=cls_2)
+
+        my_file = MyFile.objects.get(pk=data['my_file'])
+        my_data = MyFileData.objects.filter(parent=my_file)
+
+        # may be classifation or variable
+        variable = data["variable"]
+        file_variables = json.loads(my_file.variables)
+        file_classifications = json.loads(my_file.classifications)
+
+        #recoding
+        for o in my_data:
+            # is variable or classification
+            if variable in file_variables:
+                code_1 = json.loads(o.data)[variable]
+            else:
+                code_1 = json.loads(o.codes)[variable]
+           
+            code_2 = Crosswalk.objects.filter(
+                    parent=crosswalk_file,
+                    code_1=code_1[0]
+                )
+            
+            code_2 = [c.code_2 for c in code_2]
+            codes = json.loads(o.codes)
+            codes[cls_2] = code_2
+            o.codes = json.dumps(codes)
+            o.save()
+        
+        # udpate my file
+        clsfs = json.loads(my_file.classifications)
+        
+        if cls_2 not in clsfs:
+            clsfs.append(cls_2)
+            my_file.classifications = json.dumps(clsfs)
+            my_file.save()
+
+        my_data = MyFileData.objects.filter(parent=my_file)
+        my_data_ser = MyFileDataSerializer(my_data, many=True)
+        return Response(my_data_ser.data, status=status.HTTP_200_OK)
+
 
 
 # load children model instances based on the parent's reference/id
@@ -152,3 +209,72 @@ class FileDataByFileID(APIView):
             return Response(ser_data.data, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# downlaod xlsx data
+from collections import OrderedDict
+
+@api_view(['GET'])
+@renderer_classes([ XLSXRenderer ])
+def download(request, pk):
+    my_file = MyFile.objects.get(pk=pk)
+    my_data = MyFileData.objects.filter(parent=my_file)
+
+    # now create json
+    excel_list = []
+    data = json.loads(my_data[0].data)
+    codes = json.loads(my_data[0].codes)
+
+    excel = {}
+    i = 1
+    for key in data:
+        excel['var%i' % i] = key
+        i = i + 1
+
+    i = 1
+    for key in codes:
+        excel['code%i' % i] = key
+        i = i + 1
+
+    excel_list.append(excel)
+
+    for o in my_data:
+        data = json.loads(o.data)
+        codes = json.loads(o.codes)
+
+        excel = {}
+        i = 1
+        for key in data:
+            excel['var%i' % i] = data[key]
+            print(data[key])
+            i = i + 1
+
+        i = 1
+        for key in codes:
+            excel['code%i' % i] = ' '.join(codes[key])
+            print(codes[key])
+            i = i + 1
+
+        excel_list.append(excel)
+
+    excel_ser = ExcelSerializer(data=excel_list, many=True)
+    if excel_ser.is_valid():      
+        return Response(excel_ser.data, headers={
+                'Content-Disposition': 'attachment; filename=download.xlsx',
+            })
+    
+    print(excel_ser.errors)
+
+
+
+# user sign-up
+@api_view(['POST'])
+@permission_classes([ permissions.AllowAny ])
+def sign_up(request):
+    user = UserSerializer(data=request.data)
+    
+    if user.is_valid():
+        user.save()
+        return Response(user.data, status=status.HTTP_201_CREATED)
+    
+    return Response(status=status.HTTP_400_BAD_REQUEST)

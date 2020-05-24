@@ -45,7 +45,8 @@ class Command(BaseCommand):
     def verify_codes(self):
         # for codes for a given classification
         # verifies if all are complete
-        codes_obj = Code.objects.filter(parent=self.CLSF_1)
+        classification1 = Classification.objects.get(reference=self.CLSF_1)
+        codes_obj = Code.objects.filter(parent=classification1)
         codes = [c.code for c in codes_obj]
 
         # unique list (set) of codes in excel file
@@ -62,8 +63,10 @@ class Command(BaseCommand):
             self.stdout.write("Not found in file:\n % s" % ' '.join(not_found))
             self.stdout.write("Proceed?\n")
             proceed = input()
+
             if proceed != 'Y':
                 raise CommandError("ERROR: Some codes not found in file!")
+            
         return True
 
     def save(self):
@@ -104,7 +107,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.CLSF_1 = options['params'][0]
         self.CLSF_2 = options['params'][1]
-        my_file = options['params'][3]
+        my_file = options['params'][2]
 
         # check if CLSF_1 and 2 exist in db
         self.verify_classification()

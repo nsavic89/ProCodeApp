@@ -33,10 +33,7 @@
         "data-added-message": "Data added successfully",
         "loading": "Loading...",
         "no-codes-before-clsf-selected": "No codes if no classification selected",
-        "file-deleted-message": "File deleted",
-        "sign-up-successful": "Signed up successfully",
-        "sign-up-failed": "Sign-up failed",
-        "login-failed": "Username/password incorrect"
+        "file-deleted-message": "File deleted"
     },
 
     "login-view": {

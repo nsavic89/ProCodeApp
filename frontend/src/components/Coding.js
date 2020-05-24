@@ -135,12 +135,15 @@ export default function Coding() {
             `${context.API}/app/coding/`,
             values,
             {headers: headers})
-        .then(res => setState({ 
+        .then(res => {
+            console.log(res)
+            setState({ 
                 ...state,
                 predictions: res.data,
                 predicting: false,
                 inputs: values
-            }) )
+            })
+        } )
         .catch(
             e => {
                 if (e.response) {

@@ -31,7 +31,12 @@
         "sth-went-wrong": "Sorry! Something went wrong...",
         "data-deleted-message": "Data deleted successfully",
         "data-added-message": "Data added successfully",
-        "loading": "Loading..."
+        "loading": "Loading...",
+        "no-codes-before-clsf-selected": "No codes if no classification selected",
+        "file-deleted-message": "File deleted",
+        "sign-up-successful": "Signed up successfully",
+        "sign-up-failed": "Sign-up failed",
+        "login-failed": "Username/password incorrect"
     },
 
     "login-view": {
@@ -64,6 +69,18 @@
         "codes-select": "Please specify which code/title matches best the coded text"
     },
 
+    "recoding-view": {
+        "from-classification": "Recode from",
+        "end-classification": "Recode to",
+        "code-title": "Code/Title",
+        "alert-message": "Recoding between two classifications",
+        "alert-description": "Specify an starting and a target classification to perform a recoding (or transcoding) between them. The result may include one or more outcomes ordered by their likelihood.",
+        "button": "Run recoding",
+        "classification-2-crosswalk": "No crosswalks defined from the selected starting classification",
+        "recoding-successful": "Recoding successful",
+        "new-recoding-button": "New recoding"
+    },
+
     "my-files-view": {
         "upload": "Upload",
         "loading-files-spin": "Loading, please wait",
@@ -79,6 +96,14 @@
     "coding-drawer": {
         "title": "Coding file data",
         "info": "Specify the classification against which the coding will be executed and a desired code level.",
+        "variable": "Column"
+    },
+
+    "recoding-drawer": {
+        "title": "Recoding file data",
+        "from-cls": "Recode from",
+        "to-cls": "Recode to",
+        "info": "Specify the classifications between which the recoding will be performed. It is also required to specify which column of the file contains the starting codes.",
         "variable": "Column"
     }
 }

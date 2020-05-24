@@ -142,7 +142,6 @@ export default function CodingDrawer(props) {
 
     // variables of the file for form below
     let variables = [];
-    console.log(context.data.myfiles)
     if (props.visible) {
         variables = JSON.parse(context.data.myfiles
                     .find(o => o.id === props.myfile)
