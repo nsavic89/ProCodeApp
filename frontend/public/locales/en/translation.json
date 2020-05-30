@@ -13,12 +13,21 @@
     "please-select": "Please select",
     "login": "Login",
     "delete": "Delete",
+    "modify": "Modify",
+    "scroll-on": "Scroll-on",
+    "scroll-off": "Scroll-off",
+    "about": "About",
+    "cancel": "Cancel",
     
     "languages": {
         "german": "German",
         "french": "French",
         "italian": "Italian",
-        "english": "English"
+        "english": "English",
+        "ge": "Deutsch",
+        "fr": "français",
+        "it": "Italiano",
+        "en": "English"
     },
     
     "messages": {
@@ -36,7 +45,11 @@
         "file-deleted-message": "File deleted",
         "sign-up-successful": "Signed up successfully",
         "sign-up-failed": "Sign-up failed",
-        "login-failed": "Username/password incorrect"
+        "login-failed": "Username/password incorrect",
+        "password-changed-successfully": "Password changed!",
+        "are-you-sure": "Are you sure?",
+        "no-files-uploaded": "No files to show.",
+        "file-uploaded": "New file uploaded"
     },
 
     "login-view": {
@@ -105,5 +118,25 @@
         "to-cls": "Recode to",
         "info": "Specify the classifications between which the recoding will be performed. It is also required to specify which column of the file contains the starting codes.",
         "variable": "Column"
+    },
+
+    "security-drawer": {
+        "title": "Change password",
+        "old-password": "Old password",
+        "new-password": "New password",
+        "new-password-confirm": "New password (confirm)"
+    },
+
+    "about-modal": {
+        "text": "Procode is a tool that supports automatic (re-) coding of occupations and economic sectors against and between different classifications. The tool's algorithm implements a machine learning alogirithm and a large dataset of previous codings.",
+        "contact-header": "Contact",
+        "contact-text": "In case of misfunctioning or technical related question, please contact:"
+    },
+
+    "modify-modal": {
+        "title": "Modify prediction",
+        "info": "Specify which code/title best match coded text. Your input will be added to our training dataset for further predictions.",
+        "or": "------------------------------------ OR -------------------------------------",
+        "codes-select": "Select a code from the entire list of codes defined for this classification"
     }
 }

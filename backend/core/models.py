@@ -45,8 +45,8 @@ class TrainingData(models.Model):
 # if requested level for coding > max_level -> no coding permitted
 class CodingRules(models.Model):
     classification = models.CharField(max_length=50)
-    input_lng = models.CharField(max_length=10)
-    td_file_lng = models.CharField(max_length=10)
+    recode_from = models.CharField(max_length=50, default="this") 
+    languages = models.CharField(max_length=50, default="{}")
     max_level = models.IntegerField(default=1)
 
 # Spell corrections defined by admin

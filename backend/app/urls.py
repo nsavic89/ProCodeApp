@@ -7,8 +7,9 @@ from .views import (
     TranscodingView,
     CodesByCls,
     FileDataByFileID,
+    download,
     sign_up,
-    download
+    pw_change
 )
 from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token
@@ -31,6 +32,7 @@ urlpatterns = [
 
     # user sign-up/login
     path('sign-up/', sign_up),
+    path('pw-change/', pw_change),
     path('api-token-auth/', obtain_jwt_token),
     path('api-token-verify/', verify_jwt_token),
     path('api-token-refresh/', refresh_jwt_token)

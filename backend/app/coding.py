@@ -8,7 +8,9 @@ from core.models import (
     TrainingData,
     CodingRules,
     Classification,
-    Code
+    Code,
+    CrosswalkFile,
+    Crosswalk
 )
 import string, spacy, translate, json
 
@@ -16,10 +18,9 @@ import string, spacy, translate, json
 
 
 """
-    This file contains several function related to the coding of input data
+    This file contains several function
+    related to the coding of input data
 """
-
-
 
 def prepare_input(inputs, lng):
     # tokenize, lemmatize and removes stopwords
@@ -75,22 +76,32 @@ def code(inputs, clsf, lng, level):
     # training data file and training data
     # detect in which language the data should be
     try:
-        rules = CodingRules.objects.get(
-            classification=clsf,
-            input_lng=lng
-        )
+        rules = CodingRules.objects.get(classification=clsf)
         max_level = rules.max_level
-        td_file_lng = rules.td_file_lng
-
+        
+        # language of training data
+        languages = json.loads(rules.languages)
+        
+        if 'any' in languages:
+            td_file_lng = languages['any']
+        else:
+            td_file_lng = languages[lng]
+            
+        # transcode from another classification after coding
+        # or use training data available for original 
+        if rules.recode_from != "this":
+            later_trans_to = clsf
+            clsf = rules.recode_from
+            
+        # cannot go deeper than max_level
         if level > max_level:
             level = max_level
-
-        # get which levels are possible for the given classification
+            
         classification = Classification.objects.get(reference=clsf)
     except:
         # no given rule defined
         # this will result in an error
-        return False
+        return []
 
     # list of codes corresponding to classification (in try)
     codes = Code.objects.filter(parent=classification)
@@ -104,7 +115,7 @@ def code(inputs, clsf, lng, level):
     # well, its possible that their is no data
     # for the selected classfication scheme :)
     if len(tdf) == 0:
-        return False
+        return []
         
     # well, this is funny part
     # if lng of inputs is not equal to td_file_lng
@@ -147,5 +158,32 @@ def code(inputs, clsf, lng, level):
     inputs_tf = tf.transform(inputs)
     output = model.predict(inputs_tf)
 
+    # now if the training dataset was not
+    # available for the classification against
+    # which the data was coded
+    # we must transcode it to that classification
+    if rules.recode_from != 'this':
+        try:
+            crosswalk_file = CrosswalkFile.objects.get(
+                classification_1=clsf,
+                classification_2=later_trans_to
+            )
+            crosswalk = Crosswalk.objects.filter(
+                parent=crosswalk_file
+            )
+        except:
+            return []
+
+        # recode
+        re_outputs = []
+
+        for code in output:
+            recodes = crosswalk.filter(code_1=code)
+            recodes = [recode.code_2 for recode in recodes]
+            re_outputs.append(recodes)
+        
+        return re_outputs
+
+    output = [[out] for out in output]
     return output
 

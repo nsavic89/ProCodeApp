@@ -5,7 +5,7 @@
     "coding": "Coder",
     "recoding": "Re-coder",
     "my-files": "Mes fichiers",
-    "please-wait": "Veuillez pationter...",
+    "please-wait": "Veuillez patienter...",
     "back": "Retour",
     "yes": "Oui",
     "no": "Non",
@@ -13,12 +13,21 @@
     "please-select": "Veuillez sélectionner",
     "login": "Connexion",
     "delete": "Supprimer",
+    "modify": "Modifier",
+    "scroll-on": "Défilement",
+    "scroll-off": "Désactiver",
+    "about": "Info",
+    "cancel": "Annuler",
     
     "languages": {
         "german": "allemend",
         "french": "français",
         "italian": "italien",
-        "english": "anglais"
+        "english": "anglais",
+        "ge": "Deutsch",
+        "fr": "français",
+        "it": "Italiano",
+        "en": "English"
     },
     
     "messages": {
@@ -36,14 +45,18 @@
         "file-deleted-message": "Fichier supprimé",
         "sign-up-successful": "Inscrit avec succès",
         "sign-up-failed": "Inscription échouée",
-        "login-failed": "Utilisateur/mot de passe faux"
+        "login-failed": "Utilisateur/mot de passe faux",
+        "password-changed-successfully": "Votre mot de passe est mis à jour avec succès!",
+        "are-you-sure": "Êtes-vous sûr?",
+        "no-files-uploaded": "Vous n'avez aucun fichier téléchargé.",
+        "file-uploaded": "Nouveau fichier téléchargé"
     },
 
     "login-view": {
-        "username": "Utilisateur",
+        "username": "Nom d'utilisateur",
         "password": "Mot de passe",
         "open-account": "Ouvrir un compte",
-        "sign-up": "Sign-up form",
+        "sign-up": "Inscription",
         "first-name": "Prénom",
         "last-name": "Nom",
         "email": "E-mail",
@@ -57,7 +70,7 @@
         "input": "Profession/activité économique",
         "button": "Lancer codage",
         "alert-message": "Codage des données relatives aux activités professionnelles/économiques",
-        "alert-description": "Précisez la langue de l'entrée de la profession/activité économique, la nomenclature par rapport à laquelle l'entrée sera codée et le niveau de prédiction souhaité. Le niveau d'entrée correspond généralement au nombre de chiffres d'un code de classification. Toute description textuelle arbitraire peut être saisie dans le dernier champ.",
+        "alert-description": "Précisez la langue de la profession/activité économique du texte saisi, la nomenclature par rapport à laquelle il sera codé et le niveau du code évalué. Le niveau d'un code correspond généralement au nombre de chiffres dans ce code.",
         "level-info": "Pas disponible si aucune classification n'a été sélectionnée",
         "predicting-spin": "Exécution du codage...",
         "prediction-successful": "Codage terminé avec succès",
@@ -82,13 +95,13 @@
     },
 
     "my-files-view": {
-        "upload": "Téléchargement",
+        "upload": "Télécharger",
         "loading-files-spin": "Téléchargement, veuillez patienter",
         "drawer-title": "Télécharger un nouveau fichier",
-        "add-new": "Ajouter nouveau",
+        "add-new": "Ajouter",
         "upload-form": {
             "name": "Nom",
-            "info": "Déscription",
+            "info": "Description",
             "excel": "MS Excel"
         }
     },
@@ -105,5 +118,25 @@
         "to-cls": "Recoder à",
         "info": "Précisez les nomenclatures entre lesquelles le recodage sera effectué. Il est également nécessaire de préciser quelle colonne du fichier contient les codes.",
         "variable": "Colonne"
+    },
+
+    "security-drawer": {
+        "title": "Changer le mot de passe",
+        "old-password": "Mot de passe actuel",
+        "new-password": "Nouveau mot de passe",
+        "new-password-confirm": "Nouveau mot de passe (confirmer)"
+    },
+
+    "about-modal": {
+        "text": "Procode est un outil qui soutien (re-)codages automatiques par rapport et entre differentes nomenclatures d'occupations et activités économiques. L'outil comprend une téchnique d'apprentissage machine et aussi une base de données avec les codages précédentes.",
+        "contact-header": "Coordonnées de contact",
+        "contact-text": "Au cas de malfunction de l'outil, veuillez contacter:"
+    },
+
+    "modify-modal": {
+        "title": "Mofifier code(s)",
+        "info": "Veuillez préciser quel code/titre correspend au texte codé. Ces données seront ajoutées aux données d'apprentissage machine.",
+        "or": "------------------------------------ OU -------------------------------------",
+        "codes-select": "Sélectionnez un code dans la liste des codes définis pour cette nomenclature"
     }
 }

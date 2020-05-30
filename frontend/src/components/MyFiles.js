@@ -10,7 +10,9 @@ import {
     Card,
     Row,
     Col,
-    message
+    message,
+    Popconfirm,
+    Result
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
@@ -62,7 +64,7 @@ export default function MyFiles() {
             { headers: headers })
         .then(res => {
                 context.fun.updateData('myfiles', res.data);
-                setState({loading: false, loaded: true})
+                setState({ loading: false, loaded: true })
             })
         .catch(e => {
             if(e.response) {
@@ -96,10 +98,12 @@ export default function MyFiles() {
 
     // submit http request
     const handleSubmit = values => {
+        setState({ ...state, uploading: true });
+
         let formData = new FormData();
         formData.append('excel', values.excel.file, 'excel');
         formData.append('name', values.name);
-        formData.append('info', values.info);
+        formData.append('info', values.info ? values.info : " ");
         formData.append('language', values.language);
         formData.append('user', 1);
 
@@ -112,8 +116,25 @@ export default function MyFiles() {
                 Authorization: 'JWT ' + localStorage.getItem('token')
             }}
         ).then(
-            res => console.log(res.data)
-        ).catch(e => console.log(e))
+            res => {
+                let newFile = res.data;
+                let allFiles = [...context.data.myfiles];
+                allFiles.unshift(newFile);
+                context.fun.updateData('myfiles', allFiles);
+                message.success(t('messages.file-uploaded'));
+
+                setState({
+                    ...state,
+                    uploading: false,
+                    drawer: false
+                });
+            }
+        ).catch(e => {
+            console.log(e);
+            if (e.response) {
+                setState({ error: true })
+            }
+        })
     }
 
     // handle upload button
@@ -249,10 +270,14 @@ export default function MyFiles() {
                                 }}
                                 cover={<img src={require('../media/cloud.png')} alt="" />}
                                 actions={[
-                                    <DeleteTwoTone 
-                                        twoToneColor="#f5222d" key="del"
-                                        onClick={() => handleDeleteFile(item.id)}
-                                    />,
+                                    <Popconfirm
+                                        title={t('messages.are-you-sure')}
+                                        onConfirm={() => handleDeleteFile(item.id)}
+                                        okText={t('yes')}
+                                        cancelText={t('no')}
+                                    >
+                                        <DeleteTwoTone twoToneColor="#f5222d" key="del" />
+                                    </Popconfirm>,
                                     <FireOutlined
                                         key="code"
                                         onClick={() => setState({...state, coding: item.id})} 
@@ -271,8 +296,8 @@ export default function MyFiles() {
                                 ]}
                             >
                                 <h3>{item.name}</h3>
-                                <div>
-                                    <i>{item.info}</i>
+                                <div style={{ height: 50 }}>
+                                    <i>{item.info ? item.info.substr(0,85) + "..." : ""}</i>
                                 </div>
                             </Card>
                         </Col>
@@ -282,6 +307,27 @@ export default function MyFiles() {
         )
     }
 
+    // when no files uploaded
+    const NoFilesResult = (
+        <div>
+            <Result
+                status="warning"
+                title={t('messages.no-files-uploaded')}
+                extra={
+                <Button 
+                    type="primary" danger key="console"
+                    onClick={ () => setState({...state, drawer: true}) }
+                >{t('my-files-view.upload')}
+                </Button>
+                }
+            />
+        </div>
+    )
+
+    let showFiles = false;
+    try {showFiles = context.data.myfiles.length > 0}
+    catch (e) {console.log(e)}
+    
     return (
         <div>
 
@@ -304,7 +350,7 @@ export default function MyFiles() {
             </div>
 
             <div>
-                { FilesList }
+                { showFiles ? FilesList : NoFilesResult }
             </div>
             
             {/* upload new file */}
@@ -315,7 +361,12 @@ export default function MyFiles() {
                 onClose={() => setState({...state, drawer: false})}
                 width={550}
             >
-                { UploadForm }
+                { state.uploading ? 
+                    <div style={{ marginTop: 150, textAlign: "center" }}>
+                        <Spin tip={t('please-wait')} />
+                    </div>
+                    : UploadForm
+                }
             </Drawer>
 
             {/* coding drawer */}
@@ -345,7 +396,7 @@ export default function MyFiles() {
                         setState({
                             ...state,
                             editing: myfile,
-                            recoding: false
+                            coding: false
                         })
                     }}
             />

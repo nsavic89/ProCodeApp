@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import '../css/login.css';
 import axios from 'axios';
 import { UserContext } from '../contexts/UserContext';
+import background from '../media/background.png';
+import { GlobalOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 
 /*
     Login and registration
@@ -22,19 +24,6 @@ export default function Login() {
         }, 
         labelCol: {
             sm: {span: 24}
-        }
-    }
-
-    // styling form
-    const stylingForm = {
-        input: {
-            background : "black",
-            color: "white",
-            borderColor: "rgb(30, 30, 30)"
-        }, 
-        inputPw: {
-            background : "black",
-            borderColor: "rgb(30, 30, 30)"
         }
     }
 
@@ -62,16 +51,17 @@ export default function Login() {
                         {t('login-view.username')}
                     </span>}
                 labelAlign="left"
+                colon={false}
                 {...styling}
             >
                 <Input 
                     className="my-input"
-                    style={stylingForm.input}
                     size="large"
                 />
             </Form.Item>
             <Form.Item
                 {...styling}
+                colon={false}
                 name="password"
                 labelAlign="left"
                 label={<span className="my-label">
@@ -80,25 +70,16 @@ export default function Login() {
             >
                 <Input.Password
                     className="my-input"
-                    style={stylingForm.inputPw}
                     size="large"
                 />
             </Form.Item>
             <Form.Item>
                 <Button 
                     type="primary" htmlType="submit"
-                    style={{ width: "50%" }}
-                    ghost
+                    style={{ width: "100%" }}
+                    size="large"
                 >
                     {t('login')}
-                </Button>
-                <Button 
-                    danger
-                    ghost
-                    style={{ width: "50%", border: 0 }}
-                    onClick={() => setState({...state, signUpDrawer: true})}
-                >
-                    {t('login-view.open-account')}
                 </Button>
             </Form.Item>
         </Form>
@@ -115,32 +96,23 @@ export default function Login() {
         <Form {...styling} className="my-form" onFinish={handleSignUp}>
             <Form.Item
                 name="first_name"
-                label={
-                    <span className="my-label">
-                        {t('login-view.first-name')}
-                    </span>}
+                label={t('login-view.first-name')}
                 labelAlign="left"
             >
-                <Input className="my-input" style={stylingForm.input} />
+                <Input className="my-input" />
             </Form.Item>
 
             <Form.Item
                 name="last_name"
-                label={
-                    <span className="my-label">
-                        {t('login-view.last-name')}
-                    </span>}
+                label={t('login-view.last-name')}
                 labelAlign="left"
             >
-                <Input className="my-input" style={stylingForm.input} />
+                <Input className="my-input" />
             </Form.Item>
 
             <Form.Item
                 name="email"
-                label={
-                    <span className="my-label">
-                        {t('login-view.email')}
-                    </span>}
+                label={t('login-view.email')}
                 labelAlign="left"
                 rules={[
                     {
@@ -152,15 +124,12 @@ export default function Login() {
                     }
                 ]}
             >
-                <Input className="my-input" style={stylingForm.input} />
+                <Input className="my-input" />
             </Form.Item>
 
             <Form.Item
                 name="username"
-                label={
-                    <span className="my-label">
-                        {t('login-view.username')}
-                    </span>}
+                label={t('login-view.username')}
                 labelAlign="left"
                 rules={[
                     {
@@ -173,15 +142,12 @@ export default function Login() {
                     }
                 ]}
             >
-                <Input className="my-input" style={stylingForm.input} />
+                <Input className="my-input" />
             </Form.Item>
 
             <Form.Item
                 name="password"
-                label={
-                    <span className="my-label">
-                        {t('login-view.password')}
-                    </span>}
+                label={t('login-view.password')}
                 labelAlign="left"
                 rules={[
                     {
@@ -196,16 +162,12 @@ export default function Login() {
             >
                 <Input.Password 
                     className="my-input"
-                    style={stylingForm.inputPw} 
                 />
             </Form.Item>
 
             <Form.Item
                 name="password2"
-                label={
-                    <span className="my-label">
-                        {t('login-view.password2')}
-                    </span>}
+                label={t('login-view.password2')}
                 labelAlign="left"
                 rules={[
                     {
@@ -224,13 +186,13 @@ export default function Login() {
             >
                 <Input.Password
                     className="my-input"
-                    style={stylingForm.inputPw}
                 />
             </Form.Item>
 
             <Form.Item>
                 <Button 
-                    danger ghost
+                    type="primary"
+                    danger
                     htmlType="submit"
                     style={{ width: "100%" }}
                 >
@@ -241,50 +203,81 @@ export default function Login() {
     )
 
     return (
-        <div className="wrapper">
-            <div className="lang-div">
-                {['ge', 'fr', 'it', 'en'].map(item => (
-                    <Button 
-                        key={item} size="sm" 
-                        ghost style={{ border: "none" }}
-                        onClick={() => i18n.changeLanguage(item)}
-                    >{ item }
-                    </Button>
-                ))}
-            </div>
+        <div>
+            <section className="wrapper"
+                style={{
+                    backgroundImage: `url(${background})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover"
+                }}>
+                    <div className="lang-div">
+                        <GlobalOutlined style={{ marginRight: 10 }}/> 
+                        {['ge', 'fr', 'it', 'en'].map(item => (
+                            <Button 
+                                key={item} size="sm" 
+                                ghost style={{ border: "none" }}
+                                onClick={() => i18n.changeLanguage(item)}
+                            >{ t(`languages.${item}`) }
+                            </Button>
+                        ))}
+                    </div>
 
-            <div className="logo-div">
-                <img 
-                    src={require('../media/logoLight.png')}
-                    height={50} alt="" 
-                />
-            </div>
-            <div className="my-div-form">
-                { LoginForm }
-            </div>
+                    <div className="logo-div">
+                        <img 
+                            src={require('../media/logoLight.png')}
+                            height={50} alt="" 
+                        />
+                    </div>
+                    <div className="my-div-form">
+                        { LoginForm }
+                    </div>
+                    
+                    <div 
+                        style={{ marginTop: 25, textAlign: "center" }}
+                    >
+                        <Button 
+                            type="primary"
+                            danger
+                            onClick={() => setState({...state, signUpDrawer: true})}     
+                            size="large"
+                        >
+                            {t('login-view.open-account')}
+                        </Button>
+                    </div>
+            </section>
 
-            <div className="logo-div unisante">
-                <img 
-                    src={require('../media/logoUnisante.png')}
-                    height={50} alt="" 
-                />
-            </div>
+            <footer>
+                <div className="unisante">
+                    <div style={{ textAlign: "center" }}>
+                        <img 
+                            src={require('../media/logoUnisante.png')}
+                            height={50} alt="" 
+                        />
+                    </div>
+                    
+                    <div style={{ marginTop: 25 }}>
+                        Centre universitaire de médecin général et santé publique
+                    </div>
+
+                    <div>
+                        <MailOutlined /> <a href="mailto: nenad.savic@unisante.ch">
+                            nenad.savic@unisante.ch
+                        </a>
+                    </div>
+                    <div>
+                        <PhoneOutlined /> <span>
+                            +41 21 314 37 82
+                        </span>
+                    </div>
+                </div>
+            </footer>
 
             <Drawer
-                title={<span style={{ color: "white" }}>
-                        {t('login-view.sign-up')}
-                    </span>}
+                title={t('login-view.sign-up')}
                 placement="right"
                 closable={false}
                 onClose={() => setState({...state, signUpDrawer: false})}
                 visible={state.signUpDrawer}
-                headerStyle={{
-                    backgroundColor: "rgb(15, 15, 15)"
-                }}
-                drawerStyle={{
-                    backgroundColor: "rgb(10, 10, 10)",
-                    color: "rgb(220,220,220)"
-                }}
                 width={350}
             >
                 {SignUpForm}

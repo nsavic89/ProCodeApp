@@ -5,6 +5,7 @@ from rest_framework import viewsets
 from .coding import code
 from .models import Feedback, MyFile, MyFileData
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.contrib.auth import authenticate
 from rest_framework.decorators import (
     api_view,
     renderer_classes,
@@ -60,7 +61,7 @@ class CodingView(APIView):
                 # add codes 
                 for i, o in enumerate(my_data):
                     codes = json.loads(o.codes)
-                    codes[data['classification']] = [output[i]]
+                    codes[data['classification']] = output[i]
                     o.codes = json.dumps(codes)
                     o.save()
 
@@ -86,8 +87,8 @@ class FeedbackView(APIView):
         if feedback_ser.is_valid():
             feedback_ser.save()
             return Response(feedback_ser.data, status.HTTP_201_CREATED)
-
-        return Response(status.HTTP_400_BAD_REQUEST)
+        
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
     # return feedbacks created by the current user
     def get(self, request):
@@ -276,5 +277,22 @@ def sign_up(request):
     if user.is_valid():
         user.save()
         return Response(user.data, status=status.HTTP_201_CREATED)
+    
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+# user password change
+@api_view(['POST'])
+def pw_change(request):
+    
+    # authenticate the current user
+    user = authenticate(
+        username=request.user,
+        password=request.data['pw']
+    )
+    
+    if user is not None:
+        user.set_password(request.data['pw_new'])
+        user.save()
+        return Response("Password changed", status=status.HTTP_200_OK)
     
     return Response(status=status.HTTP_400_BAD_REQUEST)

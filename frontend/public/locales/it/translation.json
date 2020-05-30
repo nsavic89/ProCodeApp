@@ -37,15 +37,15 @@
     },
 
     "login-view": {
-        "username": "Username",
+        "username": "Nome utente",
         "password": "Password",
-        "open-account": "Open account",
-        "sign-up": "Sign-up form",
-        "first-name": "First name",
-        "last-name": "Last name",
+        "open-account": "Apri un conto",
+        "sign-up": "Modulo di iscrizione",
+        "first-name": "Nome",
+        "last-name": "Cognome",
         "email": "E-mail",
-        "password2": "Confirm password",
-        "sign-up-button": "Sign up"
+        "password2": "Confermare la password",
+        "sign-up-button": "Iscriviti"
     },
     
     "coding-view": {

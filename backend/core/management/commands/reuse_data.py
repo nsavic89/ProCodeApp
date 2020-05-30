@@ -55,16 +55,19 @@ class Command(BaseCommand):
             codes = [c.code_2 for c in codes if c.prob > 20 and c.code_1==e.code]
 
             for code in codes:
-                level = Code.objects.get(
-                    parent=classification, code=code).level
+                try:
+                    level = Code.objects.get(
+                        parent=classification, code=code).level
 
-                obj = TrainingData(
-                    parent=new_train_file,
-                    text=e.code,
-                    code=code,
-                    level=level
-                )
-                converted_data.append(obj)
+                    obj = TrainingData(
+                        parent=new_train_file,
+                        text=e.code,
+                        code=code,
+                        level=level
+                    )
+                    converted_data.append(obj)
+                except:
+                    continue
 
         TrainingData.objects.bulk_create(converted_data)
         return

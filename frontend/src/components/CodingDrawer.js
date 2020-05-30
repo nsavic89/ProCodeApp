@@ -118,6 +118,22 @@ export default function CodingDrawer(props) {
                 let dataList = {...context.data.myFileData};
                 dataList[props.myfile] = res.data;
                 context.fun.updateData('myFileData', dataList);
+
+                // upadate file
+                // if not updated -> classifications will not be shown
+                // in the table that opens immediatelly after the coding is done
+                let myfiles = [...context.data.myfiles];
+                let myfile = myfiles.find(o => o.id === props.myfile);
+                myfiles = myfiles.filter(o => o.id !== props.myfile);
+                myfile.classifications = JSON.parse(myfile.classifications);
+
+                if ( myfile.classifications.indexOf(values.classification) === -1 ){
+                    myfile.classifications.push(values.classification)
+                }
+                
+                myfile.classifications = JSON.stringify(myfile.classifications);
+                myfiles.unshift(myfile);
+                context.fun.updateData('myfiles', myfiles);
                 
                 // close drawer
                 props.onCodingFinish();

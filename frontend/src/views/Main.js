@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Layout,
     Button,
     Col,
-    Row
+    Row,
+    Spin
 } from 'antd';
 import { 
     GlobalOutlined,
@@ -12,12 +13,19 @@ import {
     LogoutOutlined,
     FireOutlined,
     RetweetOutlined,
-    FolderOpenOutlined
+    FolderOpenOutlined,
+    InfoCircleOutlined
 } from '@ant-design/icons';
 import Coding from '../components/Coding';
 import Recoding from '../components/Recoding';
 import MyFiles from '../components/MyFiles';
 import '../css/main.css';
+import axios from 'axios';
+import { UserContext } from '../contexts/UserContext';
+import SecurityDrawer from '../components/SecurityDrawer';
+import About from '../components/About';
+
+
 
 /*
     Main view 
@@ -26,9 +34,55 @@ import '../css/main.css';
     - transcoding
     - files
 */
-export default function Main(props) {
+export default function Main() {
     const { t, i18n } = useTranslation();
+    const [security, setSecurity] = useState(false);
+    const [about, setAbout] = useState(false);
     const [view, setView] = useState('coding');
+    const [token, setToken] = useState(false);
+    const context = useContext(UserContext);
+
+
+    // API end-points
+    const verifyURL = `${context.API}/app/api-token-verify/`
+    const refreshURL = `${context.API}/app/api-token-refresh/`
+
+
+    // on load check if token is verified
+    // if cannot be verified redirect to login page
+    // each time view is changed token is refreshed
+    useEffect(() => {
+        let jwtToken = localStorage.getItem('token');
+
+        // verify token
+        axios
+            .post(verifyURL, {token:jwtToken})
+            .then(() => setToken(true))
+            .catch(
+                () => {
+                    // refresh token
+                    axios
+                        .post(refreshURL, {token:jwtToken})
+                        .then(res => {
+                            localStorage.setItem('token', res.data.token);
+                            setToken(true);
+                        })
+                        .catch(() => window.location.href = '/login')
+                }
+            )
+
+    },[view])
+
+    // if !token then do not render main
+    // while waiting then spin
+    if (!token) {
+        return (
+            <div style={{ marginTop: "40vh", textAlign: "center" }}>
+                <Spin tip={t('please-wait')} />
+            </div>
+        )
+    }
+
 
     const styling = {
         siderButton: {
@@ -50,6 +104,12 @@ export default function Main(props) {
         'coding': <Coding />,
         'recoding': <Recoding />,
         'myFiles': <MyFiles />
+    }
+
+    // logout current user
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        window.location.href = "/login";
     }
 
     return (
@@ -95,7 +155,7 @@ export default function Main(props) {
             <Layout>
                 <Layout.Header style={{ background: "white" }}>
                     <Row>
-                        <Col sm={{span: 12}}>
+                        <Col sm={{span: 8}}>
                             <GlobalOutlined />
                             {['ge', 'fr', 'it', 'en'].map(item => (
                                 <Button
@@ -106,15 +166,41 @@ export default function Main(props) {
                                 </Button>
                             ))}
                         </Col>
-                        <Col sm={{span: 12}} style={{ textAlign: "right" }}>
-                            <Button style={{ margin: 5, border: 0 }}>
+                        <Col sm={{span: 16}} style={{ textAlign: "right" }}>
+                            <Button 
+                                style={{ margin: 5, border: 0 }}
+                                onClick={() => setAbout(true)}
+                            >
+                                <InfoCircleOutlined /> { t('about') }
+                            </Button>
+
+                            <Button 
+                                style={{ margin: 5, border: 0 }}
+                                onClick={() => setSecurity(true)}
+                            >
                                 <LockOutlined /> { t('security') }
                             </Button>
-                            <Button danger style={{ margin: 5 }}>
+
+                            <Button 
+                                style={{ margin: 5, border: 0 }}
+                                onClick={handleLogout}
+                            >
                                 <LogoutOutlined />{ t('logout') }
                             </Button>
                         </Col>
                     </Row>
+
+                    {/* security drawer */}
+                    <SecurityDrawer
+                        visible={security}
+                        onClose={() => setSecurity(false)}
+                    />
+
+                    {/* about modal */}
+                    <About
+                        visible={about}
+                        onClose={() => setAbout(false)}
+                    />
                 </Layout.Header>
 
                 <Layout>

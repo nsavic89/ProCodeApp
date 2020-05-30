@@ -8,7 +8,8 @@ import {
     Button,
     Alert,
     Result,
-    Spin
+    Spin,
+    Tag
 } from 'antd';
 import { UserContext } from '../contexts/UserContext';
 import { LoadingOutlined, CheckCircleFilled } from '@ant-design/icons';
@@ -136,10 +137,9 @@ export default function Coding() {
             values,
             {headers: headers})
         .then(res => {
-            console.log(res)
             setState({ 
                 ...state,
-                predictions: res.data,
+                predictions: res.data[0],
                 predicting: false,
                 inputs: values
             })
@@ -158,7 +158,7 @@ export default function Coding() {
             }
         )
     }
-    
+
     // coding form 
     const CodingForm = (<div>
             <Alert
@@ -437,18 +437,14 @@ export default function Coding() {
 
         <div style={{ marginTop: 25 }}>{
             state.predictions.map(
-                item => (
+                (item,inx) => (
                     <div 
                         key={item}
                         style={{ fontSize: 16 }}
                     >
-                        <span style={{ 
-                            background: "#1890ff",
-                            borderRadius: 2,
-                            padding: 2,
-                            color: "white"
-                        }}>{ item }
-                        </span>
+                        <Tag color={inx===0 ? 'geekblue' : 'orange'}>
+                            { item }
+                        </Tag>
 
                         <span style={{ paddingLeft: 10 }}>
                             { context.data

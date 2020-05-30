@@ -6,7 +6,8 @@ import {
     Select,
     Alert,
     Button,
-    Spin
+    Spin,
+    Tag
 } from 'antd';
 import axios from 'axios';
 import CodesSelect from './CodesSelect';
@@ -176,8 +177,6 @@ export default function Recoding() {
             })
         }
 
-    console.log(state)
-
     // show predictions of recoding -----------------------------
     const Predictions = (
             <div>
@@ -206,17 +205,11 @@ export default function Recoding() {
 
                 <div style={{ marginTop: 50 }}>{
                     state.predictions.map(
-                        item => (
+                        (item, inx) => (
                             <div key={item}>
-                                <span style={{
-                                    padding: 5,
-                                    background: "#1890ff",
-                                    borderRadius: 2,
-                                    color: "white",
-                                    marginRight: 5
-                                }}>
+                                <Tag color={inx === 0 ? 'geekblue': 'orange'}>
                                     {item}
-                                </span> <span>
+                                </Tag> <span>
                                     {context.data
                                         .codes[state.classification2]
                                         .find(o => o.code === item)[title]

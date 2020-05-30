@@ -143,6 +143,7 @@ export default function CodesSelect(props) {
             allowClear
             onChange={props.handleChange}
             placeholder={t('please-select')}
+            value={props.value ? props.value : ""}
         >
             { nodes.map(item => item) }
         </TreeSelect>
