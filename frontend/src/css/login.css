@@ -1,0 +1,40 @@
+.wrapper {
+    height: 95vh;
+    min-height: 600px;
+    background-color: rgb(10, 10, 10);
+}
+
+.lang-div { 
+    text-align: right;
+    color: thistle;
+    padding: 0px 50px;
+}
+
+.logo-div {
+    text-align: center;
+    padding-top: 15px;
+}
+
+.my-div-form {
+    width: 350px;
+    padding: 20px;
+    margin: auto;
+    margin-top: 12vh;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.10);
+    box-shadow: 3px 3px 10px 3px rgb(40, 40, 40);
+    border-top: 3px solid #1890ff;
+}
+
+.my-label {
+    color: white;
+    font-size: 16px;
+}
+
+footer {
+    background-color: rgb(15, 15, 15);
+    width: 100%;
+    padding: 25px;
+    color: rgb(124, 124, 124);
+    text-align: center;
+}

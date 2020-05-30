@@ -1,0 +1,106 @@
+{
+    "language": "Language",
+    "security": "Security",
+    "logout": "Logout",
+    "coding": "Coding",
+    "recoding": "Recoding",
+    "my-files": "My files",
+    "please-wait": "please wait...",
+    "back": "Back",
+    "yes": "Yes",
+    "no": "No",
+    "submit": "Submit",
+    "please-select": "Please select",
+    "login": "Login",
+    "delete": "Delete",
+    
+    "languages": {
+        "german": "German",
+        "french": "French",
+        "italian": "Italian",
+        "english": "English"
+    },
+    
+    "messages": {
+        "form": {
+            "required": "This field is required",
+            "too-short": "Too short",
+            "passwords-not-match": "Passwords do not match",
+            "not-email": "Not valid email format"
+        },
+        "sth-went-wrong": "Sorry! Something went wrong...",
+        "data-deleted-message": "Data deleted successfully",
+        "data-added-message": "Data added successfully",
+        "loading": "Loading...",
+        "no-codes-before-clsf-selected": "No codes if no classification selected",
+        "file-deleted-message": "File deleted"
+    },
+
+    "login-view": {
+        "username": "Nome utente",
+        "password": "Password",
+        "open-account": "Apri un conto",
+        "sign-up": "Modulo di iscrizione",
+        "first-name": "Nome",
+        "last-name": "Cognome",
+        "email": "E-mail",
+        "password2": "Confermare la password",
+        "sign-up-button": "Iscriviti"
+    },
+    
+    "coding-view": {
+        "classification": "Classification",
+        "level": "Code level",
+        "input": "Occupation/economic activity",
+        "button": "Run coding",
+        "alert-message": "Coding of occupational/economic activity data",
+        "alert-description": "Specify the language of the occupation/economic activity entry, the classification against which the entry will be coded and the desired level of prediction(s). The level input usually corresponds to the number of digits in a classificaiton code. Any arbitrary textual description can be entered in the last field which is coded.",
+        "level-info": "Not available if no classification selected",
+        "predicting-spin": "Running coding...",
+        "prediction-successful": "Coding finished successfully",
+        "new-prediction-button": "New coding",
+        "feedback-alert-message": "Feedback",
+        "feedback-alert-description": "If possible, please specify below if the predicted code/title corresponds to the coded text.",
+        "feedback-question": "The classification code is correct?",
+        "feedback-submitted-message": "Thank you for your feedback!",
+        "codes-select": "Please specify which code/title matches best the coded text"
+    },
+
+    "recoding-view": {
+        "from-classification": "Recode from",
+        "end-classification": "Recode to",
+        "code-title": "Code/Title",
+        "alert-message": "Recoding between two classifications",
+        "alert-description": "Specify an starting and a target classification to perform a recoding (or transcoding) between them. The result may include one or more outcomes ordered by their likelihood.",
+        "button": "Run recoding",
+        "classification-2-crosswalk": "No crosswalks defined from the selected starting classification",
+        "recoding-successful": "Recoding successful",
+        "new-recoding-button": "New recoding"
+    },
+
+    "my-files-view": {
+        "upload": "Upload",
+        "loading-files-spin": "Loading, please wait",
+        "drawer-title": "Upload new file",
+        "add-new": "Add new",
+        "upload-form": {
+            "name": "Name",
+            "info": "Description",
+            "excel": "MS Excel"
+        }
+    },
+
+    "coding-drawer": {
+        "title": "Coding file data",
+        "info": "Specify the classification against which the coding will be executed and a desired code level.",
+        "variable": "Column"
+    },
+
+    "recoding-drawer": {
+        "title": "Recoding file data",
+        "from-cls": "Recode from",
+        "to-cls": "Recode to",
+        "info": "Specify the classifications between which the recoding will be performed. It is also required to specify which column of the file contains the starting codes.",
+        "variable": "Column"
+    }
+}
