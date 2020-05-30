@@ -1,154 +1,135 @@
 {
-    "general": {
-        "help": "Hilfe",
-        "submit": "Absenden",
-        "cancel": "Abbrechen",
-        "close": "Schließen",
-        "language": "Sprache",
-        "created-date": "Erstellt",
-        "add-new-btn": "Neue Eingabe",
-        "download": "Herunterladen",
-        "delete": "Löschen"
-    },
-
-    "messages": {
-        "field-obligatory": "Dieses Feld kann nicht leer sein",
-        "request-failed": "Verbindungsausfall",
-        "request-success": "Erfolgreich hinzugefügt",
-        "request-success-update": "Erfolgreich aktualisiert",
-        "data-deleted": "Gelöscht",
-        "are-you-sure": "Sind Sie sicher?",
-        "no": "Nein",
-        "yes": "Ja",
-        "no-data-alert": "Nichts vorzuweisen. Keine Angaben für diese Seite"
-    },
-
-    "login": {
-        "login": "Anmelden",
-        "welcome-text": "Kodieren Sie Ihre Berufsdatenbank nach einem standardisierten Klassifikationsschema. Procode ist ein Werkzeug, das Ihre Arbeit durch den Einsatz von fortgeschrittenen maschinellen Lernalgorithmen unterstützt, die auf einem großen Datenbestand von Vorab-Codierungen basieren.",
-        "register": "Sich anmelden",
-        "title": "Anmeldung",
-        "username": "Benutzer",
-        "password": "Kennwort",
-        "sign-up": {
-            "title": "Neue Benutzer",
-            "email": "E-mail",
-            "password": "Kennwort",
-            "password2": "Kennwort wiederholen"
-        }
-    },
-
-    "langs": {
-        "en": "Englisch",
+    "language": "Sprache",
+    "security": "Sicherheit",
+    "logout": "Abmelden",
+    "coding": "Kodierung",
+    "recoding": "Umkodierung",
+    "my-files": "Meine Dateien",
+    "please-wait": "Bitte warten",
+    "back": "Zurück",
+    "yes": "Ja",
+    "no": "Nein",
+    "submit": "Absenden",
+    "please-select": "Bitte wählen",
+    "login": "Anmelden",
+    "delete": "Löschen",
+    "modify": "Ändern",
+    "scroll-on": "Blättern",
+    "scroll-off": "Blättern aus",
+    "about": "Information",
+    "cancel": "Abbrechen",
+    
+    "languages": {
+        "german": "Deutsch",
+        "french": "Französisch",
+        "italian": "Italienisch",
+        "english": "Englisch",
         "ge": "Deutsch",
-        "fr": "Französisch",
-        "it": "Italienisch"
+        "fr": "français",
+        "it": "Italiano",
+        "en": "English"
     },
-
-    "header": {
-        "search-placeholder": "Kodierung oder Transcodierung die Hochladen Datei",
-        "security": "Sicherheit",
-        "language": "Sprache",
-        "logout": "Abmeldung"
-    },
-
-    "file-upload": {
-        "upload-file-btn": "Hochladen Datei",
-        "title": "Neue Datei hochladen",
-        "name": "Name",
-        "lng": "Sprache",
-        "dscr": "Beschreibung",
-        "file": "MS Excel (.xlsx)"
-    },
-
-    "sider": {
-        "coding": "Kodierung",
-        "transcoding": "Transkodierung",
-        "my-files": "Meine Dateien",
-        "history": "Historie"
-    },
-
-    "coding": {
-        "help-text": "Suchen Sie einen Klassifizierungscode für ein ausgewähltes Klassifizierung der Berufe, die eingegebenen Daten und die ausgewählte Codierungspräzision. Die Präzision entspricht in der Regel (nicht immer!) der Anzahl der Stellen eines Klassifizierungscodes.",
-        "page-title": "Codierung",
-        "button-title": "Codierung ausführen",
-        "feedback-text": "Ist der erhaltene Code/Titel korrekt?",
-        "feedback-alert-info": "Ihr Feedback wird verwendet, um die Vorhersagekraft der Software zu verbessern.",
-        "results": {
-            "dont-agree": "Keines der Ergebnisse entspricht den eingegebenen Kriterien",
-            "send-feedback-btn": "Absenden",
-            "feedback-modal-title": "Auswahl des richtigen Codes/Titels",
-            "no-response-msg": "Bitte geben Sie das richtige Ergebnis an",
-            "feedback-sent-msg": "Vielen Dank für Ihr Feedback",
-            "feedback-info": "Das Feld darunter listet alle Codes/Titel für die entsprechende Klassifikation auf. Bitte geben Sie an, welcher davon die eingegebenen (gesuchten) Daten am besten beschreibt",
-            "feedback-text": "Um Procode intelligenter zu machen, geben Sie bitte an, welches der gelieferten Ergebnisse korrekt ist. Wenn keine Ergebnisse korrekt ist, dann wählen Sie die letzte Option und klicken Sie auf den Button 'Senden'.",
-            "no-result-alert": "Procode konnte keine Ergebnisse liefern. Erlauben Sie im obigen Formular die Verwendung des alternativen Algorithmus oder prüfen Sie die Rechtschreibung der eingegebenen Kriterien."
+    
+    "messages": {
+        "form": {
+            "required": "Dieses Feld muss ausgefüllt werden",
+            "too-short": "Zu kurz",
+            "passwords-not-match": "Kennwörte stimmen nicht überein",
+            "not-email": "Nicht gültiges Format"
         },
-        "search": {
-            "input-placeholder": "Beschreibung",
-            "level": "Präzision",
-            "alert-select-scheme": "Präzision vor Auswahl die Klassifikation nicht verfügbar",
-            "scheme-placeholder": "Bitte wählen Sie",
-            "scheme": "Klassifikation:",
-            "text": "Eingabe",
-            "dict": "Führen Sie (falls erforderlich) den alternativen Algorithmus des Procodes aus",
-            "dict-tooltip": "Dieser Algorithmus wird verwendet, wenn das maschinelle Lernen keinen Code/Titel liefert. Der Algorithmus erforscht Synonyme und Definitionen der eingegebenen Kriterien. Warnung: dies kann länger dauern."
-        },
-        "file": {
-            "modal-title": "File coding/transcoding",
-            "coding": "Coding",
-            "transcoding": "Transcoding",
-            "variables": "Variable",
-            "variable-help": "Die für die Codierung ausgewählte Datei kann mehrere Spalten enthalten haben. Wählen Sie denjenigen aus, der die Daten für die Kodierung/Transkodierung enthält",
-            "modal-ok-text": "Ausführen",
-            "dict": "Alternativer Algorithmus ausführen",
-            "scheme-tree-label": "Bitte geben Sie die richtige Antwort an:"
+        "sth-went-wrong": "Entschuldigung! Etwas ist schief gelaufen...",
+        "data-deleted-message": "Daten erfolgreich gelöscht",
+        "data-added-message": "Daten erfolgreich hinzugefügt",
+        "loading": "Laden...",
+        "no-codes-before-clsf-selected": "Keine Codes, wenn keine Klassifizierung ausgewählt wurde",
+        "file-deleted-message": "Gelöschte Datei"
+    },
+
+    "login-view": {
+        "username": "Benutzer",
+        "password": "Passwort",
+        "open-account": "Neues Konto erstellen",
+        "sign-up": "Anmeldeformular",
+        "first-name": "Vorname",
+        "last-name": "Nachname",
+        "email": "E-mail",
+        "password2": "Passwort bestätigen",
+        "sign-up-button": "Anmelden"
+    },
+    
+    "coding-view": {
+        "classification": "Klassifikation",
+        "level": "Code-Niveau",
+        "input": "Beruf/wirtschaftliche Tätigkeit",
+        "button": "Codierung ausführt",
+        "alert-message": "Kodierung von Daten über Berufs-/Wirtschaftsaktivitäten",
+        "alert-description": "Geben Sie die Sprache des Berufs-/Wirtschaftstätigkeitseintrags, die Klassifikation, gegen die der Eintrag kodiert werden soll, und den gewünschten Niveau der Vorhersage(n) an. Das eingegebene Niveau entspricht in der Regel der Anzahl der Ziffern in einem Klassifikationscode. In das letzte Feld, das kodiert wird, kann jede beliebige textliche Beschreibung eingegeben werden.",
+        "level-info": "Nicht verfügbar, wenn keine Klassifizierung ausgewählt wurde",
+        "predicting-spin": "Codierung läuft...",
+        "prediction-successful": "Kodierung erfolgreich abgeschlossen",
+        "new-prediction-button": "Neue Kodierung",
+        "feedback-alert-message": "Feedback",
+        "feedback-alert-description": "Wenn möglich, geben Sie bitte unten an, ob der vorhergesagte Code/Titel mit dem kodierten Text übereinstimmt.",
+        "feedback-question": "Der Klassifizierungscode ist korrekt?",
+        "feedback-submitted-message": "Vielen Dank für Ihr Feedback",
+        "codes-select": "Bitte geben Sie an, welcher Code/Titel am besten zum kodierten Text passt"
+    },
+
+    "recoding-view": {
+        "from-classification": "Umkodieren von",
+        "end-classification": "Umkodieren zu",
+        "code-title": "Code/Titel",
+        "alert-message": "Rekodierung zwischen zwei Klassifikationen",
+        "alert-description": "Geben Sie eine Ausgangs- und eine Zielklassifikation an, um eine Rekodierung zwischen ihnen durchzuführen. Das Ergebnis kann ein oder mehrere Ergebnisse enthalten, die nach ihrer Wahrscheinlichkeit geordnet sind.",
+        "button": "Umkodierung ausführt",
+        "classification-2-crosswalk": "Keine Crosswalk definierten",
+        "recoding-successful": "Umkodierung erfolgreich",
+        "new-recoding-button": "Neue Umkodierung"
+    },
+
+    "my-files-view": {
+        "upload": "Hochladen",
+        "loading-files-spin": "Laden, bitte warten",
+        "drawer-title": "Neue Datei hochladen",
+        "add-new": "Neues hinzufügen",
+        "upload-form": {
+            "name": "Name",
+            "info": "Beschreibung",
+            "excel": "MS Excel"
         }
     },
 
-    "files": {
-        "page-title" : "Meine Datei",
-        "no-data-tag": "Datei ist leer",
-        "file-size": "Datengröße:",
-        "no-dscr": "Keine Beschreibung",
-        "modal-editing-title": "Daten bearbeiten",
-        "results": {
-            "page-title": "Codierungsergebnisse",
-            "page-title-trans": "Transcodierungsergebnisse",
-            "column-input": "Eingabetext",
-            "column-code": "Code",
-            "column-title": "Titel",
-            "column-scheme": "Standardklassifikation",
-            "column-edit": "Ergebnisse bearbeiten",
-            "modal-title": "Ergebnisse verbessern",
-            "modal-obtained-results": "Ergebnisse"
-        }
+    "coding-drawer": {
+        "title": "Codierung von Dateidaten",
+        "info": "Geben Sie die Klassifikation an, anhand derer die Codierung ausgeführt werden soll, sowie eine gewünschte Code-Ebene.",
+        "variable": "Spalte"
     },
 
-    "transcoding": {
-        "page-title": "Transcodierung",
-        "help-text": "Transcodierung zwischen zwei Standardklassifikation der Berufe. Wählen Sie nur anfahrend Standardklassifikation, Code/Titel für die Transcodierung und Endklassifikation.",
-        "starting-scheme": "Transcoding from",
-        "classification": "Code/Titel",
-        "end-scheme": "Transcodierung zu",
-        "error": {
-            "no-content-204": "Transcodierung nicht möglich. Wahrscheinlich, dieser Transcodierungregel ist nicht zwischen diese zwei Klassifikationen erstellt."
-        }
+    "recoding-drawer": {
+        "title": "Umkodierung von Dateidaten",
+        "from-cls": "Umkodieren von",
+        "to-cls": "Umkodieren zu",
+        "info": "Geben Sie die Klassifikationen an, zwischen denen die Umkodierung durchgeführt werden soll. Es muss auch angegeben werden, welche Spalte der Datei die Startcodes enthält.",
+        "variable": "Spalte"
     },
 
-
-    "history": {
-        "page-title": "Historie",
-        "file": "Name von Datei",
-        "coded-in": "Kodiert für",
-        "transcoded-in": "Transcodierung zu"
+    "security-drawer": {
+        "title": "Passwort ändern",
+        "old-password": "Altes Passwort",
+        "new-password": "Neues Passwort",
+        "new-password-confirm": "Neues Passwort (bestätigen)"
     },
 
-    "security": {
-        "title": "Kennwortänderung",
-        "old-pw": "Altes Kennwort",
-        "new-pw": "Neues Kennwort",
-        "new-pw2": "Neues Kennwort (wiederholen)",
-        "success": "Kennwort aktualisiert"
+    "about-modal": {
+        "text": "Procode ist ein Werkzeug, das die automatische (Neu-)Kodierung von Berufen und Wirtschaftssektoren gegen und zwischen verschiedenen Klassifikationen unterstützt. Der Algorithmus des Werkzeugs implementiert einen Alogirithmus des maschinellen Lernens und einen großen Datensatz früherer Kodierungen.",
+        "contact-header": "Kontakt",
+        "contact-text": "Im Falle von Fehlfunktionen oder technischen Fragen wenden Sie sich bitte an"
+    },
+
+    "modify-modal": {
+        "title": "Ergebnisse modifizieren",
+        "info": "Geben Sie an, welcher Code/Titel am besten zu kodiertem Text passt. Ihre Eingabe wird unserem Trainingsdaten für weitere Vorhersagen hinzugefügt.",
+        "or": "------------------------------------ OR -------------------------------------",
+        "codes-select": "Wählen Sie einen Code aus der gesamten Liste der für diese Klassifikation definierten Codes"
     }
 }

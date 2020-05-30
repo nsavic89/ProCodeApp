@@ -1,128 +1,287 @@
-import React from 'react';
-import { Form, Button, Row, Col } from 'antd';
+import React, { useState, useContext } from 'react';
+import {
+    Form, Input, Button, Drawer, message
+} from 'antd';
 import { useTranslation } from 'react-i18next';
-import Logo from '../media/logo_dark.png';
-import ProfessionsImgs from '../media/login_imgs.png';
-import LoginForm from '../components/login/LoginForm';
-import RegisterForm from '../components/login/RegisterForm';
-import Animation from '../media/animation.gif';
-import withAuth from '../hoc/withAuth';
-import LogoUnisante from '../media/logo_unisante.png';
+import '../css/login.css';
+import axios from 'axios';
+import { UserContext } from '../contexts/UserContext';
+import background from '../media/background.png';
+import { GlobalOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 
+/*
+    Login and registration
+*/
 
-const styling = {
-    wrapper: {
-        background: "white" ,
-        height: "100vh",
-        textAlign: "center",
-        color: "#333",
-        minHeight: 750
-    },
-    header: {
-        width: "100%",
-        minHeight: 50,
-        paddingTop: 12,
-        paddingLeft: 25,
-        paddingRight: 25,
-        background: "rgb(30,30,40)",
-        borderBottom: "1px solid silver",
-        color: "white"
-    },
-    lngBtn: {
-        margin: 2,
-        color: "white",
-        boxShadow: "none",
-        border: "none"
-    },
-    logoDiv: {
-        textAlign: "center",
-        marginTop: 50
-    },
-    logo: {
-        height: 75
-    },
-    profImgs: {
-        height: 300,
-        paddingTop: 50,
-        opacity: 0.7
-    },
-    animation: {
-        height: 300,
-        marginTop: 50
-    },
-    welcomeText: {
-        padding: "10vh 50px",
-        textAlign: "center",
-        fontSize: 20,
-        fontWeight: 500,
-        color: "#333"
-    },
-    logoUni: {
-        height: 50
-    }
-}
-
-
-function Login(props) {
+export default function Login() {
     const { t, i18n } = useTranslation();
+    const [ state, setState ] = useState({ signUpDrawer: false });
+    const context = useContext(UserContext);
 
-    if (props.isAuth) {
-        props.history.push('/');
+    const styling = {
+        wrapperCol: {
+            sm: {span: 24}
+        }, 
+        labelCol: {
+            sm: {span: 24}
+        }
     }
 
-    return(
-        <div style={styling.wrapper}>
-                <Row style={styling.header} type="flex" justify="space-between">
-                    <Col>
+    // login
+    const handleLogin = values => {
+        axios.post(
+            `${context.API}/app/api-token-auth/`,
+            values
+        ).then(res => {
+                let token = res.data.token;
+                localStorage.setItem("token", token);
+                window.location.href="/";
+            }
+        ).catch(
+            () => message.error(t('messages.login-failed'))
+        )
+    }
+
+    // login form 
+    const LoginForm = (
+        <Form className="my-form" onFinish={handleLogin}>
+            <Form.Item
+                name="username"
+                label={<span className="my-label">
+                        {t('login-view.username')}
+                    </span>}
+                labelAlign="left"
+                colon={false}
+                {...styling}
+            >
+                <Input 
+                    className="my-input"
+                    size="large"
+                />
+            </Form.Item>
+            <Form.Item
+                {...styling}
+                colon={false}
+                name="password"
+                labelAlign="left"
+                label={<span className="my-label">
+                    {t('login-view.password')}
+                </span>}
+            >
+                <Input.Password
+                    className="my-input"
+                    size="large"
+                />
+            </Form.Item>
+            <Form.Item>
+                <Button 
+                    type="primary" htmlType="submit"
+                    style={{ width: "100%" }}
+                    size="large"
+                >
+                    {t('login')}
+                </Button>
+            </Form.Item>
+        </Form>
+    )
+
+    const handleSignUp = values => {
+        axios.post(`${context.API}/app/sign-up/`, values)
+            .then(() => message.success(t('messages.sign-up-successful')))
+            .catch(() => message.error(t('messages.sign-up-failed')))
+    }
+
+    // sign up form
+    const SignUpForm = (
+        <Form {...styling} className="my-form" onFinish={handleSignUp}>
+            <Form.Item
+                name="first_name"
+                label={t('login-view.first-name')}
+                labelAlign="left"
+            >
+                <Input className="my-input" />
+            </Form.Item>
+
+            <Form.Item
+                name="last_name"
+                label={t('login-view.last-name')}
+                labelAlign="left"
+            >
+                <Input className="my-input" />
+            </Form.Item>
+
+            <Form.Item
+                name="email"
+                label={t('login-view.email')}
+                labelAlign="left"
+                rules={[
                     {
-                        [ "ge", "fr", "en", "it" ].map(
-                            item => (
-                                <Button
-                                    style={styling.lngBtn}
-                                    size="small"
-                                    key={item}
-                                    ghost
-                                    onClick={() => i18n.changeLanguage(item)}
-                                >{item}</Button>
-                            )
-                        )
+                        type: "email",
+                        message: t('messages.form.not-email')
+                    }, {
+                        required: true,
+                        message: t('messages.form.required')
                     }
-                    </Col>
+                ]}
+            >
+                <Input className="my-input" />
+            </Form.Item>
 
-                    <Col>
-                        { t('login.title') }
-                    </Col>
-                </Row>
+            <Form.Item
+                name="username"
+                label={t('login-view.username')}
+                labelAlign="left"
+                rules={[
+                    {
+                        required: true,
+                        message: t('messages.form.required')
+                    },
+                    {
+                        min: 5,
+                        message: t('messages.form.too-short')
+                    }
+                ]}
+            >
+                <Input className="my-input" />
+            </Form.Item>
 
-                <Row type="flex" justify="space-around">
-                    <Col md={{ span: 8 }} xs={{span: 0}}>
-                        <img src={ProfessionsImgs} alt="" style={styling.profImgs} />
-                    </Col>
+            <Form.Item
+                name="password"
+                label={t('login-view.password')}
+                labelAlign="left"
+                rules={[
+                    {
+                        required: true,
+                        message: t('messages.form.required')
+                    },
+                    {
+                        min: 8,
+                        message: t('messages.form.too-short')
+                    }
+                ]}
+            >
+                <Input.Password 
+                    className="my-input"
+                />
+            </Form.Item>
 
-                    <Col md={{ span: 8 }} xs={{span: 24}}>
-                        <div style={styling.logoDiv}>
-                            <img src={Logo} alt="" style={styling.logo} />
-                        </div>
+            <Form.Item
+                name="password2"
+                label={t('login-view.password2')}
+                labelAlign="left"
+                rules={[
+                    {
+                        required: true,
+                        message: t('messages.form.required')
+                    }, 
+                    ({getFieldValue}) => ({
+                        validator(rule, value) {
+                            if (!value || getFieldValue('password') === value) {
+                                return Promise.resolve();
+                            }
+                            return Promise.reject(t('messages.form.passwords-not-match'));
+                        }
+                    })
+                ]}
+            >
+                <Input.Password
+                    className="my-input"
+                />
+            </Form.Item>
 
-                        <div>
-                            <LoginForm />
-                            <RegisterForm />
-                        </div>
-                    </Col>
+            <Form.Item>
+                <Button 
+                    type="primary"
+                    danger
+                    htmlType="submit"
+                    style={{ width: "100%" }}
+                >
+                    {t('login-view.sign-up-button')}
+                </Button>
+            </Form.Item>
+        </Form>
+    )
 
-                    <Col md={{ span: 8 }} xs={{span: 0}}>
-                        <img src={Animation} alt="" style={styling.animation} />
-                    </Col>
-                </Row>
-                <div style={styling.welcomeText}>
-                    { t('login.welcome-text') }
+    return (
+        <div>
+            <section className="wrapper"
+                style={{
+                    backgroundImage: `url(${background})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "cover"
+                }}>
+                    <div className="lang-div">
+                        <GlobalOutlined style={{ marginRight: 10 }}/> 
+                        {['ge', 'fr', 'it', 'en'].map(item => (
+                            <Button 
+                                key={item} size="sm" 
+                                ghost style={{ border: "none" }}
+                                onClick={() => i18n.changeLanguage(item)}
+                            >{ t(`languages.${item}`) }
+                            </Button>
+                        ))}
+                    </div>
+
+                    <div className="logo-div">
+                        <img 
+                            src={require('../media/logoLight.png')}
+                            height={50} alt="" 
+                        />
+                    </div>
+                    <div className="my-div-form">
+                        { LoginForm }
+                    </div>
+                    
+                    <div 
+                        style={{ marginTop: 25, textAlign: "center" }}
+                    >
+                        <Button 
+                            type="primary"
+                            danger
+                            onClick={() => setState({...state, signUpDrawer: true})}     
+                            size="large"
+                        >
+                            {t('login-view.open-account')}
+                        </Button>
+                    </div>
+            </section>
+
+            <footer>
+                <div className="unisante">
+                    <div style={{ textAlign: "center" }}>
+                        <img 
+                            src={require('../media/logoUnisante.png')}
+                            height={50} alt="" 
+                        />
+                    </div>
+                    
+                    <div style={{ marginTop: 25 }}>
+                        Centre universitaire de médecin général et santé publique
+                    </div>
+
+                    <div>
+                        <MailOutlined /> <a href="mailto: nenad.savic@unisante.ch">
+                            nenad.savic@unisante.ch
+                        </a>
+                    </div>
+                    <div>
+                        <PhoneOutlined /> <span>
+                            +41 21 314 37 82
+                        </span>
+                    </div>
                 </div>
+            </footer>
 
-                <div style={styling.logoDiv}>
-                <img src={LogoUnisante} alt="" style={styling.logoUni} />
-            </div>
-        </div> 
+            <Drawer
+                title={t('login-view.sign-up')}
+                placement="right"
+                closable={false}
+                onClose={() => setState({...state, signUpDrawer: false})}
+                visible={state.signUpDrawer}
+                width={350}
+            >
+                {SignUpForm}
+            </Drawer>
+        </div>
     )
 }
-
-export default withAuth( Form.create()( Login ) );

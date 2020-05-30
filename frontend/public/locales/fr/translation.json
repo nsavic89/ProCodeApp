@@ -1,160 +1,142 @@
 {
-    "general": {
-        "help": "Aide",
-        "submit": "Envoyer",
-        "cancel": "Annuler",
-        "close": "Fermer",
-        "language": "Langue",
-        "created-date": "Crée",
-        "add-new-btn": "Nouveau",
-        "download": "Télécharger",
-        "delete": "Supprimer"
+    "language": "Langue",
+    "security": "Sécurité",
+    "logout": "Déconnexion",
+    "coding": "Coder",
+    "recoding": "Re-coder",
+    "my-files": "Mes fichiers",
+    "please-wait": "Veuillez patienter...",
+    "back": "Retour",
+    "yes": "Oui",
+    "no": "Non",
+    "submit": "Envoyer",
+    "please-select": "Veuillez sélectionner",
+    "login": "Connexion",
+    "delete": "Supprimer",
+    "modify": "Modifier",
+    "scroll-on": "Défilement",
+    "scroll-off": "Désactiver",
+    "about": "Info",
+    "cancel": "Annuler",
+    
+    "languages": {
+        "german": "allemend",
+        "french": "français",
+        "italian": "italien",
+        "english": "anglais",
+        "ge": "Deutsch",
+        "fr": "français",
+        "it": "Italiano",
+        "en": "English"
     },
-
+    
     "messages": {
-        "field-obligatory": "Ce champ doit être rempli",
-        "request-failed": "Connexion échouée",
-        "request-success": "Ajouté avec succès",
-        "request-success-update": "Mis-à-jour avec succès",
-        "data-deleted": "Donnée surprimmée",
+        "form": {
+            "required": "Champ obligatoire",
+            "too-short": "Trop courte",
+            "passwords-not-match": "les mots de passe ne concordent pas",
+            "not-email": "Format de e-mail non valide"
+        },
+        "sth-went-wrong": "Désolé ! Quelque chose a mal tourné...",
+        "data-deleted-message": "Données supprimées avec succès",
+        "data-added-message": "Données ajoutées avec succès",
+        "loading": "Téléchargement...",
+        "no-codes-before-clsf-selected": "Aucun code au cas si aucune classification n'est sélectionnée",
+        "file-deleted-message": "Fichier supprimé",
+        "sign-up-successful": "Inscrit avec succès",
+        "sign-up-failed": "Inscription échouée",
+        "login-failed": "Utilisateur/mot de passe faux",
+        "password-changed-successfully": "Votre mot de passe est mis à jour avec succès!",
         "are-you-sure": "Êtes-vous sûr?",
-        "no": "Non",
-        "yes": "Oui",
-        "no-data-alert": "Rien à montrer. Aucun contenu correspondant à cette page.",
-        "invalid-email": "E-mail non valable"
+        "no-files-uploaded": "Vous n'avez aucun fichier téléchargé.",
+        "file-uploaded": "Nouveau fichier téléchargé"
     },
 
-    "login": {
-        "login": "Connexion",
-        "welcome-text": "Codez votre base de données professionnelles selon un système de classification normalisé. Procode est un outil qui soutient votre travail en utilisant des algorithmes d'apprentissage machine avancés basés sur un large ensemble de données de codages antérieurs",
-        "register": "Nouveau utilisateur",
-        "title": "Connexion",
+    "login-view": {
         "username": "Nom d'utilisateur",
         "password": "Mot de passe",
-        "sign-up": {
-            "title": "Nouveau utilisateur",
-            "email": "E-mail",
-            "password": "Mot de passe",
-            "password2": "Répetez mot de passe",
-            "message-success": "Inscrit avec succès"
-        }
+        "open-account": "Ouvrir un compte",
+        "sign-up": "Inscription",
+        "first-name": "Prénom",
+        "last-name": "Nom",
+        "email": "E-mail",
+        "password2": "Confirmer le mot de passe",
+        "sign-up-button": "S'inscrire"
     },
-
-    "langs": {
-        "en": "anglais",
-        "ge": "allemand",
-        "fr": "français",
-        "it": "italian"
-    },
-
-    "header": {
-        "search-placeholder": "Codage/transcodage de fichier",
-        "security": "Sécurité",
-        "language": "Langue",
-        "logout": "Déconnexion"
-    },
-
-    "file-upload": {
-        "upload-file-btn": "Téléchargement de fichier",
-        "title": "Téléchargement d'un nouveau fichier",
-        "name": "Nom de fichier",
-        "lng": "Langue",
-        "dscr": "Déscription",
-        "file": "MS Excel (.xlsx)"
-    },
-
     
-    "sider": {
-        "coding": "Codage",
-        "transcoding": "Transcodage",
-        "my-files": "Mes fichiers",
-        "history": "Historique"
+    "coding-view": {
+        "classification": "Nomenclature",
+        "level": "Niveau",
+        "input": "Profession/activité économique",
+        "button": "Lancer codage",
+        "alert-message": "Codage des données relatives aux activités professionnelles/économiques",
+        "alert-description": "Précisez la langue de la profession/activité économique du texte saisi, la nomenclature par rapport à laquelle il sera codé et le niveau du code évalué. Le niveau d'un code correspond généralement au nombre de chiffres dans ce code.",
+        "level-info": "Pas disponible si aucune classification n'a été sélectionnée",
+        "predicting-spin": "Exécution du codage...",
+        "prediction-successful": "Codage terminé avec succès",
+        "new-prediction-button": "Nouveau codage",
+        "feedback-alert-message": "Feedback",
+        "feedback-alert-description": "Si possible, veuillez préciser ci-dessous si le code/titre prévu correspond au texte codé.",
+        "feedback-question": "Le code de la nomenclature est-il correct ?",
+        "feedback-submitted-message": "Merci pour votre contribution !",
+        "codes-select": "Veuillez préciser le code/titre qui correspond le mieux au texte codé"
     },
 
-    "coding": {
-        "help-text": "Trouver un code/titre pour le nomenclature sélectionné qui correspond à la déscription entrée et le niveau sélectioné. Le niveua souvant (pas toujours) correspond au nombre de chiffres du code de nomenclature.",
-        "page-title": "Codage",
-        "button-title": "Lancer codage",
-        "feedback-text": "Le code/titre obtenu est-il correct ?",
-        "feedback-alert-info": "Vos commentaires seront utilisés pour améliorer la puissance de prédiction du logiciel",
-        "results": {
-            "dont-agree": "Le(s) résultat(s) n'est (ne sont) pas correct(s)",
-            "send-feedback-btn": "Envoyer",
-            "feedback-modal-title": "Sélection de code/titre",
-            "no-response-msg": "Merci de choisir un résultat correct",
-            "feedback-sent-msg": "Merci pour votre réponse",
-            "feedback-info": "Le champ ci-dessous contien tous codes/titres qui correspondent au nomenclature. Merci de sélectionner quel entre eux décrit le mieux les critères entrées.",
-            "feedback-text": "Afin d'améliorer Procode, merci de choisir le résultat qui est plus correct. Si aucun résultat est correct, choisissez la dernière option est appuyez sur 'envoyer'.",
-            "error-no-lang": "La langue sélectionnée n'est pas disponible pour ce nomenclature",
-            "no-result-alert": "Procode n'a pas fourni de résultats. Dans le formulaire ci-dessus, autoriser l'utilisation de l'algorithme alternatif ou vérifier l'orthographe des critères saisis."
-        },
-        "search": {
-            "input-placeholder": "Déscription",
-            "level": "Niveau",
-            "alert-select-scheme": "Niveau indisponible si aucune nomenclature sélectionnée",
-            "scheme-placeholder": "Sélectionner une nomenclature",
-            "scheme": "Nomenclature:",
-            "text": "Saisie de texte",
-            "dict": "Exécutez (si nécessaire) l'algorithme alternatif du Procode",
-            "dict-tooltip": "Cet alorithme est utilisé lorsque l'apprentissage machine ne parvient pas à fournir le code/titre. L'algorithme explore les synonymes et les définitions des critères entrés. Attention : cela peut prendre plus de temps."
-        },
-        "file": {
-            "modal-title": "Codage/Transcodage de fichier",
-            "coding": "Codage",
-            "transcoding": "Transcodage",
-            "variables": "Variable",
-            "variable-help": "Le fichier sélectionné pour codage peut contenir plusieur collones. Choisissez la collone qui contient les données pour codage/transcodage.",
-            "modal-ok-text": "Lancer",
-            "dict": "Exécution d'un algorithme alternatif",
-            "scheme-tree-label": "Veuillez préciser la bonne réponse :"
+    "recoding-view": {
+        "from-classification": "Recoder de",
+        "end-classification": "Recoder à",
+        "code-title": "Code/Titre",
+        "alert-message": "Recodage entre deux nomenclature",
+        "alert-description": "Spécifier une nomenclature de départ et une nomenclature cible pour effectuer un recodage (ou transcodage) entre elles. Le résultat peut comprendre un ou plusieurs résultats classés selon leur probabilité.",
+        "button": "Lancer recodage",
+        "classification-2-crosswalk": "Aucun crosswalk défini à partir de la classification sélectionnéen",
+        "recoding-successful": "Recodage réussi",
+        "new-recoding-button": "Recommencer"
+    },
+
+    "my-files-view": {
+        "upload": "Télécharger",
+        "loading-files-spin": "Téléchargement, veuillez patienter",
+        "drawer-title": "Télécharger un nouveau fichier",
+        "add-new": "Ajouter",
+        "upload-form": {
+            "name": "Nom",
+            "info": "Description",
+            "excel": "MS Excel"
         }
     },
 
-
-    "files": {
-        "page-title" : "Mes fichiers",
-        "no-data-tag": "Le fichier est vide",
-        "file-size": "Taille de fichier",
-        "no-dscr": "Aucun déscription",
-        "modal-editing-title": "Réviser données",
-        "results": {
-            "page-title": "Résultats de codage",
-            "page-title-trans": "Résultats de transcodage",
-            "column-input": "Texte entrée",
-            "column-code": "Code",
-            "column-title": "Titre",
-            "column-scheme": "Nomenclature",
-            "column-edit": "Corriger résultats",
-            "modal-title": "Ameliorer résultats",
-            "modal-obtained-results": "Attribuer code/titre"
-        }
+    "coding-drawer": {
+        "title": "Coder un fichier",
+        "info": "Précisez la nomenclature par rapport à laquelle le codage sera exécuté et un niveau de code souhaité.",
+        "variable": "Colonne"
     },
 
-    "transcoding": {
-        "page-title": "Transcodage",
-        "help-text": "Transcoding or translation between different classification schemes is performed on this page. Simply select the starting scheme, desired code/title for transcoding and a target scheme. The results will appear immediately below the fields.",
-        "starting-scheme": "Transcoder depuis",
-        "classification": "Code/titre",
-        "button-title": "Lancer transcodage",
-        "end-scheme": "Transcoder à",
-        "error": {
-            "no-content-204": "Procode failed to transcode the selected input code to the destination scheme. This is probably due to the missing transcoding rule between the two classification schemes."
-        }
+    "recoding-drawer": {
+        "title": "Recoding",
+        "from-cls": "Recoder de",
+        "to-cls": "Recoder à",
+        "info": "Précisez les nomenclatures entre lesquelles le recodage sera effectué. Il est également nécessaire de préciser quelle colonne du fichier contient les codes.",
+        "variable": "Colonne"
     },
 
-
-    "history": {
-        "page-title": "Historique",
-        "file": "Nom de fichier",
-        "coded-in": "Codé pour",
-        "transcoded-in": "Transcodé à"
+    "security-drawer": {
+        "title": "Changer le mot de passe",
+        "old-password": "Mot de passe actuel",
+        "new-password": "Nouveau mot de passe",
+        "new-password-confirm": "Nouveau mot de passe (confirmer)"
     },
 
-    "security": {
-        "title": "Changement de mot de passe",
-        "old-pw": "Ancien mot de passe",
-        "new-pw": "Nouveau mot de passe",
-        "new-pw2": "Nouveau mot de passe (confirmer)",
-        "success": "Mot de passe changé avec succès"
+    "about-modal": {
+        "text": "Procode est un outil qui soutien (re-)codages automatiques par rapport et entre differentes nomenclatures d'occupations et activités économiques. L'outil comprend une téchnique d'apprentissage machine et aussi une base de données avec les codages précédentes.",
+        "contact-header": "Coordonnées de contact",
+        "contact-text": "Au cas de malfunction de l'outil, veuillez contacter:"
+    },
+
+    "modify-modal": {
+        "title": "Mofifier code(s)",
+        "info": "Veuillez préciser quel code/titre correspend au texte codé. Ces données seront ajoutées aux données d'apprentissage machine.",
+        "or": "------------------------------------ OU -------------------------------------",
+        "codes-select": "Sélectionnez un code dans la liste des codes définis pour cette nomenclature"
     }
 }
