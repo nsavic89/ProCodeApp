@@ -1,11 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import {
     Drawer,
     Form,
     Select,
     Button,
     Radio,
-    Spin
+    Spin,
+    Alert
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../contexts/UserContext';
@@ -24,6 +25,37 @@ export default function RecodingDrawer(props) {
         Pragma: "no-cache",
         Authorization: 'JWT ' + localStorage.getItem('token')
     }
+
+    // load crosswalks
+    // in order to know which starting classification has end classifications
+    useEffect(() => {
+        // only if not loaded
+        if (!context.data.crosswaks) {
+            axios.get(
+                `${context.API}/crosswalk-files/`,
+                {headers: {
+                    Pragma: "no-cache",
+                    Authorization: 'JWT ' + localStorage.getItem('token')
+                }}
+            ).then(
+                res => {
+                    let crosswalks = res.data;
+                    context.fun.updateData('crosswalks', crosswalks);
+                    setState({
+                        ...state,
+                        loading: false
+                    })
+                }
+            ).catch(
+                e => {
+                    console.log(e);
+                    if (e.response) {
+                        setState({ loading: false, error: e.response.status });
+                    }
+                }
+            )
+        }
+    }, [])
 
     // handle submit button in form
     // runs recoding
@@ -94,10 +126,46 @@ export default function RecodingDrawer(props) {
         variables = variables.concat(variables2);
     }
 
+    const handleFormValueChange = obj => {
+        if ("from_cls" in obj) {
+        // needed to know what codes/titles to load in Tree Nodes
+
+            let clsf1 = obj['from_cls'];
+            let crswks = context.data
+                            .crosswalks
+                            .filter(o => o['classification_1'] === clsf1);
+
+            // well if no crosswalks
+            if (crswks.length === 0) {
+                setState({
+                    ...state, 
+                    endClsfList: false,
+                    classification1: obj['from_cls']
+                });
+                return;
+            }
+            
+            // populate classsifation 2
+            let clsf2 = [];
+            for (let i in crswks) {
+                let reference = crswks[i]['classification_2'];
+                let classification2 = context.data
+                                        .classifications
+                                        .find(o => o.reference === reference);
+                clsf2.push(classification2);
+            }
+            setState({
+                ...state, 
+                endClsfList: clsf2,
+                classification1: obj['from_cls']});
+        }
+    }
+
     const RecodingForm = (
         <Form
             onFinish={handleSumit}
             {...context.styling.formItemLayout}
+            onValuesChange={handleFormValueChange}
         >
             <Form.Item
                 name="from_cls"
@@ -129,9 +197,10 @@ export default function RecodingDrawer(props) {
                         message: t('messages.form.required')
                     }
                 ]}
-            >
+            >{
+                state.endClsfList ?
                 <Select>{
-                    context.data.classifications.map(
+                    state.endClsfList.map(
                         item => (
                             <Select.Option key={item.id} value={item.reference}>
                                 { item.short } ({item.name})
@@ -139,7 +208,13 @@ export default function RecodingDrawer(props) {
                         )
                     )
                 }</Select>
-            </Form.Item>
+                : <Alert
+                    type="warning"
+                    message={t('recoding-view.classification-2-crosswalk')}
+                    showIcon
+                    banner={true}
+                />
+            }</Form.Item>
 
             <Form.Item
                 name="variable"

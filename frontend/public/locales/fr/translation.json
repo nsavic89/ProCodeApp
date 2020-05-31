@@ -92,7 +92,7 @@
         "alert-message": "Recodage entre deux nomenclature",
         "alert-description": "Spécifier une nomenclature de départ et une nomenclature cible pour effectuer un recodage (ou transcodage) entre elles. Le résultat peut comprendre un ou plusieurs résultats classés selon leur probabilité.",
         "button": "Lancer recodage",
-        "classification-2-crosswalk": "Aucun crosswalk défini à partir de la classification sélectionnéen",
+        "classification-2-crosswalk": "Aucun crosswalk défini à partir de la nomenclature sélectionnée",
         "recoding-successful": "Recodage réussi",
         "new-recoding-button": "Recommencer"
     },
