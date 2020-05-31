@@ -324,6 +324,9 @@ export default function Coding() {
 
     // submit user feedback
     const submitFeedback = code => {
+        // spin while waiting request to send respose
+        setState({ ...state, feedbackSending: true });
+
         let data = {...state.inputs};
         data.text = data['my_input'];
         data.code = code;
@@ -341,7 +344,8 @@ export default function Coding() {
                     error: e.response.status,
                     feedbackSubmitted: false,
                     selectedFeedbackCode: false,
-                    codeNotCorrect: false
+                    codeNotCorrect: false,
+                    feedbackSending: false
                 });
             } else {
                 setState({
@@ -349,7 +353,8 @@ export default function Coding() {
                     error: "40x",
                     feedbackSubmitted: false,
                     selectedFeedbackCode: false,
-                    codeNotCorrect: false
+                    codeNotCorrect: false,
+                    feedbackSending: false
                 });
             }
         } )
@@ -476,7 +481,20 @@ export default function Coding() {
             )
         }</div>
 
-        { state.feedbackSubmitted ? "" : Feedback }
+        <div>
+            { 
+                state.feedbackSubmitted || state.feedbackSending ? 
+                <div /> : Feedback 
+            }
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: 50 }}>
+        {
+            state.feedbackSending ?
+            <Spin tip={t('please-wait')} />
+            : <div />
+        }
+        </div>
     </div>);
 
 

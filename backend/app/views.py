@@ -91,10 +91,10 @@ class FeedbackView(APIView):
         if feedback_ser.is_valid():
             # lemmatize, tokenize, to lower from .coding
             prep_text = prepare_input(
-                [ feedback_ser.data['text'] ],
-                feedback_ser.data['language']
+                [ feedback_ser.validated_data['text'] ],
+                feedback_ser.validated_data['language']
             )
-            fb.data['text'] = prep_text
+            feedback_ser.validated_data['text'] = prep_text[0]
             fb = feedback_ser.save()
             
             # save same text for the training data towards top-level
@@ -112,7 +112,7 @@ class FeedbackView(APIView):
                     user=fb.user,
                     text=fb.text,
                     language=fb.language,
-                    code=code_instance.code,
+                    code=child_of,
                     level=code_instance.level-1,
                     classification=fb.classification
                 )
