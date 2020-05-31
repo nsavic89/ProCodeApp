@@ -6,9 +6,9 @@ from .views import (
     MyFileDataViewSet,
     TranscodingView,
     CodesByCls,
+    UserView,
     FileDataByFileID,
     download,
-    sign_up,
     pw_change
 )
 from rest_framework.routers import DefaultRouter
@@ -31,7 +31,7 @@ urlpatterns = [
     path('download/pk=<int:pk>/', download),
 
     # user sign-up/login
-    path('sign-up/', sign_up),
+    path('user/', UserView.as_view()),
     path('pw-change/', pw_change),
     path('api-token-auth/', obtain_jwt_token),
     path('api-token-verify/', verify_jwt_token),

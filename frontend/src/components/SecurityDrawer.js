@@ -10,6 +10,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
+import { UserOutlined } from '@ant-design/icons';
 
 
 
@@ -126,7 +127,7 @@ export default function SecurityDrawer(props) {
             </Form.Item>
         </Form>
     )
-
+    
     return(
         <Drawer
             placement="right"
@@ -135,6 +136,15 @@ export default function SecurityDrawer(props) {
             onClose={() => {setState({}); props.onClose()}}
             width={350}
         >
+            <div style={{ marginBottom: 25, color: 'red', fontSize: 16 }}>
+                <UserOutlined /> <span>
+                    {
+                        context.state.user ? 
+                        context.data.user.username
+                        : "401"
+                    }
+                </span>
+            </div>
             {
                 !state.loading ? 
                 <div>

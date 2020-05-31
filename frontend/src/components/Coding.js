@@ -12,7 +12,7 @@ import {
     Tag
 } from 'antd';
 import { UserContext } from '../contexts/UserContext';
-import { LoadingOutlined, CheckCircleFilled } from '@ant-design/icons';
+import { LoadingOutlined, CheckCircleFilled, ConsoleSqlOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import CodesSelect from './CodesSelect';
 
@@ -217,7 +217,7 @@ export default function Coding() {
                     ]}
                 >
                     {
-                        context.state.classifications === true ?
+                        context.state.classifications ?
                         <Select>
                             { context.data.classifications.map(
                                 item => (
@@ -307,9 +307,10 @@ export default function Coding() {
     // submit user feedback
     const submitFeedback = code => {
         let data = {...state.inputs};
+        data.text = data['my_input'];
         data.code = code;
-        data.user = 'admin'; // later must be replaced
-
+        data.user = context.data.user.username; // later must be replaced
+        
         axios.post(
             `${context.API}/app/feedback/`,
             data,
@@ -342,7 +343,7 @@ export default function Coding() {
     const handleCodesSelectChange = value => {
         setState({...state, selectedFeedbackCode: value});
     }
-
+    
     const Feedback = (
         <div>
             <div style={{ marginTop: 25 }}>

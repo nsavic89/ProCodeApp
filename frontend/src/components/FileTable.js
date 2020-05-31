@@ -396,7 +396,7 @@ export default function FileTable(props) {
         height: '30px',
         lineHeight: '30px'
       };
-      console.log(state)
+
     const handleFeedback = () => {
         /*
             this function is executed on OK button in the 
@@ -409,7 +409,75 @@ export default function FileTable(props) {
             * it also updates the data of this fil
             replaces the given code(s) with the selected one
         */
+        const codeForFeedback = state.feedback; // code for feedback - selected in modal
+        let modify = [...state.modify];         // modify 0 - row in table | modify 1 - clsf
+        const row = modify[0];
+        const clsf = modify[1];
+        const data = [...state.data];           // all data of the considered file
+        let dataFile = data[row];
         
+        // update code regarding the provided feedback
+        dataFile.codes = JSON.parse(dataFile.codes);
+        dataFile.codes[clsf] = [codeForFeedback];
+        dataFile.codes = JSON.stringify(dataFile.codes);
+
+        let promises = [];
+
+        // promise sent to update row (data-file) in table (file)
+        promises.push(axios.put(
+            `${context.API}/app/my-file-data/${dataFile.id}/`,
+            dataFile,
+            {headers: headers}
+        ))
+
+        
+        // feedback
+        const myfile = context.data.myfiles.find(o => o.id === props.myfile);
+        const codedVar = JSON.parse(myfile['coded_variables'])[clsf];
+        console.log(codedVar)
+        // if this variable has been coded 
+        // if recoded it has no text that was coded
+        // and thus a feedback cannot be sent
+        if (codedVar) {
+            const text = JSON.parse(data[row].data)[codedVar];
+            const level = context
+                            .data
+                            .codes[clsf]
+                            .find(o => o.code === codeForFeedback)
+                            .level;
+
+            const feedback = {
+                user: context.data.user.username,
+                text: text,
+                classification: clsf,
+                code: codeForFeedback,
+                language: myfile.language,
+                level: level
+            }
+            promises.push(axios.post(
+                `${context.API}/app/feedback/`,
+                feedback,
+                {headers: headers}
+            ))
+        }
+
+        // resolve promises
+        Promise
+            .all(promises)
+            .then(
+                res => {
+                    // update state and context
+                    const update = res[0].data;
+                    let data = [...state.data];
+                    data[row] = update;
+                    let myFileData = {...context.data.myFileData};
+                    myFileData[props.myfile] = data;
+                    context.fun.updateData('myFileData', myFileData);
+                    setState({...state, data: data, modify: false});
+                })
+            .catch(
+                e => console.log(e)
+            )
     }
 
     const ModifyCodeModal = (
@@ -421,6 +489,7 @@ export default function FileTable(props) {
             okText={t('submit')}
             width={800}
             onOk={handleFeedback}
+            style={{ top: '25px' }}
         >
             {
                 state.modify && state.modify !== false ?
@@ -471,7 +540,7 @@ export default function FileTable(props) {
                            <CodesSelect
                                 title={title}
                                 reference={state.modify[1]}
-                                value={state.codesSelect}
+                                additionalProps={{value: state.codesSelect}}
                                 handleChange={
                                     value => {
                                         setState({

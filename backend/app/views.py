@@ -1,17 +1,15 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
+from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework import viewsets
 from .coding import code
 from .models import Feedback, MyFile, MyFileData
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth import authenticate
-from rest_framework.decorators import (
-    api_view,
-    renderer_classes,
-    permission_classes
-)
+from rest_framework.decorators import renderer_classes, api_view
 from drf_renderer_xlsx.renderers import XLSXRenderer
+from django.contrib.auth.models import User, AnonymousUser
 from core.models import (
     CrosswalkFile,
     Crosswalk,
@@ -56,7 +54,12 @@ class CodingView(APIView):
                 if data['classification'] not in clsf:
                     clsf.append(data['classification'])
 
+                # coded variables
+                coded_variables = json.loads(my_file.coded_variables)
+                coded_variables[data['classification']] = data['variable']
+
                 my_file.classifications = json.dumps(clsf)
+                my_file.coded_variables = json.dumps(coded_variables)
                 my_file.save()
                 # add codes 
                 for i, o in enumerate(my_data):
@@ -87,6 +90,8 @@ class FeedbackView(APIView):
         if feedback_ser.is_valid():
             feedback_ser.save()
             return Response(feedback_ser.data, status.HTTP_201_CREATED)
+        else:
+            print(feedback_ser.errors)
         
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -100,10 +105,10 @@ class MyFileViewSet(viewsets.ModelViewSet):
     serializer_class = MyFileSerializer
     queryset = MyFile.objects.all()
     parser_classes = (MultiPartParser, FormParser)
-    """
+    
     def list(self, request):
         self.queryset = self.queryset.filter(user=request.user.id)
-        return super().list(self, request)"""
+        return super().list(self, request)
 
 class MyFileDataViewSet(viewsets.ModelViewSet):
     serializer_class = MyFileDataSerializer
@@ -268,17 +273,33 @@ def download(request, pk):
 
 
 
-# user sign-up
-@api_view(['POST'])
-@permission_classes([ permissions.AllowAny ])
-def sign_up(request):
-    user = UserSerializer(data=request.data)
+# User details and sign up
+class UserView(APIView):
+
+    permission_classes = [AllowAny]
+
+    # get user details current user
+    def get(self, request):
+        user = request.user
+
+        # Well becuase we allow anybody to access this view
+        # if a random user requests it before signed in
+        # he is an anonymous user and we return HTTP 401
+        if isinstance(user, AnonymousUser) == True:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        user = UserSerializer(User.objects.get(username=user))
+        return Response(user.data, status=status.HTTP_200_OK)
+
+    # sign-up new user
+    def post(self, request):
+        user = UserSerializer(data=request.data)
     
-    if user.is_valid():
-        user.save()
-        return Response(user.data, status=status.HTTP_201_CREATED)
-    
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+        if user.is_valid():
+            user.save()
+            return Response(user.data, status=status.HTTP_201_CREATED)
+        
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 # user password change
 @api_view(['POST'])

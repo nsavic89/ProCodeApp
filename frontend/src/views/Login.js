@@ -86,7 +86,7 @@ export default function Login() {
     )
 
     const handleSignUp = values => {
-        axios.post(`${context.API}/app/sign-up/`, values)
+        axios.post(`${context.API}/app/user/`, values)
             .then(() => message.success(t('messages.sign-up-successful')))
             .catch(() => message.error(t('messages.sign-up-failed')))
     }

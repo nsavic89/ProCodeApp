@@ -1,4 +1,4 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useState, useEffect} from 'react';
 import axios from 'axios';
 
 
@@ -39,18 +39,41 @@ export default function UserContextProvider(props) {
                 'http://api.pro-code.ch'
                 : 'http://localhost:8000'
 
-    // laod classifications
-    if (!state.classifications) {
-        axios.get( 
-            `${API}/classifications/`,
-            { headers: headers() }
-        ).then(
+    useEffect(() => {
+        // laod classifications
+    const clsfPromise = axios.get( 
+        `${API}/classifications/`,
+        { headers: headers() }
+    )
+
+    // laod user details
+    const userPromise = axios.get( 
+        `${API}/app/user/`,
+        { headers: headers() }
+    )
+    
+    Promise.all([clsfPromise, userPromise])
+        .then(
             res => {
-                setData({ ...data, classifications: res.data })
-                setState({ ...state, classifications: true });
+                setData({ 
+                    ...data,
+                    classifications: res[0].data,
+                    user: res[1].data 
+                })
+                setState({ ...state, classifications: true, user: true });
+            }
+        ).catch(
+            e => {
+                console.log(e);
+                setState({
+                    ...state,
+                    classifications: false,
+                    user: false
+                })
             }
         )
-    }
+    }, [])
+
 
     const updateData = (key, values) => {
         let newData = {...data}
