@@ -42,7 +42,11 @@
         "data-added-message": "Daten erfolgreich hinzugefügt",
         "loading": "Laden...",
         "no-codes-before-clsf-selected": "Keine Codes, wenn keine Klassifizierung ausgewählt wurde",
-        "file-deleted-message": "Gelöschte Datei"
+        "file-deleted-message": "Gelöschte Datei",
+        "password-changed-successfully": "Passwort geändert!",
+        "are-you-sure": "Sind Sie sicher?",
+        "no-files-uploaded": "Keine Dateien.",
+        "file-uploaded": "Neue Datei hochladen"
     },
 
     "login-view": {
