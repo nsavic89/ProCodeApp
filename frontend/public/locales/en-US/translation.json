@@ -79,7 +79,9 @@
         "feedback-alert-description": "If possible, please specify below if the predicted code/title corresponds to the coded text.",
         "feedback-question": "The classification code is correct?",
         "feedback-submitted-message": "Thank you for your feedback!",
-        "codes-select": "Please specify which code/title matches best the coded text"
+        "codes-select": "Please specify which code/title matches best the coded text",
+        "german-compound-words-msg": "German!",
+        "german-compound-words-dscr": "Veuillez éviter d'utiliser des mots composés en allemand (par exemple, au lieu de 'Universitätsprofessor', utilisez 'Professor an der Universität')"
     },
 
     "recoding-view": {

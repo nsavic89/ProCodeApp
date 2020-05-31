@@ -79,7 +79,10 @@
         "feedback-alert-description": "Si possible, veuillez préciser ci-dessous si le code/titre prévu correspond au texte codé.",
         "feedback-question": "Le code de la nomenclature est-il correct ?",
         "feedback-submitted-message": "Merci pour votre contribution !",
-        "codes-select": "Veuillez préciser le code/titre qui correspond le mieux au texte codé"
+        "codes-select": "Veuillez préciser le code/titre qui correspond le mieux au texte codé",
+        "german-compound-words-msg": "Allemend!",
+        "german-compound-words-dscr": "Bitte vermeiden Sie die Verwendung von deutschen zusammengesetzten Wörtern (z.B. anstelle von 'Universitätsprofessor' verwenden Sie 'Professor an der Universität')"
+    
     },
 
     "recoding-view": {

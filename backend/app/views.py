@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate
 from rest_framework.decorators import renderer_classes, api_view
 from drf_renderer_xlsx.renderers import XLSXRenderer
 from django.contrib.auth.models import User, AnonymousUser
+from .coding import prepare_input
 from core.models import (
     CrosswalkFile,
     Crosswalk,
@@ -88,7 +89,40 @@ class FeedbackView(APIView):
         feedback_ser = FeedbackSerializer(data=request.data)
 
         if feedback_ser.is_valid():
-            feedback_ser.save()
+            # lemmatize, tokenize, to lower from .coding
+            prep_text = prepare_input(
+                [ feedback_ser.data['text'] ],
+                feedback_ser.data['language']
+            )
+            fb.data['text'] = prep_text
+            fb = feedback_ser.save()
+            
+            # save same text for the training data towards top-level
+            classification = Classification.objects.get(
+                reference=fb.classification
+            )
+            code_instance = Code.objects.get(
+                parent=classification,
+                code=fb.code
+            )
+            child_of = code_instance.child_of
+
+            while child_of != 'root':
+                new_fb = Feedback.objects.create(
+                    user=fb.user,
+                    text=fb.text,
+                    language=fb.language,
+                    code=code_instance.code,
+                    level=code_instance.level-1,
+                    classification=fb.classification
+                )
+
+                code_instance = Code.objects.get(
+                    parent=classification,
+                    code=code_instance.child_of
+                )
+                child_of = code_instance.child_of
+
             return Response(feedback_ser.data, status.HTTP_201_CREATED)
         else:
             print(feedback_ser.errors)

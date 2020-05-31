@@ -76,7 +76,9 @@
         "feedback-alert-description": "Se possibile, specificare qui di seguito se il codice/titolo previsto corrisponde al testo codificato.",
         "feedback-question": "Il codice di classificazione è corretto?",
         "feedback-submitted-message": "Grazie per il vostro feedback!",
-        "codes-select": "Si prega di specificare quale codice/titolo corrisponde meglio al testo codificato"
+        "codes-select": "Si prega di specificare quale codice/titolo corrisponde meglio al testo codificato",
+        "german-compound-words-msg": "Tedesco!",
+        "german-compound-words-dscr": "Si prega di evitare l'uso di parole composte in tedesco (ad esempio, al posto di 'Universitätsprofessor' utilizzare 'Professor an der Universität')."
     },
 
     "recoding-view": {

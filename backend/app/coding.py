@@ -3,6 +3,7 @@ from sklearn.naive_bayes import ComplementNB
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from django.core.cache import cache
+from .models import Feedback
 from core.models import (
     TrainingDataFile,
     TrainingData,
@@ -13,7 +14,7 @@ from core.models import (
     Crosswalk
 )
 import string, spacy, translate, json
-
+from unidecode import unidecode
 
 
 
@@ -42,9 +43,9 @@ def prepare_input(inputs, lng):
     # lemmatize the tokens
     # using spacy package
     lang_core = {
-        'en': 'en_core_news_sm',
+        'en': 'en_core_web_sm',
         'fr': 'fr_core_news_sm',
-        'de': 'ge_core_news_sm',
+        'de': 'de_core_news_sm',
         'it': 'it_core_news_sm'
     }
 
@@ -55,8 +56,9 @@ def prepare_input(inputs, lng):
     # tokenize and remove unwanted tokens
     cleaned_inputs = []
     for text in inputs:
+        text = text.lower()
         text = text.replace('-', ' ')
-        tokens = word_tokenize(text)
+        tokens = word_tokenize(text) # does not work with compound german words!!!
         tokens = [t for t in tokens if t not in unwanted]
         doc = nlp(' '.join(tokens))
         tokens = [t.lemma_ for t in doc]
@@ -71,7 +73,6 @@ def prepare_input(inputs, lng):
 #   1. input: a list of textual entries
 #   2. clsf: classification reference name
 #   3. lng: language of input list
-import time
 def code(inputs, clsf, lng, level):
     # training data file and training data
     # detect in which language the data should be
@@ -124,8 +125,13 @@ def code(inputs, clsf, lng, level):
     # this is how we avoid that coding for some 
     # language would not work because of lack of data
     if lng != td_file_lng:
+
+        from_lng = lng
+        if lng == 'ge':
+            from_lng = 'de'
+
         translator = translate.Translator(
-            from_lang=lng,
+            from_lang=from_lng,
             to_lang=td_file_lng
         )
 
@@ -146,8 +152,17 @@ def code(inputs, clsf, lng, level):
 
     # filter data
     train = TrainingData.objects.filter(parent__in=tdf, level=level)
-    train_text = [t.text for t in train]
+    train_text = [unidecode(t.text) for t in train]
     train_codes = [t.code for t in train]
+
+    # training data collected through feedbacks
+    feedbacks = Feedback.objects.filter(
+        classification=clsf,
+        language=td_file_lng,
+        level=level
+    )
+    train_text = train_text + [fb.text for fb in feedbacks]
+    train_codes = train_codes + [fb.code for fb in feedbacks]
     
     X = tf.fit_transform(train_text)
     
@@ -155,6 +170,7 @@ def code(inputs, clsf, lng, level):
     # complement naive bayes
     model = ComplementNB()
     model.fit(X, train_codes)
+    inputs = [unidecode(i) for i in inputs]
     inputs_tf = tf.transform(inputs)
     output = model.predict(inputs_tf)
 

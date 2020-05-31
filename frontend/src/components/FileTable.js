@@ -434,7 +434,7 @@ export default function FileTable(props) {
         // feedback
         const myfile = context.data.myfiles.find(o => o.id === props.myfile);
         const codedVar = JSON.parse(myfile['coded_variables'])[clsf];
-        console.log(codedVar)
+
         // if this variable has been coded 
         // if recoded it has no text that was coded
         // and thus a feedback cannot be sent

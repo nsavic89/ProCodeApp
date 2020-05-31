@@ -76,7 +76,9 @@
         "feedback-alert-description": "Wenn möglich, geben Sie bitte unten an, ob der vorhergesagte Code/Titel mit dem kodierten Text übereinstimmt.",
         "feedback-question": "Der Klassifizierungscode ist korrekt?",
         "feedback-submitted-message": "Vielen Dank für Ihr Feedback",
-        "codes-select": "Bitte geben Sie an, welcher Code/Titel am besten zum kodierten Text passt"
+        "codes-select": "Bitte geben Sie an, welcher Code/Titel am besten zum kodierten Text passt",
+        "german-compound-words-msg": "Deutsch!",
+        "german-compound-words-dscr": "Bitte vermeiden Sie die Verwendung von deutschen zusammengesetzten Wörtern (z.B. anstelle von 'Universitätsprofessor' verwenden Sie 'Professor an der Universität')"
     },
 
     "recoding-view": {

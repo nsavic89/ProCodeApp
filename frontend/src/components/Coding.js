@@ -159,6 +159,7 @@ export default function Coding() {
         )
     }
 
+
     // coding form 
     const CodingForm = (<div>
             <Alert
@@ -167,10 +168,22 @@ export default function Coding() {
                 closable
                 message={t('coding-view.alert-message')}
                 description={t('coding-view.alert-description')}
-                style={{ marginBottom: 25 }}
+                style={{ marginBottom: 5 }}
             />
 
+            {
+                state.selectedLanguage === 'ge' ?
+                    <Alert
+                        type="warning"
+                        message={t('coding-view.german-compound-words-msg')}
+                        description={t('coding-view.german-compound-words-dscr')}
+                        showIcon
+                    />
+                    : <div />
+            }
+
             <Form
+                style={{ marginTop: 20 }}
                 onFinish={handleFinish}
                 initialValues={{
                     language: i18n.language === "en-US" ? "en" : i18n.language
@@ -189,7 +202,12 @@ export default function Coding() {
                         }
                     ]}
                 >
-                    <Radio.Group>
+                    <Radio.Group onChange={
+                        e => setState({
+                            ...state,
+                            selectedLanguage: e.target.value
+                        })}
+                    >
                         <Radio.Button value="ge">
                             {t('languages.german')}
                         </Radio.Button>
