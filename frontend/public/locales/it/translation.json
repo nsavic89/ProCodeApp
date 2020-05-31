@@ -1,39 +1,52 @@
 {
-    "language": "Language",
-    "security": "Security",
+    "language": "Lingua",
+    "security": "Sicurezza",
     "logout": "Logout",
-    "coding": "Coding",
-    "recoding": "Recoding",
-    "my-files": "My files",
-    "please-wait": "please wait...",
-    "back": "Back",
-    "yes": "Yes",
+    "coding": "Codifica",
+    "recoding": "Recodifica",
+    "my-files": "I miei file",
+    "please-wait": "si prega di attendere...",
+    "back": "Indietro",
+    "yes": "Sì",
     "no": "No",
-    "submit": "Submit",
-    "please-select": "Please select",
+    "submit": "Invia",
+    "please-select": "Selezionare",
     "login": "Login",
-    "delete": "Delete",
+    "delete": "Annulla",
+    "modify": "Modificare",
+    "scroll-on": "Défilement",
+    "scroll-off": "Désactiver",
+    "about": "Aiuto",
+    "cancel": "Cancella",
     
     "languages": {
-        "german": "German",
-        "french": "French",
-        "italian": "Italian",
-        "english": "English"
+        "german": "Tedesco",
+        "french": "Francese",
+        "italian": "Italiano",
+        "english": "Inglese",
+        "ge": "Deutsch",
+        "fr": "français",
+        "it": "Italiano",
+        "en": "English"
     },
     
     "messages": {
         "form": {
-            "required": "This field is required",
-            "too-short": "Too short",
-            "passwords-not-match": "Passwords do not match",
-            "not-email": "Not valid email format"
+            "required": "Questo campo è obbligatorio",
+            "too-short": "Troppo breve",
+            "passwords-not-match": "Le password non corrispondono",
+            "not-email": "Formato e-mail non valido"
         },
-        "sth-went-wrong": "Sorry! Something went wrong...",
-        "data-deleted-message": "Data deleted successfully",
-        "data-added-message": "Data added successfully",
-        "loading": "Loading...",
-        "no-codes-before-clsf-selected": "No codes if no classification selected",
-        "file-deleted-message": "File deleted"
+        "sth-went-wrong": "Scusate! Qualcosa è andato storto...",
+        "data-deleted-message": "Dati annullati con successo",
+        "data-added-message": "Dati aggiunti con successo",
+        "loading": "Caricamento...",
+        "no-codes-before-clsf-selected": "Nessun codice se non è stata selezionata alcuna classificazione",
+        "file-deleted-message": "File annullato",
+        "password-changed-successfully": "La tua password è stata aggiornata con successo!",
+        "are-you-sure": "Sei sicuro?",
+        "no-files-uploaded": "Non è stato caricato alcun file.",
+        "file-uploaded": "Nuovo file scaricato"
     },
 
     "login-view": {
@@ -49,58 +62,78 @@
     },
     
     "coding-view": {
-        "classification": "Classification",
-        "level": "Code level",
-        "input": "Occupation/economic activity",
-        "button": "Run coding",
-        "alert-message": "Coding of occupational/economic activity data",
-        "alert-description": "Specify the language of the occupation/economic activity entry, the classification against which the entry will be coded and the desired level of prediction(s). The level input usually corresponds to the number of digits in a classificaiton code. Any arbitrary textual description can be entered in the last field which is coded.",
-        "level-info": "Not available if no classification selected",
-        "predicting-spin": "Running coding...",
-        "prediction-successful": "Coding finished successfully",
-        "new-prediction-button": "New coding",
+        "classification": "Classificazione",
+        "level": "Livello di codice",
+        "input": "Occupazione / attività economica",
+        "button": "Codifica",
+        "alert-message": "Codifica dei dati relativi all'attività occupazionale/economica",
+        "alert-description": "Specificare la lingua della voce relativa all'occupazione o all'attività economica, la classificazione rispetto alla quale la voce sarà codificata e il livello di previsione desiderato. Il livello di inserimento corrisponde di solito al numero di cifre di un codice classificaiton. Qualsiasi descrizione testuale arbitraria può essere inserita nell'ultimo campo codificato.",
+        "level-info": "Non disponibile se non è stata selezionata alcuna classificazione",
+        "predicting-spin": "Codifica...",
+        "prediction-successful": "La codifica è terminata con successo",
+        "new-prediction-button": "Nuova codifica",
         "feedback-alert-message": "Feedback",
-        "feedback-alert-description": "If possible, please specify below if the predicted code/title corresponds to the coded text.",
-        "feedback-question": "The classification code is correct?",
-        "feedback-submitted-message": "Thank you for your feedback!",
-        "codes-select": "Please specify which code/title matches best the coded text"
+        "feedback-alert-description": "Se possibile, specificare qui di seguito se il codice/titolo previsto corrisponde al testo codificato.",
+        "feedback-question": "Il codice di classificazione è corretto?",
+        "feedback-submitted-message": "Grazie per il vostro feedback!",
+        "codes-select": "Si prega di specificare quale codice/titolo corrisponde meglio al testo codificato"
     },
 
     "recoding-view": {
-        "from-classification": "Recode from",
-        "end-classification": "Recode to",
-        "code-title": "Code/Title",
-        "alert-message": "Recoding between two classifications",
-        "alert-description": "Specify an starting and a target classification to perform a recoding (or transcoding) between them. The result may include one or more outcomes ordered by their likelihood.",
-        "button": "Run recoding",
-        "classification-2-crosswalk": "No crosswalks defined from the selected starting classification",
-        "recoding-successful": "Recoding successful",
-        "new-recoding-button": "New recoding"
+        "from-classification": "Ricodifica da",
+        "end-classification": "Ricodifica a",
+        "code-title": "Codice/Titolo",
+        "alert-message": "Ricodifica tra due classificazioni",
+        "alert-description": "Specificare una classificazione di partenza e una classificazione di destinazione per eseguire una ricodifica (o transcodifica) tra di loro. Il risultato può includere uno o più risultati ordinati in base alla loro probabilità.",
+        "button": "Recodifica",
+        "classification-2-crosswalk": "Nessun attraversamento trasversale definito dalla classificazione di partenza selezionata",
+        "recoding-successful": "Ricodifica di successo",
+        "new-recoding-button": "Nuova ricodifica"
     },
 
     "my-files-view": {
-        "upload": "Upload",
-        "loading-files-spin": "Loading, please wait",
-        "drawer-title": "Upload new file",
-        "add-new": "Add new",
+        "upload": "Carica file",
+        "loading-files-spin": "Caricamento, attendere prego",
+        "drawer-title": "Carica file",
+        "add-new": "Aggiungi nuovo",
         "upload-form": {
-            "name": "Name",
-            "info": "Description",
+            "name": "Nome",
+            "info": "Descrizione",
             "excel": "MS Excel"
         }
     },
 
     "coding-drawer": {
-        "title": "Coding file data",
-        "info": "Specify the classification against which the coding will be executed and a desired code level.",
-        "variable": "Column"
+        "title": "Codifica dei dati del file",
+        "info": "Specificare la classificazione in base alla quale verrà eseguita la codifica e il livello di codice desiderato.",
+        "variable": "Colonna"
     },
 
     "recoding-drawer": {
-        "title": "Recoding file data",
-        "from-cls": "Recode from",
-        "to-cls": "Recode to",
-        "info": "Specify the classifications between which the recoding will be performed. It is also required to specify which column of the file contains the starting codes.",
-        "variable": "Column"
+        "title": "Ricodifica dei dati dei file",
+        "from-cls": "Ricodifica da",
+        "to-cls": "Ricodifica a",
+        "info": "Specificare le classificazioni tra le quali verrà effettuata la ricodifica. È inoltre necessario specificare quale colonna del file contiene i codici di partenza.",
+        "variable": "Colonna"
+    },
+
+    "security-drawer": {
+        "title": "Cambia il mot de passe",
+        "old-password": "Password attuale",
+        "new-password": "Nuova password",
+        "new-password-confirm": "Nuova password (confermare)"
+    },
+
+    "about-modal": {
+        "text": "Procode è uno strumento che supporta la (ri)codifica automatica in relazione e tra le diverse classificazioni delle professioni e delle attività economiche. Lo strumento include una tecnica di apprendimento a macchina e anche una banca dati con le codifiche precedenti.",
+        "contact-header": "Dati di contatto",
+        "contact-text": "In caso di malfunzionamento dell'utensile, si prega di contattare:"
+    },
+
+    "modify-modal": {
+        "title": "Mofificare il/i codice/i",
+        "info": "Si prega di specificare quale codice/titolo corrisponde al testo codificato. Questi dati saranno aggiunti ai dati di autoapprendimento della macchina.",
+        "or": "------------------------------------ OU -------------------------------------",
+        "codes-select": "Selezionare un codice dalla lista dei codici definiti per questa distinta base"
     }
 }
