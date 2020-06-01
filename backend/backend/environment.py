@@ -3,7 +3,7 @@ ENVIRONMENT = 'development'
 
 
 
-SETTINGS_MODULE = 'backend.settings.development'
+SETTINGS_MODULE = 'backend.development'
 
 if ENVIRONMENT == 'production':
-    SETTINGS_MODULE = 'backend.settings.production'
+    SETTINGS_MODULE = 'backend.production'
