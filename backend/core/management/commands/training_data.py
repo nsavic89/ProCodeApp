@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from backend.settings import BASE_DIR
+from backend.base import BASE_DIR
 from core.models import (
     Classification, Code, SpellCorrection,
     TrainingDataFile, TrainingData
@@ -287,10 +287,10 @@ class Command(BaseCommand):
         
         self.stdout.write("Lemmatize ->\n")
         langs = {
-            'en': 'en_core_web_md',
-            'fr': 'fr_core_news_md',
-            'de': 'ge_core_web_md',
-            'it': 'it_core_web_md'
+            'en': 'en_core_web_sm',
+            'fr': 'fr_core_news_sm',
+            'de': 'de_core_news_sm',
+            'it': 'it_core_news_sm'
         }
 
         nlp = spacy.load(langs[self.LNG])
@@ -415,7 +415,7 @@ class Command(BaseCommand):
         data = []
         
         #len(codes)
-        for i in range(101, 5000):
+        for i in range(1, my_file.nrows):
             try:
                 text = texts[i].lower()
                 text = re.sub('[^a-zà-ÿ]', ' ', text)

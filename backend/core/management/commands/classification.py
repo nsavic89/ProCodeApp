@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from backend.settings import BASE_DIR
+from backend.base import BASE_DIR
 from core.models import Classification, Code
 from core.serializers import CodeSerializer
 import os, xlrd
