@@ -14,7 +14,8 @@ export default function UserContextProvider(props) {
     // as a list for a key as classification reference
     const [ data, setData ] = useState({
         codes: {},
-        myFileData: {}
+        myFileData: {},
+        myfiles: []
     });
 
         
