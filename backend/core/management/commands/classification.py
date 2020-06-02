@@ -33,6 +33,7 @@ class Command(BaseCommand):
         # now we check if all codes are different -> no duplicates
         codes = my_file.col_values(code_index)
         codes = [str(int(code)) if type(code) is float else str(code) for code in codes]
+        codes = [code.strip() for code in codes]
         codes_set = set(codes)
         duplicates_exist = False
 
