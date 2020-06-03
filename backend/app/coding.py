@@ -57,11 +57,11 @@ def prepare_input(inputs, lng):
     cleaned_inputs = []
     for text in inputs:
         text = text.lower()
+        text = text.strip()
         text = text.replace('-', ' ')
-        tokens = word_tokenize(text) # does not work with compound german words!!!
-        tokens = [t for t in tokens if t not in unwanted]
-        doc = nlp(' '.join(tokens))
+        doc = nlp(text)
         tokens = [t.lemma_ for t in doc]
+        tokens = [t for t in tokens if t not in unwanted]
         cleaned_inputs.append(' '.join(tokens))
 
     return cleaned_inputs
@@ -144,7 +144,7 @@ def code(inputs, clsf, lng, level):
     # all that defined in function prepare_input
     # that takes inputs and lng args provided here
     inputs = prepare_input(inputs, td_file_lng)
-    
+
     # vectorizer to transform data into td-idf 
     tf = TfidfVectorizer(
         analyzer="word", ngram_range=(1,2),
@@ -173,6 +173,7 @@ def code(inputs, clsf, lng, level):
     inputs = [unidecode(i) for i in inputs]
     inputs_tf = tf.transform(inputs)
     output = model.predict(inputs_tf)
+    probs = model.predict_proba(inputs_tf)
 
     # now if the training dataset was not
     # available for the classification against

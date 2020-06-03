@@ -8,7 +8,7 @@ from core.serializers import SpellCorrectionSerializer
 from spellchecker import SpellChecker
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-import os, xlrd, re, spacy
+import os, xlrd, re, spacy, string
 
 
 class Command(BaseCommand):
@@ -265,11 +265,15 @@ class Command(BaseCommand):
         langs = {'en': 'english','fr': 'french','de': 'german','it': 'italian'}
 
         # get stop words for the given language
-        stop_words = set(stopwords.words(langs[self.LNG]))
+        stop_words = list(set(stopwords.words(langs[self.LNG])) 
+                        ) + list(string.punctuation)
+
         data_tokenized = []
 
         for e in self.DATA:
             text = e['text']
+            text = text.replace("-", " ")
+            text = text.strip()
             tokens = word_tokenize(text)
             tokens = [w for w in tokens if w not in stop_words and len(w) > 1]
             text = ' '.join(tokens)
@@ -441,9 +445,10 @@ class Command(BaseCommand):
 
         if options['check_spelling'] == True:
             self.check_spelling()
-        
-        self.tokenize()
+
         self.lemmatize()
+        self.tokenize()
+
         self.save()
 
         if self.ERROR == True:
