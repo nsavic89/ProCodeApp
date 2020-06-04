@@ -1,6 +1,7 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import ComplementNB
 from nltk.corpus import stopwords
+from nltk.corpus import wordnet as wn
 from nltk.tokenize import word_tokenize
 from django.core.cache import cache
 from .models import Feedback
@@ -67,6 +68,81 @@ def prepare_input(inputs, lng):
     return cleaned_inputs
 
 
+
+# used to extend inputs with their synonymes, definitions
+# only if max()-min() == 0 -> which means that
+# first trial failed to find a likely class
+# lng argument is the language of inputs
+# 
+def extend_inputs_dict(inputs, probs, lng, trans_lng):
+
+    # if german return
+    # this language requires a special package
+    if lng == 'ge':
+        return inputs
+
+    # languages for stopwords
+    lang_dict = {
+        'en': 'english',
+        'fr': 'french',
+        'ge': 'german',
+        'it': 'italian'
+    }
+
+    # synsets use different labels for languages
+    lang_dict2 = {'en': 'eng', 'fr': 'fra', 'it': 'ita'}
+
+    # also remove stop words
+    # words & characters (punctuations) that will be removed
+    unwanted = list( set(stopwords.words(lang_dict[lng])) 
+                ) + list(string.punctuation)
+
+    # translate must be performed from english (resulting after synsets)
+    # into the language of the training dataset (trans_lng)
+    translator = translate.Translator(from_lng="en", to_lang=trans_lng)
+
+    # each input has its array of probabilities
+    # so we must iterate it for each input
+    new_inputs = []
+    for i in range(0, len(probs)):
+        dif = max(probs[i]) - min(probs[i])
+        
+        # if difference is 0 
+        # meaning no different probability for different classes
+        # this is why it usually results in a outcome that makes no sense
+        # such as for 'sécuritas' it assigns agriculture related code
+        # which basically has the same probability as any other of PCS
+        if dif == 0:
+            my_input = inputs[i]
+            my_input = my_input.replace("-", " ")
+            tokens = word_tokenize(my_input)
+            tokens = [token for token in tokens if token not in unwanted]
+            tokens = [token.strip() for token in tokens]
+
+            # definitions that will be used to replace my_input in inputs
+            definitions = []
+
+            # for each word (token) of input
+            for token in tokens:
+                synsets = wn.synsets(token, lang=lang_dict2[lng])
+
+                # a single token may have multiple synsets
+                for syn in synsets:
+                    definition = syn.definition()
+
+                    if lng != trans_lng:
+                        trans_def = translator.translate(definition)
+                        definitions.append(trans_def)
+                    else:
+                        definitions.append(definition)
+            
+            new_inputs.append(' '.join(definitions))
+
+    new_inputs = prepare_input(new_inputs, trans_lng)
+    return new_inputs
+
+
+
 # Coding a textual entry agains a classification
 # using training data also stored in the db
 # arguments:
@@ -74,8 +150,14 @@ def prepare_input(inputs, lng):
 #   2. clsf: classification reference name
 #   3. lng: language of input list
 def code(inputs, clsf, lng, level):
+
+    # keep original entry without modifications
+    # needed for nltk dict fun later
+    inputs_original_lng = inputs
+
     # training data file and training data
     # detect in which language the data should be
+
     try:
         rules = CodingRules.objects.get(classification=clsf)
         max_level = rules.max_level
@@ -173,7 +255,31 @@ def code(inputs, clsf, lng, level):
     inputs = [unidecode(i) for i in inputs]
     inputs_tf = tf.transform(inputs)
     output = model.predict(inputs_tf)
+
+    # get probabilities of intput belonging to any class
+    # append other likely predictions
+    # then if necessary run dictionaries
+    # dictionary only if max(prob)-min(prob) == 0
     probs = model.predict_proba(inputs_tf)
+    classes = model.classes_
+
+    inputs_retrial = extend_inputs_dict(
+        inputs_original_lng, probs, lng, td_file_lng)
+
+    if len(inputs_retrial) > 0:
+        inputs_retrial = [unidecode(i) for i in inputs_retrial]
+        inputs_retrial_tf = tf.transform(inputs_retrial)
+
+        # now rerun predictions for those for which prob == 0
+        outputs_retrial = model.predict(inputs_retrial_tf)
+        outputs_retrial = outputs_retrial.tolist()
+
+        for i in range(0, len(probs)):
+            dif = max(probs[i]) - min(probs[i])
+
+            if dif == 0:
+                output[i] = outputs_retrial.pop(0)
+
 
     # now if the training dataset was not
     # available for the classification against
