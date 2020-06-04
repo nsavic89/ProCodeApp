@@ -127,7 +127,7 @@ def extend_inputs_dict(inputs, probs, lng, trans_lng):
                 synsets = wn.synsets(token, lang=lang_dict2[lng])
 
                 # a single token may have multiple synsets
-                for syn in synsets:
+                for syn in synsets: 
                     definition = syn.definition()
 
                     if lng != trans_lng:
