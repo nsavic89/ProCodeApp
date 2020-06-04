@@ -138,6 +138,7 @@ def extend_inputs_dict(inputs, probs, lng, trans_lng):
             
             new_inputs.append(' '.join(definitions))
 
+
     new_inputs = prepare_input(new_inputs, trans_lng)
     return new_inputs
 
@@ -184,7 +185,7 @@ def code(inputs, clsf, lng, level):
     except:
         # no given rule defined
         # this will result in an error
-        return []
+        return [] 
 
     # list of codes corresponding to classification (in try)
     codes = Code.objects.filter(parent=classification)
