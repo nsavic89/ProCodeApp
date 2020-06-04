@@ -9,7 +9,7 @@ coding the occupations. Over time, its training dataset will grow and improve th
 
 Available at URL: www.pro-code.ch
 
-<h3>Built with</h3>
+<h3>Technologies:</h3>
 <ul>
   <li><strong>Django REST framework:</strong>  Python web framework (server-side)</li>
   <li><strong>React.js:</strong> JavaScript framework (client- or browser-side)</li>
