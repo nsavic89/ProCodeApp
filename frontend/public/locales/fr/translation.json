@@ -18,7 +18,7 @@
     "scroll-off": "Désactiver",
     "about": "Info",
     "cancel": "Annuler",
-    
+
     "languages": {
         "german": "allemend",
         "french": "français",
@@ -29,7 +29,7 @@
         "it": "Italiano",
         "en": "English"
     },
-    
+
     "messages": {
         "form": {
             "required": "Champ obligatoire",
@@ -41,7 +41,7 @@
         "data-deleted-message": "Données supprimées avec succès",
         "data-added-message": "Données ajoutées avec succès",
         "loading": "Téléchargement...",
-        "no-codes-before-clsf-selected": "Aucun code au cas si aucune classification n'est sélectionnée",
+        "no-codes-before-clsf-selected": "Aucun code au cas si aucune nomenclature n'est sélectionnée",
         "file-deleted-message": "Fichier supprimé",
         "sign-up-successful": "Inscrit avec succès",
         "sign-up-failed": "Inscription échouée",
@@ -63,15 +63,15 @@
         "password2": "Confirmer le mot de passe",
         "sign-up-button": "S'inscrire"
     },
-    
+
     "coding-view": {
         "classification": "Nomenclature",
         "level": "Niveau",
         "input": "Profession/activité économique",
         "button": "Lancer codage",
-        "alert-message": "Codage des données relatives aux activités professionnelles/économiques",
+        "alert-message": "Codage des données relatives aux professions/activités économiques",
         "alert-description": "Précisez la langue de la profession/activité économique du texte saisi, la nomenclature par rapport à laquelle il sera codé et le niveau du code évalué. Le niveau d'un code correspond généralement au nombre de chiffres dans ce code.",
-        "level-info": "Pas disponible si aucune classification n'a été sélectionnée",
+        "level-info": "Pas disponible si aucune nomeclature n'a été sélectionnée",
         "predicting-spin": "Exécution du codage...",
         "prediction-successful": "Codage terminé avec succès",
         "new-prediction-button": "Nouveau codage",
@@ -81,8 +81,8 @@
         "feedback-submitted-message": "Merci pour votre contribution !",
         "codes-select": "Veuillez préciser le code/titre qui correspond le mieux au texte codé",
         "german-compound-words-msg": "Allemend!",
-        "german-compound-words-dscr": "Bitte vermeiden Sie die Verwendung von deutschen zusammengesetzten Wörtern (z.B. anstelle von 'Universitätsprofessor' verwenden Sie 'Professor an der Universität')"
-    
+        "german-compound-words-dscr": "Veuillez éviter utilisation des mots complex en allemend (par example, au lieu de 'Universitätsprofessor' saisissez 'Professor an der Universität')"
+
     },
 
     "recoding-view": {
@@ -98,6 +98,7 @@
     },
 
     "my-files-view": {
+        "download": "Télécharger",
         "upload": "Télécharger",
         "loading-files-spin": "Téléchargement, veuillez patienter",
         "drawer-title": "Télécharger un nouveau fichier",

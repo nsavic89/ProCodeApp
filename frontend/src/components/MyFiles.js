@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { 
+import {
     Button,
     Spin,
     Drawer,
@@ -12,7 +12,8 @@ import {
     Col,
     message,
     Popconfirm,
-    Result
+    Result,
+    Tooltip
 } from 'antd';
 import { useTranslation } from 'react-i18next';
 import {
@@ -106,8 +107,6 @@ export default function MyFiles() {
         formData.append('info', values.info ? values.info : " ");
         formData.append('language', values.language);
         formData.append('user', context.data.user.id);
-        console.log(context.data.user.id)
-        console.log(context.data.user)
 
         axios.post(
             `${context.API}/app/my-files/`,
@@ -209,7 +208,7 @@ export default function MyFiles() {
                     }
                 ]}
             >
-                <Upload 
+                <Upload
                     beforeUpload={() => false}
                     fileList={state.fileList}
                     onChange={handleFileUpload}
@@ -223,8 +222,8 @@ export default function MyFiles() {
             <Form.Item
                 {...styling.tailItemLayout}
             >
-                <Button 
-                    htmlType="submit" type="primary" 
+                <Button
+                    htmlType="submit" type="primary"
                     style={{ width: "100%" }}
                 >
                     {t('submit')}
@@ -280,21 +279,27 @@ export default function MyFiles() {
                                     >
                                         <DeleteTwoTone twoToneColor="#f5222d" key="del" />
                                     </Popconfirm>,
-                                    <FireOutlined
-                                        key="code"
-                                        onClick={() => setState({...state, coding: item.id})} 
-                                    />,
-                                    <RetweetOutlined
-                                        key="recode"
-                                        onClick={() => setState({...state, recoding: item.id})}
-                                    />,
-                                    <SearchOutlined 
+                                    <Tooltip title={t('coding')}>
+                                        <FireOutlined
+                                            key="code"
+                                            onClick={() => setState({...state, coding: item.id})}
+                                        />
+                                    </Tooltip>,
+                                    <Tooltip title={t('recoding')}>
+                                        <RetweetOutlined
+                                            key="recode"
+                                            onClick={() => setState({...state, recoding: item.id})}
+                                        />
+                                    </Tooltip>,
+                                    <SearchOutlined
                                         key="open"
-                                        onClick={() => setState({...state, editing: item.id})} 
+                                        onClick={() => setState({...state, editing: item.id})}
                                     />,
-                                    <DownloadOutlined key="download"
-                                        onClick={() => window.open(`${context.API}/app/download/pk=${item.id}/`)}
-                                    />
+                                    <Tooltip title={t('my-files-view.download')}>
+                                        <DownloadOutlined key="download"
+                                            onClick={() => window.open(`${context.API}/app/download/pk=${item.id}/`)}
+                                        />
+                                    </Tooltip>
                                 ]}
                             >
                                 <h3>{item.name}</h3>
@@ -316,7 +321,7 @@ export default function MyFiles() {
                 status="warning"
                 title={t('messages.no-files-uploaded')}
                 extra={
-                <Button 
+                <Button
                     type="primary" danger key="console"
                     onClick={ () => setState({...state, drawer: true}) }
                 >{t('my-files-view.upload')}
@@ -329,11 +334,11 @@ export default function MyFiles() {
     let showFiles = false;
     try {showFiles = context.data.myfiles.length > 0}
     catch (e) {console.log(e)}
-    
+
     return (
         <div>
 
-            <div style={{ 
+            <div style={{
                 borderBottom: "1px solid rgb(220,220,220)",
                 paddingBottom: 5
             }}>
@@ -341,8 +346,8 @@ export default function MyFiles() {
                     { t('my-files') }
                 </span>
 
-                <Button 
-                    type="primary" 
+                <Button
+                    type="primary"
                     danger
                     style={{ float: "right" }}
                     onClick={ () => setState({...state, drawer: true}) }
@@ -354,7 +359,7 @@ export default function MyFiles() {
             <div>
                 { showFiles ? FilesList : NoFilesResult }
             </div>
-            
+
             {/* upload new file */}
             <Drawer
                 title={t('my-files-view.drawer-title')}
@@ -363,7 +368,7 @@ export default function MyFiles() {
                 onClose={() => setState({...state, drawer: false})}
                 width={550}
             >
-                { state.uploading ? 
+                { state.uploading ?
                     <div style={{ marginTop: 150, textAlign: "center" }}>
                         <Spin tip={t('please-wait')} />
                     </div>
@@ -372,7 +377,7 @@ export default function MyFiles() {
             </Drawer>
 
             {/* coding drawer */}
-            <CodingDrawer 
+            <CodingDrawer
                 visible={state.coding && state.coding !== false}
                 onClose={() => setState({...state, coding: false})}
                 myfile={state.coding}

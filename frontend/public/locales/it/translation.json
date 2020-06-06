@@ -18,7 +18,7 @@
     "scroll-off": "Désactiver",
     "about": "Aiuto",
     "cancel": "Cancella",
-    
+
     "languages": {
         "german": "Tedesco",
         "french": "Francese",
@@ -29,7 +29,7 @@
         "it": "Italiano",
         "en": "English"
     },
-    
+
     "messages": {
         "form": {
             "required": "Questo campo è obbligatorio",
@@ -60,7 +60,7 @@
         "password2": "Confermare la password",
         "sign-up-button": "Iscriviti"
     },
-    
+
     "coding-view": {
         "classification": "Classificazione",
         "level": "Livello di codice",
@@ -94,6 +94,7 @@
     },
 
     "my-files-view": {
+        "download": "Scaricamento",
         "upload": "Carica file",
         "loading-files-spin": "Caricamento, attendere prego",
         "drawer-title": "Carica file",

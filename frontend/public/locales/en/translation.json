@@ -18,7 +18,7 @@
     "scroll-off": "Scroll-off",
     "about": "About",
     "cancel": "Cancel",
-    
+
     "languages": {
         "german": "German",
         "french": "French",
@@ -29,7 +29,7 @@
         "it": "Italiano",
         "en": "English"
     },
-    
+
     "messages": {
         "form": {
             "required": "This field is required",
@@ -63,7 +63,7 @@
         "password2": "Confirm password",
         "sign-up-button": "Sign up"
     },
-    
+
     "coding-view": {
         "classification": "Classification",
         "level": "Code level",
@@ -97,6 +97,7 @@
     },
 
     "my-files-view": {
+        "download": "Download",
         "upload": "Upload",
         "loading-files-spin": "Loading, please wait",
         "drawer-title": "Upload new file",
