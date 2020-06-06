@@ -7,7 +7,10 @@ from .coding import code
 from .models import Feedback, MyFile, MyFileData
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth import authenticate
-from rest_framework.decorators import renderer_classes, api_view
+from rest_framework.decorators import (
+    renderer_classes,
+    api_view,
+    permission_classes)
 from drf_renderer_xlsx.renderers import XLSXRenderer
 from django.contrib.auth.models import User, AnonymousUser
 from .coding import prepare_input
@@ -256,6 +259,7 @@ from collections import OrderedDict
 
 @api_view(['GET'])
 @renderer_classes([ XLSXRenderer ])
+@permission_classes([ AllowAny ])
 def download(request, pk):
     my_file = MyFile.objects.get(pk=pk)
     my_data = MyFileData.objects.filter(parent=my_file)

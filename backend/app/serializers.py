@@ -118,11 +118,11 @@ class TranscodingSerializer(serializers.Serializer):
 
 
 class ExcelSerializer(serializers.Serializer):
-    var1 = serializers.CharField(required=False)
-    var2 = serializers.CharField(required=False)
-    var3 = serializers.CharField(required=False)
-    var4 = serializers.CharField(required=False)
-    var5 = serializers.CharField(required=False)
+    var1 = serializers.CharField(required=False, allow_blank=True)
+    var2 = serializers.CharField(required=False, allow_blank=True)
+    var3 = serializers.CharField(required=False, allow_blank=True)
+    var4 = serializers.CharField(required=False, allow_blank=True)
+    var5 = serializers.CharField(required=False, allow_blank=True)
 
     code1 = serializers.CharField(required=False)
     code2 = serializers.CharField(required=False)
@@ -138,6 +138,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
+            'id',
             'username', 
             'first_name', 'last_name',
             'email',

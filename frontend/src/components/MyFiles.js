@@ -105,7 +105,9 @@ export default function MyFiles() {
         formData.append('name', values.name);
         formData.append('info', values.info ? values.info : " ");
         formData.append('language', values.language);
-        formData.append('user', 1);
+        formData.append('user', context.data.user.id);
+        console.log(context.data.user.id)
+        console.log(context.data.user)
 
         axios.post(
             `${context.API}/app/my-files/`,
