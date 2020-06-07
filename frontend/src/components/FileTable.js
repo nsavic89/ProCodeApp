@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { 
+import {
     Button,
     Spin,
     Table,
@@ -18,7 +18,7 @@ import {
     Alert
 } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { 
+import {
     ArrowLeftOutlined,
     PlusCircleOutlined,
     DeleteTwoTone,
@@ -49,7 +49,7 @@ export default function FileTable(props) {
     };
 
     const title = (
-        ['en', 'en-US'].indexOf(i18n.language) === -1 ? 
+        ['en', 'en-US'].indexOf(i18n.language) === -1 ?
         `title_${i18n.language}` : 'title'
     )
 
@@ -66,7 +66,7 @@ export default function FileTable(props) {
                 Pragma: "no-cache",
                 Authorization: 'JWT ' + localStorage.getItem('token')
             }};
-        
+
         let fileDataLoaded = false;
         let promises = [];
 
@@ -87,7 +87,7 @@ export default function FileTable(props) {
             clsf = JSON.parse(myfile.classifications);
         }
         catch(e) {console.log(e)}
-        
+
         // add promises for classifications against which file was coded
         for (let c in clsf) {
             let url = `${context.API}/app/codes/ref=${clsf[c]}/`;
@@ -217,7 +217,7 @@ export default function FileTable(props) {
     if ( !state.error && !state.loading ) {
         const myFile = context.data.myfiles.find(o=>o.id===props.myfile);
         variables = JSON.parse(myFile.variables);
-        
+
         // populate columns
         for (let i in variables) {
             let column = {
@@ -270,21 +270,24 @@ export default function FileTable(props) {
             for (let clsf in codes) {
                 data[clsf] = codes[clsf].map(
                     (item, inx) => (
-                        <div 
-                            key={item}
-                        >
-                            <Tag color={inx===0 ? 'geekblue': 'orange'}>
-                                {item}
-                            </Tag> <span>{
-                                context.data.codes[clsf].find(
-                                    o => o.code === item
-                                )[title]
-                            }</span>
-                        </div>)
+                          item === 'None' ?
+                          <div />
+                          :<div 
+                              key={item}
+                          >
+                              <Tag color={inx===0 ? 'geekblue': 'orange'}>
+                                  {item}
+                              </Tag> <span>{
+                                  context.data.codes[clsf].find(
+                                      o => o.code === item
+                                  )[title]
+                              }</span>
+                          </div>
+                        )
                     );
                 data[clsf].push(
                     <div key={clsf}>
-                        <Button 
+                        <Button
                             size="small" type="primary"
                             danger ghost style={{ marginTop: 5 }}
                             onClick={
@@ -305,7 +308,7 @@ export default function FileTable(props) {
                     okText={t('yes')}
                     cancelText={t('no')}
                 >
-                    <Button 
+                    <Button
                         style={{ border: "none" }}
                         size="small"
                     >
@@ -319,7 +322,7 @@ export default function FileTable(props) {
 
     // add new (or submit) function for form in drawer
     const handleAddNewFinish = values => {
-        // myFileData instance includes 
+        // myFileData instance includes
         // data as textfield (json)
         // classifications with coded cls codes (json)
         const obj = {
@@ -346,7 +349,7 @@ export default function FileTable(props) {
                 setState({
                     ...state,
                     data: dataList,
-                    addNewDrawer: false 
+                    addNewDrawer: false
                 });
                 message.success(t('messages.data-added-message'));
             }
@@ -370,7 +373,7 @@ export default function FileTable(props) {
     function getCodesForModal(row, clsf) {
         /*
             this function will by using row and clsf
-            extract codes for the given classification 
+            extract codes for the given classification
             from the data in state
 
             * required for the modal below to list codes
@@ -399,7 +402,7 @@ export default function FileTable(props) {
 
     const handleFeedback = () => {
         /*
-            this function is executed on OK button in the 
+            this function is executed on OK button in the
             modify model below
 
             * it uses feedback value in state
@@ -415,7 +418,7 @@ export default function FileTable(props) {
         const clsf = modify[1];
         const data = [...state.data];           // all data of the considered file
         let dataFile = data[row];
-        
+
         // update code regarding the provided feedback
         dataFile.codes = JSON.parse(dataFile.codes);
         dataFile.codes[clsf] = [codeForFeedback];
@@ -430,12 +433,12 @@ export default function FileTable(props) {
             {headers: headers}
         ))
 
-        
+
         // feedback
         const myfile = context.data.myfiles.find(o => o.id === props.myfile);
         const codedVar = JSON.parse(myfile['coded_variables'])[clsf];
 
-        // if this variable has been coded 
+        // if this variable has been coded
         // if recoded it has no text that was coded
         // and thus a feedback cannot be sent
         if (codedVar) {
@@ -502,7 +505,7 @@ export default function FileTable(props) {
                     />
                     <Radio.Group
                         value={state.radioChecked}
-                        onChange={e => setState({ 
+                        onChange={e => setState({
                             ...state,
                             feedback: e.target.value,
                             radioChecked: e.target.value,
@@ -511,11 +514,11 @@ export default function FileTable(props) {
                     >{ getCodesForModal(
                         state.modify[0], state.modify[1]).map(
                             (item, inx) => (
-                                <Radio 
+                                <Radio
                                     style={radioStyle} value={item} key={item}
                                 >
                                     <Tag color={inx===0 ? 'geekblue':'orange'}>
-                                        { item } 
+                                        { item }
                                     </Tag> <span>
                                         { getTitleByCode(state.modify[1], item) }
                                     </span>
@@ -532,7 +535,7 @@ export default function FileTable(props) {
                     </div>
 
                     <div>
-                        <Form.Item 
+                        <Form.Item
                             label={t('modify-modal.codes-select')}
                             labelAlign="left"
                             labelCol={{span: 24}}
@@ -551,7 +554,7 @@ export default function FileTable(props) {
                                         })
                                     }}
                            />
-                       </Form.Item> 
+                       </Form.Item>
                     </div>
                 </div>
                 : <div />
@@ -577,9 +580,9 @@ export default function FileTable(props) {
                             style={{ marginLeft: 5 }}
                             defaultChecked={state.scroll}
                             onChange={() => setState({ ...state, scroll: !state.scroll })}
-                        /> 
+                        />
 
-                        <Button 
+                        <Button
                             style={{ marginLeft: 5 }}
                             onClick={() => setState({...state, coding: props.myfile})}
                             type="primary"
@@ -589,7 +592,7 @@ export default function FileTable(props) {
                             <FireOutlined />
                         </Button>
 
-                        <Button 
+                        <Button
                             style={{ marginLeft: 5 }}
                             onClick={() => setState({...state, recoding: props.myfile})}
                             type="primary"
@@ -599,7 +602,7 @@ export default function FileTable(props) {
                             <RetweetOutlined />
                         </Button>
 
-                        <Button 
+                        <Button
                             style={{ marginLeft: 5 }}
                             onClick={() => window.open(`${context.API}/app/download/pk=${props.myfile}/`)}
                             type="primary"
@@ -621,7 +624,7 @@ export default function FileTable(props) {
             </Row>
 
             <div style={{ marginTop: 15 }}>
-                <Table 
+                <Table
                     columns={columns}
                     dataSource={dataSource}
                     scroll={ state.scroll ? { x: "100vw" }: false }

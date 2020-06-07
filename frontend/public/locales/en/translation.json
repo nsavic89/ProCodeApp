@@ -49,7 +49,8 @@
         "password-changed-successfully": "Password changed!",
         "are-you-sure": "Are you sure?",
         "no-files-uploaded": "No files to show.",
-        "file-uploaded": "New file uploaded"
+        "file-uploaded": "New file uploaded",
+        "coding-failed": "Coding failed"
     },
 
     "login-view": {

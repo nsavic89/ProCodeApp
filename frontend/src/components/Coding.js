@@ -12,7 +12,12 @@ import {
     Tag
 } from 'antd';
 import { UserContext } from '../contexts/UserContext';
-import { LoadingOutlined, CheckCircleFilled, ConsoleSqlOutlined } from '@ant-design/icons';
+import {
+    LoadingOutlined,
+    CheckCircleFilled,
+    ConsoleSqlOutlined,
+    CloseCircleOutlined
+} from '@ant-design/icons';
 import axios from 'axios';
 import CodesSelect from './CodesSelect';
 
@@ -21,7 +26,7 @@ import CodesSelect from './CodesSelect';
     Collects data related to the following coding
     of entered data
 
-    Form items: 
+    Form items:
         1. Languages
         2. Classification
         3. Level
@@ -63,8 +68,8 @@ export default function Coding() {
                 when classification is updated
                 we check if in the context are codes
                 already loaded (i.e. context.data.codes)
-                
-                if not we run function of context to 
+
+                if not we run function of context to
                 load all codes corresponding to the classification
             */
             const reference = obj.classification
@@ -79,7 +84,7 @@ export default function Coding() {
             }
 
             // otherwise
-            axios.get( 
+            axios.get(
                 `${context.API}/app/codes/ref=${reference}/`,
                 { headers: headers })
             .then(
@@ -116,7 +121,7 @@ export default function Coding() {
                 status="500"
                 title={state.error}
                 subTitle={t('messages.sth-went-wrong')}
-                extra={<Button 
+                extra={<Button
                             type="primary"
                             onClick={ () => setState({...state, error: false}) }
                         >{ t('back') }
@@ -124,20 +129,20 @@ export default function Coding() {
             />
         </div>
     )
-    
+
 
 
     // form submit
     const handleFinish = values => {
         // set loading spinner
         setState({ ...state, predicting: true });
-        
+
         axios.post(
             `${context.API}/app/coding/`,
             values,
             {headers: headers})
         .then(res => {
-            setState({ 
+            setState({
                 ...state,
                 predictions: res.data[0],
                 predicting: false,
@@ -147,8 +152,8 @@ export default function Coding() {
         .catch(
             e => {
                 if (e.response) {
-                    setState({ 
-                        ...state, 
+                    setState({
+                        ...state,
                         error: e.response.status,
                         predicting: false
                     });
@@ -160,7 +165,7 @@ export default function Coding() {
     }
 
 
-    // coding form 
+    // coding form
     const CodingForm = (<div>
             <Alert
                 type="info"
@@ -246,7 +251,7 @@ export default function Coding() {
                             )}
                         </Select>
                         : <span>
-                            <LoadingOutlined 
+                            <LoadingOutlined
                                 style={{ color: "#1890ff" }}
                             /> {t('please-wait')}
                         </span>
@@ -314,7 +319,7 @@ export default function Coding() {
         </div>)
 
     // resutls of coding
-    // first div is green check icon and message 
+    // first div is green check icon and message
     // the next one contains results
     // final component is feedback
     const title = (
@@ -331,7 +336,7 @@ export default function Coding() {
         data.text = data['my_input'];
         data.code = code;
         data.user = context.data.user.username; // later must be replaced
-        
+
         axios.post(
             `${context.API}/app/feedback/`,
             data,
@@ -340,7 +345,7 @@ export default function Coding() {
         .catch( e => {
             if (e.response) {
                 setState({
-                    ...state, 
+                    ...state,
                     error: e.response.status,
                     feedbackSubmitted: false,
                     selectedFeedbackCode: false,
@@ -349,7 +354,7 @@ export default function Coding() {
                 });
             } else {
                 setState({
-                    ...state, 
+                    ...state,
                     error: "40x",
                     feedbackSubmitted: false,
                     selectedFeedbackCode: false,
@@ -361,24 +366,34 @@ export default function Coding() {
     }
 
 
-    // handle codes select change 
+    // handle codes select change
     // when the predicted code not matching criteria
     const handleCodesSelectChange = value => {
         setState({...state, selectedFeedbackCode: value});
     }
-    
+
+
+    const predictingFailed = (
+        state.predictions.length === 1 && state.predictions[0] === 'None'
+    )
+
+
     const Feedback = (
         <div>
-            <div style={{ marginTop: 25 }}>
-                <Alert
-                    showIcon
-                    message={ t('coding-view.feedback-alert-message') }
-                    description={ t('coding-view.feedback-alert-description') }
-                />
-            </div>
+            {
+                predictingFailed ?
+                <div />
+                : <div style={{ marginTop: 25 }}>
+                    <Alert
+                        showIcon
+                        message={ t('coding-view.feedback-alert-message') }
+                        description={ t('coding-view.feedback-alert-description') }
+                    />
+                </div>
+            }
 
             {
-                state.codeNotCorrect ?
+                state.codeNotCorrect || predictingFailed ?
                 <div style={{ marginTop: 25 }}>
                     <Form.Item
                         label={t('coding-view.codes-select')}
@@ -393,18 +408,18 @@ export default function Coding() {
                             handleChange={handleCodesSelectChange}
                         />
                     </Form.Item>
-                    <Button 
+                    <Button
                         type="primary"
                         onClick={() => submitFeedback(state.selectedFeedbackCode)}
                     >
                         {t('submit')}
                     </Button>
-                </div> 
+                </div>
                 : <div style={{ marginTop: 15 }}>
                     <span>
                         { t('coding-view.feedback-question') }
                     </span>
-                    <Button 
+                    <Button
                         type="primary"
                         style={{ marginLeft: 10 }}
                         size="small"
@@ -412,9 +427,9 @@ export default function Coding() {
                     >
                         {t('yes')}
                     </Button>
-                    <Button 
+                    <Button
                         type="primary"
-                        danger 
+                        danger
                         style={{ marginLeft: 2 }}
                         size="small"
                         onClick={() => setState({...state, codeNotCorrect: true})}
@@ -425,26 +440,44 @@ export default function Coding() {
             }
         </div>
     )
-    
+
+
     const Predictions = (<div>
-        <div style={{ 
-            textAlign: "center", 
+        <div style={{
+            textAlign: "center",
         }}>
-            <div style={{ fontSize: 55, color: "#52c41a" }}>
-                <CheckCircleFilled />
-            </div>
+            {
+                predictingFailed ?
+                    <div>
+                        <div style={{ fontSize: 55, color: "#f5222d" }}>
+                            <CloseCircleOutlined />
+                        </div>
+                        <div>
+                            {t('messages.coding-failed')}
+                        </div>
+                    </div>
+                    : <div>
+                        <div style={{ fontSize: 55, color: "#52c41a" }}>
+                            <CheckCircleFilled />
+                        </div>
+                        <div>
+                            {t('coding-view.prediction-successful')}
+                        </div>
+                    </div>
+            }
+
             <div>
                 {
-                    state.feedbackSubmitted ? 
+                    state.feedbackSubmitted ?
                     t('coding-view.feedback-submitted-message')
-                    : t('coding-view.prediction-successful')
+                    : ""
                 }
             </div>
 
             <div style={{ marginTop: 15 }}>
                 <Button
                     type="default"
-                    onClick={ 
+                    onClick={
                         () => setState({
                             ...state,
                             predictions: [],
@@ -462,7 +495,9 @@ export default function Coding() {
         <div style={{ marginTop: 25 }}>{
             state.predictions.map(
                 (item,inx) => (
-                    <div 
+                    item === 'None' ?
+                    <div />
+                    :<div
                         key={item}
                         style={{ fontSize: 16 }}
                     >
@@ -482,9 +517,9 @@ export default function Coding() {
         }</div>
 
         <div>
-            { 
-                state.feedbackSubmitted || state.feedbackSending ? 
-                <div /> : Feedback 
+            {
+                state.feedbackSubmitted || state.feedbackSending ?
+                <div /> : Feedback
             }
         </div>
 

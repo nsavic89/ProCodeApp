@@ -46,7 +46,8 @@
         "password-changed-successfully": "La tua password è stata aggiornata con successo!",
         "are-you-sure": "Sei sicuro?",
         "no-files-uploaded": "Non è stato caricato alcun file.",
-        "file-uploaded": "Nuovo file scaricato"
+        "file-uploaded": "Nuovo file scaricato",
+        "coding-failed": "Codifica fallita"
     },
 
     "login-view": {

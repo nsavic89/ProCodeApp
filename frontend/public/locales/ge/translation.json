@@ -46,7 +46,8 @@
         "password-changed-successfully": "Passwort geändert!",
         "are-you-sure": "Sind Sie sicher?",
         "no-files-uploaded": "Keine Dateien.",
-        "file-uploaded": "Neue Datei hochladen"
+        "file-uploaded": "Neue Datei hochladen",
+        "coding-failed": "Kodierung fehlgeschlagen"
     },
 
     "login-view": {

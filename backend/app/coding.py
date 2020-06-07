@@ -38,15 +38,15 @@ def prepare_input(inputs, lng):
     }
 
     # words & characters (punctuations) that will be removed
-    unwanted = list( set(stopwords.words(lang_dict[lng])) 
+    unwanted = list( set(stopwords.words(lang_dict[lng]))
                 ) + list(string.punctuation)
-    
+
     # lemmatize the tokens
     # using spacy package
     lang_core = {
         'en': 'en_core_web_sm',
         'fr': 'fr_core_news_sm',
-        'de': 'de_core_news_sm',
+        'ge': 'de_core_news_sm',
         'it': 'it_core_news_sm'
     }
 
@@ -73,7 +73,7 @@ def prepare_input(inputs, lng):
 # only if max()-min() == 0 -> which means that
 # first trial failed to find a likely class
 # lng argument is the language of inputs
-# 
+#
 def extend_inputs_dict(inputs, probs, lng, trans_lng):
 
     # if german return
@@ -94,7 +94,7 @@ def extend_inputs_dict(inputs, probs, lng, trans_lng):
 
     # also remove stop words
     # words & characters (punctuations) that will be removed
-    unwanted = list( set(stopwords.words(lang_dict[lng])) 
+    unwanted = list( set(stopwords.words(lang_dict[lng]))
                 ) + list(string.punctuation)
 
     # translate must be performed from english (resulting after synsets)
@@ -106,8 +106,8 @@ def extend_inputs_dict(inputs, probs, lng, trans_lng):
     new_inputs = []
     for i in range(0, len(probs)):
         dif = max(probs[i]) - min(probs[i])
-        
-        # if difference is 0 
+
+        # if difference is 0
         # meaning no different probability for different classes
         # this is why it usually results in a outcome that makes no sense
         # such as for 'sécuritas' it assigns agriculture related code
@@ -127,7 +127,7 @@ def extend_inputs_dict(inputs, probs, lng, trans_lng):
                 synsets = wn.synsets(token, lang=lang_dict2[lng])
 
                 # a single token may have multiple synsets
-                for syn in synsets: 
+                for syn in synsets:
                     definition = syn.definition()
 
                     if lng != trans_lng:
@@ -135,7 +135,7 @@ def extend_inputs_dict(inputs, probs, lng, trans_lng):
                         definitions.append(trans_def)
                     else:
                         definitions.append(definition)
-            
+
             new_inputs.append(' '.join(definitions))
 
 
@@ -162,30 +162,30 @@ def code(inputs, clsf, lng, level):
     try:
         rules = CodingRules.objects.get(classification=clsf)
         max_level = rules.max_level
-        
+
         # language of training data
         languages = json.loads(rules.languages)
-        
+
         if 'any' in languages:
             td_file_lng = languages['any']
         else:
             td_file_lng = languages[lng]
-            
+
         # transcode from another classification after coding
-        # or use training data available for original 
+        # or use training data available for original
         if rules.recode_from != "this":
             later_trans_to = clsf
             clsf = rules.recode_from
-            
+
         # cannot go deeper than max_level
         if level > max_level:
             level = max_level
-            
+
         classification = Classification.objects.get(reference=clsf)
     except:
         # no given rule defined
         # this will result in an error
-        return [] 
+        return []
 
     # list of codes corresponding to classification (in try)
     codes = Code.objects.filter(parent=classification)
@@ -200,12 +200,12 @@ def code(inputs, clsf, lng, level):
     # for the selected classfication scheme :)
     if len(tdf) == 0:
         return []
-        
+
     # well, this is funny part
     # if lng of inputs is not equal to td_file_lng
-    # defined in Coding_Rules, then it must be 
+    # defined in Coding_Rules, then it must be
     # translated to td_file_lng
-    # this is how we avoid that coding for some 
+    # this is how we avoid that coding for some
     # language would not work because of lack of data
     if lng != td_file_lng:
 
@@ -220,7 +220,7 @@ def code(inputs, clsf, lng, level):
 
         for i in range(0, len(inputs)):
             inputs[i] = translator.translate(inputs[i])
-            
+
     # 1. tokenization
     # 2. clean stop words
     # 3. lemmatize
@@ -228,7 +228,7 @@ def code(inputs, clsf, lng, level):
     # that takes inputs and lng args provided here
     inputs = prepare_input(inputs, td_file_lng)
 
-    # vectorizer to transform data into td-idf 
+    # vectorizer to transform data into td-idf
     tf = TfidfVectorizer(
         analyzer="word", ngram_range=(1,2),
         min_df=0, sublinear_tf=True)
@@ -246,9 +246,9 @@ def code(inputs, clsf, lng, level):
     )
     train_text = train_text + [fb.text for fb in feedbacks]
     train_codes = train_codes + [fb.code for fb in feedbacks]
-    
+
     X = tf.fit_transform(train_text)
-    
+
     # finally, model
     # complement naive bayes
     model = ComplementNB()
@@ -271,9 +271,20 @@ def code(inputs, clsf, lng, level):
         inputs_retrial = [unidecode(i) for i in inputs_retrial]
         inputs_retrial_tf = tf.transform(inputs_retrial)
 
-        # now rerun predictions for those for which prob == 0
+        # now return predictions for those for which prob == 0
         outputs_retrial = model.predict(inputs_retrial_tf)
         outputs_retrial = outputs_retrial.tolist()
+
+        # here we remove those with probs == 0
+        # if even dictionary has zero prob then no need to keep false code
+        probs_retrial = model.predict_proba(inputs_retrial_tf)
+        for i in range(0, len(probs_retrial)):
+            dif = max(probs_retrial[i]) - min(probs_retrial[i])
+
+            if dif == 0:
+                outputs_retrial[i] = None
+
+
 
         for i in range(0, len(probs)):
             dif = max(probs[i]) - min(probs[i])
@@ -305,9 +316,9 @@ def code(inputs, clsf, lng, level):
             recodes = crosswalk.filter(code_1=code)
             recodes = [recode.code_2 for recode in recodes]
             re_outputs.append(recodes)
-        
+
         return re_outputs
 
     output = [[out] for out in output]
+    print(output)
     return output
-
