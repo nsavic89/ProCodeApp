@@ -320,5 +320,4 @@ def code(inputs, clsf, lng, level):
         return re_outputs
 
     output = [[out] for out in output]
-    print(output)
     return output

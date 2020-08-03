@@ -374,7 +374,9 @@ export default function Coding() {
 
 
     const predictingFailed = (
+        state.predictions ?
         state.predictions.length === 1 && state.predictions[0] === 'None'
+        : true
     )
 
 
@@ -441,7 +443,12 @@ export default function Coding() {
         </div>
     )
 
-
+    
+    // results contain received predictions
+    const results = (
+        state.predictions ? 
+        state.predictions : ["None"]
+    )
     const Predictions = (<div>
         <div style={{
             textAlign: "center",
@@ -493,7 +500,7 @@ export default function Coding() {
         </div>
 
         <div style={{ marginTop: 25 }}>{
-            state.predictions.map(
+            results.map(
                 (item,inx) => (
                     item === 'None' ?
                     <div />
@@ -544,7 +551,7 @@ export default function Coding() {
         return(Error)
     } else if (state.predicting) {
         return(PredictingSpin)
-    } else if (state.predictions.length > 0) {
+    } else if (results.length > 0) {
         return(Predictions)
     } else {
         return(CodingForm);

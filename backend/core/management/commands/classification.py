@@ -33,7 +33,9 @@ class Command(BaseCommand):
         # now we check if all codes are different -> no duplicates
         codes = my_file.col_values(code_index)
         codes = [str(int(code)) if type(code) is float else str(code) for code in codes]
+        codes = [code[1:len(code)] if code[0] == 'c' else code for code in codes]
         codes = [code.strip() for code in codes]
+        
         codes_set = set(codes)
         duplicates_exist = False
 
@@ -102,6 +104,10 @@ class Command(BaseCommand):
                 if type(value) is float:
                     value = str(int(value))
                 else:
+                    # check if code is preceeded with 'c'
+                    if col == code_index:
+                        if value[0] == 'c':
+                            value = value[1:len(value)]
                     value = str(value)
 
                 obj[cols[col]] = value
