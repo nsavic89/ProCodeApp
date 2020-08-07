@@ -387,6 +387,11 @@ export default function FileTable(props) {
     function getTitleByCode(clsf, code) {
         let codes = context.data.codes[clsf];
         code = codes.find(o => o.code === code);
+
+        // BUG FIX: CANNOT READ PROPERTY 'title_fr' OF UNDEFINED
+        // PATCH
+        if (!code) {return ""}
+
         let titleLng = code[title];
         if (titleLng.length > 100) {
             titleLng = titleLng.substr(0,97) + '...';
@@ -514,7 +519,9 @@ export default function FileTable(props) {
                     >{ getCodesForModal(
                         state.modify[0], state.modify[1]).map(
                             (item, inx) => (
-                                <Radio
+                                item === "None" ?
+                                <div />
+                                :<Radio
                                     style={radioStyle} value={item} key={item}
                                 >
                                     <Tag color={inx===0 ? 'geekblue':'orange'}>
