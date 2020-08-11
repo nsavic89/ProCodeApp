@@ -307,7 +307,8 @@ def download(request, pk):
                 'Content-Disposition': 'attachment; filename=download.xlsx',
             })
     
-    print(excel_ser.errors)
+    else:
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 

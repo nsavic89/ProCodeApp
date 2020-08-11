@@ -124,11 +124,11 @@ class ExcelSerializer(serializers.Serializer):
     var4 = serializers.CharField(required=False, allow_blank=True)
     var5 = serializers.CharField(required=False, allow_blank=True)
 
-    code1 = serializers.CharField(required=False)
-    code2 = serializers.CharField(required=False)
-    code3 = serializers.CharField(required=False)
-    code4 = serializers.CharField(required=False)
-    code5 = serializers.CharField(required=False)
+    code1 = serializers.CharField(required=False, allow_blank=True)
+    code2 = serializers.CharField(required=False, allow_blank=True)
+    code3 = serializers.CharField(required=False, allow_blank=True)
+    code4 = serializers.CharField(required=False, allow_blank=True)
+    code5 = serializers.CharField(required=False, allow_blank=True)
 
 
 # sign up
