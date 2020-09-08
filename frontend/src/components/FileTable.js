@@ -41,6 +41,7 @@ import RecodingDrawer from './RecodingDrawer';
 
 export default function FileTable(props) {
     const [state, setState] = useState({data: [], update:0});
+    const [searched, setSearched] = useState("");
     const { t, i18n } = useTranslation();
     const context = useContext(UserContext);
     const headers = {
@@ -254,7 +255,6 @@ export default function FileTable(props) {
         // populate data source
         // dataList is file data...every row
         let dataList = [...state.data];
-
         for (let i in dataList) {
             // one row = data
             let data = dataList[i];
@@ -262,6 +262,21 @@ export default function FileTable(props) {
             let codes = JSON.parse(data.codes);
             // other columns
             data = JSON.parse(data.data);
+
+            // if search field is not empty
+            // we filter the dataList
+            if (searched) {
+                let text = "";
+                for (let key in data) {
+                    text = text + " " + data[key];
+                }
+                text = text.toLowerCase();
+                if (!text.includes(searched.toLowerCase())) {
+                    continue;
+                }
+            }
+
+
             data.key = i;
             // classification codes for each clsf in json
             // appends clsf: codes to data (see above)
@@ -569,17 +584,36 @@ export default function FileTable(props) {
         </Modal>)
 
 
+
+    
+    // handle search entry
+    // filter those records that contain entered criteria
+    const handleSearch = e => {
+        let input = e.target.value;
+        setSearched(input);
+    }
+
+
+
+
+
+
+
     return(
         <div>
             { ModifyCodeModal }
             <Row gutter={8}>
-                <Col md={{ span: 6 }}>
+                <Col md={{ span: 3 }}>
                     <Button type="primary" onClick={props.onClose}>
                         <ArrowLeftOutlined /> { t('back') }
                     </Button>
                 </Col>
 
-                <Col md={{ span: 18 }}>
+                <Col md={{ span: 11 }}>
+                    <Input.Search onChange={handleSearch} placeholder={t('search')} />
+                </Col>
+
+                <Col md={{ span: 10 }}>
                     <div style={{ textAlign: "right" }}>
                         <Switch
                             checkedChildren={t('scroll-off')}
