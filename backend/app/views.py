@@ -134,7 +134,7 @@ class FeedbackView(APIView):
 
     # return feedbacks created by the current user
     def get(self, request):
-        queryset = Feedback.objects.filter(user=request.user.id)
+        queryset = Feedback.objects.all()
         data_ser = FeedbackSerializer(queryset, many=True)
         return Response(data_ser.data, status.HTTP_200_OK)
 

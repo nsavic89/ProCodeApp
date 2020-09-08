@@ -144,6 +144,41 @@ def extend_inputs_dict(inputs, probs, lng, trans_lng):
 
 
 
+def code_from_feedbacks(inputs, clsf, lng, level):
+    # does the same stuff as in 'code'
+    inputs = prepare_input(inputs, lng)
+    tf = TfidfVectorizer(
+        analyzer="word", ngram_range=(1,2),
+        min_df=0, sublinear_tf=True)
+
+    # filter data
+    train = Feedback.objects.filter(
+        classification=clsf,
+        level=level,
+        language=lng
+    )
+    train_text = [unidecode(t.text) for t in train]
+    train_codes = [t.code for t in train]
+    X = tf.fit_transform(train_text)
+
+    # finally, model
+    # complement naive bayes
+    model = ComplementNB()
+    model.fit(X, train_codes)
+    inputs = [unidecode(i) for i in inputs]
+    inputs_tf = tf.transform(inputs)
+    output = model.predict(inputs_tf)
+    probs = model.predict_proba(inputs_tf)
+
+    output2 = [[out] for out in output]
+    for i in range(0, len(inputs)):
+        dif = max(probs[i]) - min(probs[i])
+        if(dif == 0):
+            output2[i] = []
+    print(output2)
+    return output2
+
+
 # Coding a textual entry agains a classification
 # using training data also stored in the db
 # arguments:
@@ -151,6 +186,17 @@ def extend_inputs_dict(inputs, probs, lng, trans_lng):
 #   2. clsf: classification reference name
 #   3. lng: language of input list
 def code(inputs, clsf, lng, level):
+
+    # UPDATE: 08 September 2020 --------------------------------------------
+    # Irina demanded that feedbacks should have priority in coding
+    # to allow "faster learning" (which is basically not true technically)
+    # this PACH is just to avoid further explanations
+    feedback_outputs = code_from_feedbacks(inputs, clsf, lng, level)
+
+
+
+    # ---------------------------------------------------------------------
+
 
     # keep original entry without modifications
     # needed for nltk dict fun later
@@ -316,8 +362,14 @@ def code(inputs, clsf, lng, level):
             recodes = crosswalk.filter(code_1=code)
             recodes = [recode.code_2 for recode in recodes]
             re_outputs.append(recodes)
-
+        
+        # add results obtained through coding from feedbacks (only! -> PATCH)
+        for i in range(0, len(re_outputs)):
+            re_outputs[i] = feedback_outputs[i] + re_outputs[i]
         return re_outputs
 
     output = [[out] for out in output]
+    for i in range(0, len(output)):
+        output[i] = feedback_outputs[i] + output[i]
+        
     return output
