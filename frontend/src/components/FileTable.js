@@ -432,6 +432,10 @@ export default function FileTable(props) {
             * it also updates the data of this fil
             replaces the given code(s) with the selected one
         */
+        // spin while this action take place
+        // state will set waitResponse to true
+        // after it finishes it goes back to state with waitResponse === false
+        setState({...state, waitResponse: true});
         const codeForFeedback = state.feedback; // code for feedback - selected in modal
         let modify = [...state.modify];         // modify 0 - row in table | modify 1 - clsf
         const row = modify[0];
@@ -496,7 +500,7 @@ export default function FileTable(props) {
                     let myFileData = {...context.data.myFileData};
                     myFileData[props.myfile] = data;
                     context.fun.updateData('myFileData', myFileData);
-                    setState({...state, data: data, modify: false});
+                    setState({...state, data: data, modify: false, waitResponse: false});
                 })
             .catch(
                 e => console.log(e)
@@ -515,71 +519,77 @@ export default function FileTable(props) {
             style={{ top: '25px' }}
         >
             {
-                state.modify && state.modify !== false ?
-                <div>
-                    <Alert
-                        type="info"
-                        description={t('modify-modal.info')}
-                        showIcon
-                        style={{ marginBottom: 25 }}
-                    />
-                    <Radio.Group
-                        value={state.radioChecked}
-                        onChange={e => setState({
-                            ...state,
-                            feedback: e.target.value,
-                            radioChecked: e.target.value,
-                            codesSelect: ""
-                        })}
-                    >{ getCodesForModal(
-                        state.modify[0], state.modify[1]).map(
-                            (item, inx) => (
-                                item === "None" ?
-                                <div />
-                                :<Radio
-                                    style={radioStyle} value={item} key={item}
-                                >
-                                    <Tag color={inx===0 ? 'geekblue':'orange'}>
-                                        { item }
-                                    </Tag> <span>
-                                        { getTitleByCode(state.modify[1], item) }
-                                    </span>
-                                </Radio>
-                            )
-                    )}</Radio.Group>
-
-                    <div style={{
-                        marginTop: 15,
-                        marginBottom: 15,
-                        textAlign: "center"
-                    }}>
-                        {t('modify-modal.or')}
-                    </div>
-
-                    <div>
-                        <Form.Item
-                            label={t('modify-modal.codes-select')}
-                            labelAlign="left"
-                            labelCol={{span: 24}}
-                        >
-                           <CodesSelect
-                                title={title}
-                                reference={state.modify[1]}
-                                additionalProps={{value: state.codesSelect}}
-                                handleChange={
-                                    value => {
-                                        setState({
-                                            ...state,
-                                            feedback: value,
-                                            radioChecked: "",
-                                            codesSelect: value
-                                        })
-                                    }}
-                           />
-                       </Form.Item>
-                    </div>
+                state.waitResponse ?
+                <div style={{ textAlign: "center" }}>
+                    <Spin tip={t('please-wait')} />
                 </div>
-                : <div />
+                :<div>{
+                    state.modify && state.modify !== false ?
+                    <div>
+                        <Alert
+                            type="info"
+                            description={t('modify-modal.info')}
+                            showIcon
+                            style={{ marginBottom: 25 }}
+                        />
+                        <Radio.Group
+                            value={state.radioChecked}
+                            onChange={e => setState({
+                                ...state,
+                                feedback: e.target.value,
+                                radioChecked: e.target.value,
+                                codesSelect: ""
+                            })}
+                        >{ getCodesForModal(
+                            state.modify[0], state.modify[1]).map(
+                                (item, inx) => (
+                                    item === "None" ?
+                                    <div />
+                                    :<Radio
+                                        style={radioStyle} value={item} key={item}
+                                    >
+                                        <Tag color={inx===0 ? 'geekblue':'orange'}>
+                                            { item }
+                                        </Tag> <span>
+                                            { getTitleByCode(state.modify[1], item) }
+                                        </span>
+                                    </Radio>
+                                )
+                        )}</Radio.Group>
+    
+                        <div style={{
+                            marginTop: 15,
+                            marginBottom: 15,
+                            textAlign: "center"
+                        }}>
+                            {t('modify-modal.or')}
+                        </div>
+    
+                        <div>
+                            <Form.Item
+                                label={t('modify-modal.codes-select')}
+                                labelAlign="left"
+                                labelCol={{span: 24}}
+                            >
+                               <CodesSelect
+                                    title={title}
+                                    reference={state.modify[1]}
+                                    additionalProps={{value: state.codesSelect}}
+                                    handleChange={
+                                        value => {
+                                            setState({
+                                                ...state,
+                                                feedback: value,
+                                                radioChecked: "",
+                                                codesSelect: value
+                                            })
+                                        }}
+                               />
+                           </Form.Item>
+                        </div>
+                    </div>
+                    : <div />
+                }</div>
             }
         </Modal>)
 
