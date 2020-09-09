@@ -157,6 +157,11 @@ def code_from_feedbacks(inputs, clsf, lng, level):
         level=level,
         language=lng
     )
+
+    # if no feedbacks...return empty array of arrays
+    if len(train) < 2:
+        return [[] for i in inputs]
+
     train_text = [unidecode(t.text) for t in train]
     train_codes = [t.code for t in train]
     X = tf.fit_transform(train_text)
@@ -175,7 +180,7 @@ def code_from_feedbacks(inputs, clsf, lng, level):
         dif = max(probs[i]) - min(probs[i])
         if(dif == 0):
             output2[i] = []
-    print(output2)
+
     return output2
 
 
