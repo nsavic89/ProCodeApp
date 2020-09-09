@@ -122,6 +122,8 @@ export default function FileTable(props) {
                             context.fun.updateData('myFileData', data);
                             newState.data = res[0].data;
                             inx = 1;
+                        } else {
+                            newState.data = context.data.myFileData[props.myfile];
                         }
 
                         let codes = {...context.data.codes};
@@ -131,6 +133,7 @@ export default function FileTable(props) {
                             codes[clsf[clsf_inx]] = res[i].data;
                             clsf_inx++;
                         }
+                        
                         context.fun.updateData('codes', codes);
                         setState(newState);
                     })
@@ -254,7 +257,7 @@ export default function FileTable(props) {
 
         // populate data source
         // dataList is file data...every row
-        let dataList = [...state.data];
+        let dataList = state.data ? [...state.data] : [];
         for (let i in dataList) {
             // one row = data
             let data = dataList[i];
@@ -419,7 +422,6 @@ export default function FileTable(props) {
         height: '30px',
         lineHeight: '30px'
       };
-
     const handleFeedback = () => {
         /*
             this function is executed on OK button in the
@@ -456,7 +458,6 @@ export default function FileTable(props) {
             dataFile,
             {headers: headers}
         ))
-
 
         // feedback
         const myfile = context.data.myfiles.find(o => o.id === props.myfile);
