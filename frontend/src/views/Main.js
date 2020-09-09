@@ -160,29 +160,30 @@ export default function Main() {
                             {['ge', 'fr', 'it', 'en'].map(item => (
                                 <Button
                                     key={item}
-                                    style={{border: "none", fontSize: 16, marginLeft: 5 }}
+                                    style={{border: "none", fontSize: 16, marginLeft: 2, boxShadow: "none" }}
                                     onClick={() => i18n.changeLanguage(item)}
+                                    size="small"
                                 >{ item }
                                 </Button>
                             ))}
                         </Col>
                         <Col sm={{span: 16}} style={{ textAlign: "right" }}>
                             <Button 
-                                style={{ margin: 5, border: 0 }}
+                                style={{ margin: 5, border: 0, boxShadow: "none" }}
                                 onClick={() => setAbout(true)}
                             >
                                 <InfoCircleOutlined /> { t('about') }
                             </Button>
 
                             <Button 
-                                style={{ margin: 5, border: 0 }}
+                                style={{ margin: 5, border: 0, boxShadow: "none" }}
                                 onClick={() => setSecurity(true)}
                             >
                                 <LockOutlined /> { t('security') }
                             </Button>
 
                             <Button 
-                                style={{ margin: 5, border: 0 }}
+                                style={{ margin: 5, border: 0, boxShadow: "none" }}
                                 onClick={handleLogout}
                             >
                                 <LogoutOutlined />{ t('logout') }

@@ -170,7 +170,6 @@ export default function Coding() {
             <Alert
                 type="info"
                 showIcon
-                closable
                 message={t('coding-view.alert-message')}
                 description={t('coding-view.alert-description')}
                 style={{ marginBottom: 5 }}
@@ -188,7 +187,7 @@ export default function Coding() {
             }
 
             <Form
-                style={{ marginTop: 20 }}
+                style={{ marginTop: 50 }}
                 onFinish={handleFinish}
                 initialValues={{
                     language: i18n.language === "en-US" ? "en" : i18n.language
