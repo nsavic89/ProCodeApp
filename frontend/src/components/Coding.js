@@ -15,8 +15,8 @@ import { UserContext } from '../contexts/UserContext';
 import {
     LoadingOutlined,
     CheckCircleFilled,
-    ConsoleSqlOutlined,
-    CloseCircleOutlined
+    CloseCircleOutlined,
+    PlayCircleOutlined
 } from '@ant-design/icons';
 import axios from 'axios';
 import CodesSelect from './CodesSelect';
@@ -170,6 +170,7 @@ export default function Coding() {
             <Alert
                 type="info"
                 showIcon
+                closable
                 message={t('coding-view.alert-message')}
                 description={t('coding-view.alert-description')}
                 style={{ marginBottom: 5 }}
@@ -179,6 +180,7 @@ export default function Coding() {
                 state.selectedLanguage === 'ge' ?
                     <Alert
                         type="warning"
+                        closable
                         message={t('coding-view.german-compound-words-msg')}
                         description={t('coding-view.german-compound-words-dscr')}
                         showIcon
@@ -187,7 +189,7 @@ export default function Coding() {
             }
 
             <Form
-                style={{ marginTop: 50 }}
+                style={{ marginTop: 30 }}
                 onFinish={handleFinish}
                 initialValues={{
                     language: i18n.language === "en-US" ? "en" : i18n.language
@@ -311,7 +313,7 @@ export default function Coding() {
 
                 <Form.Item {...context.styling.tailItemLayout}>
                     <Button type="primary" danger htmlType="submit">
-                        {t('coding-view.button')}
+                        <PlayCircleOutlined /> {t('coding-view.button')}
                     </Button>
                 </Form.Item>
             </Form>

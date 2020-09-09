@@ -160,7 +160,7 @@ export default function Main() {
                             {['ge', 'fr', 'it', 'en'].map(item => (
                                 <Button
                                     key={item}
-                                    style={{border: "none", fontSize: 16, marginLeft: 2, boxShadow: "none" }}
+                                    style={{border: "none", fontSize: 16, marginRight: 2, boxShadow: "none" }}
                                     onClick={() => i18n.changeLanguage(item)}
                                     size="small"
                                 >{ item }

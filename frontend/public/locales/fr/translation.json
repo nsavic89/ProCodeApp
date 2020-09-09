@@ -69,7 +69,7 @@
     "coding-view": {
         "classification": "Nomenclature",
         "level": "Niveau",
-        "input": "Profession/activité économique",
+        "input": "Texte libre",
         "button": "Lancer codage",
         "alert-message": "Codage des données relatives aux professions/activités économiques",
         "alert-description": "Précisez la langue de la profession/activité économique du texte saisi, la nomenclature par rapport à laquelle il sera codé et le niveau du code évalué. Le niveau d'un code correspond généralement au nombre de chiffres dans ce code.",

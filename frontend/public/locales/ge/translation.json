@@ -66,7 +66,7 @@
     "coding-view": {
         "classification": "Klassifikation",
         "level": "Code-Niveau",
-        "input": "Beruf/wirtschaftliche Tätigkeit",
+        "input": "Texteingabe",
         "button": "Codierung ausführt",
         "alert-message": "Kodierung von Daten über Berufs-/Wirtschaftsaktivitäten",
         "alert-description": "Geben Sie die Sprache des Berufs-/Wirtschaftstätigkeitseintrags, die Klassifikation, gegen die der Eintrag kodiert werden soll, und den gewünschten Niveau der Vorhersage(n) an. Das eingegebene Niveau entspricht in der Regel der Anzahl der Ziffern in einem Klassifikationscode. In das letzte Feld, das kodiert wird, kann jede beliebige textliche Beschreibung eingegeben werden.",

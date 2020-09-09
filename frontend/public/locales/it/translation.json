@@ -66,7 +66,7 @@
     "coding-view": {
         "classification": "Classificazione",
         "level": "Livello di codice",
-        "input": "Occupazione / attività economica",
+        "input": "Testo libero",
         "button": "Codifica",
         "alert-message": "Codifica dei dati relativi all'attività occupazionale/economica",
         "alert-description": "Specificare la lingua della voce relativa all'occupazione o all'attività economica, la classificazione rispetto alla quale la voce sarà codificata e il livello di previsione desiderato. Il livello di inserimento corrisponde di solito al numero di cifre di un codice classificaiton. Qualsiasi descrizione testuale arbitraria può essere inserita nell'ultimo campo codificato.",

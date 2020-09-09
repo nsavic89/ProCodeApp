@@ -613,18 +613,15 @@ export default function FileTable(props) {
     return(
         <div>
             { ModifyCodeModal }
-            <Row gutter={8}>
-                <Col md={{ span: 3 }}>
-                    <Button type="primary" onClick={props.onClose}>
+            <Row gutter={4}>
+                <Col md={{ span: 4 }}>
+                    <Button onClick={props.onClose}>
                         <ArrowLeftOutlined /> { t('back') }
                     </Button>
                 </Col>
 
-                <Col md={{ span: 11 }}>
-                    <Input.Search onChange={handleSearch} placeholder={t('search')} />
-                </Col>
 
-                <Col md={{ span: 10 }}>
+                <Col md={{ span: 20 }}>
                     <div style={{ textAlign: "right" }}>
                         <Switch
                             checkedChildren={t('scroll-off')}
@@ -674,8 +671,12 @@ export default function FileTable(props) {
                     </div>
                 </Col>
             </Row>
-
-            <div style={{ marginTop: 15 }}>
+            <Row style={{ marginTop: 25 }}>
+                <Col xs={{ span: 24 }} xl={{ span: 12 }}>
+                    <Input.Search onChange={handleSearch} placeholder={t('search')} />
+                </Col>
+            </Row>
+            <div style={{ marginTop: 2 }}>
                 <Table
                     columns={columns}
                     dataSource={dataSource}
