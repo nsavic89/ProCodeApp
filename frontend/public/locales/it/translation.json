@@ -60,7 +60,8 @@
         "last-name": "Cognome",
         "email": "E-mail",
         "password2": "Confermare la password",
-        "sign-up-button": "Iscriviti"
+        "sign-up-button": "Iscriviti",
+        "sign-up-on-request": "Un nuovo conto può essere aperto solo su richiesta. Si prega di scaricare il documento utilizzando il link sottostante e di seguire le istruzioni fornite."
     },
 
     "coding-view": {

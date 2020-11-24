@@ -60,7 +60,8 @@
         "last-name": "Nachname",
         "email": "E-mail",
         "password2": "Passwort bestätigen",
-        "sign-up-button": "Anmelden"
+        "sign-up-button": "Anmelden",
+        "sign-up-on-request": "Ein neues Konto kann nur auf Antrag eröffnet werden. Bitte laden Sie das Dokument über den untenstehenden Link herunter und folgen Sie den angegebenen Anweisungen."
     },
 
     "coding-view": {

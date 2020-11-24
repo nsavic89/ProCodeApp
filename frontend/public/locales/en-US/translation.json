@@ -63,7 +63,8 @@
         "last-name": "Last name",
         "email": "E-mail",
         "password2": "Confirm password",
-        "sign-up-button": "Sign up"
+        "sign-up-button": "Sign up",
+        "sign-up-on-request": "A new account may only be open on request. Please download the document using the link below and follow the given instruction."
     },
 
     "coding-view": {

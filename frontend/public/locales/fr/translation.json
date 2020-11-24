@@ -63,7 +63,8 @@
         "last-name": "Nom",
         "email": "E-mail",
         "password2": "Confirmer le mot de passe",
-        "sign-up-button": "S'inscrire"
+        "sign-up-button": "S'inscrire",
+        "sign-up-on-request": "Un nouveau compte ne peut être ouvert que sur demande. Veulliez télécharger le document en utilisant le lien ci-dessous et suivre les instructions données."
     },
 
     "coding-view": {

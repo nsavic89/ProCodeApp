@@ -8,6 +8,7 @@ import axios from 'axios';
 import { UserContext } from '../contexts/UserContext';
 import background from '../media/background.png';
 import { GlobalOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
+import { T } from 'antd/lib/upload/utils';
 
 /*
     Login and registration
@@ -202,6 +203,24 @@ export default function Login() {
         </Form>
     )
 
+    // update: 24 Nov 2020
+    // following a zoom meeting with Irina
+    // she (for some reason) decided to exclude open registration proces
+    // but instead to provide a sign-up on request
+    // where an individual fulfills an agreement form
+    // and requests from us to open a Procode account
+
+    // link where the mentioned document can be found
+    const signUpWordDocument = "https://chuv-my.sharepoint.com/:w:/g/personal/nenad_savic_chuv_onmicrosoft_com/EQIqm4ZzQsVFuKBfUDVKoyIBqDbYuuNtOPwe4nTc40E7Rw?e=zRRWal";
+    const SignUpOnRequest = (
+        <div>
+            <p>{ t('login-view.sign-up-on-request') }</p>
+            <p><a target="_blank" href={signUpWordDocument}>
+                { t('my-files-view.download') }
+            </a></p>
+        </div>
+    )
+
     return (
         <div>
             <section className="wrapper"
@@ -280,7 +299,7 @@ export default function Login() {
                 visible={state.signUpDrawer}
                 width={350}
             >
-                {SignUpForm}
+                { SignUpOnRequest }
             </Drawer>
         </div>
     )
