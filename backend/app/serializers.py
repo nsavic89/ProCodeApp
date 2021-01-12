@@ -86,7 +86,12 @@ class MyFileSerializer(serializers.ModelSerializer):
             data = {}
 
             for col in cols:
-                data[col] = str(excel.cell_value(row, cols.index(col)))
+                cell_val = excel.cell_value(row, cols.index(col))
+
+                if isinstance(cell_val, float):
+                    data[col] = str(int(cell_val))
+                else:
+                    data[col] = str(cell_val)
             
             instances_list.append(
                 MyFileData(data=json.dumps(data), parent=my_file)
