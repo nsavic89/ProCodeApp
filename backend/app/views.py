@@ -206,7 +206,7 @@ class TranscodingView(APIView):
            
             code_2 = Crosswalk.objects.filter(
                     parent=crosswalk_file,
-                    code_1=code_1[0]
+                    code_1=code_1
                 )
             
             code_2 = [c.code_2 for c in code_2]
