@@ -9,7 +9,7 @@ click==7.1.2
 cymem==2.0.3
 de-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-2.2.5/de_core_news_sm-2.2.5.tar.gz
 distlib==0.3.0
-Django==3.0.7
+Django==3.0.14
 django-cors-headers==3.2.0
 djangorestframework==3.10.3
 djangorestframework-jwt==1.11.0
