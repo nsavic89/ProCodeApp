@@ -28,7 +28,7 @@ lxml==4.6.2
 murmurhash==1.0.2
 nltk==3.4.5
 nodeenv==1.4.0
-numpy==1.17.4
+numpy==1.22.0
 openpyxl==3.0.2
 packaging==20.4
 plac==1.1.3
