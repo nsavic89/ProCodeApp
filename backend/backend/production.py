@@ -12,9 +12,9 @@ CORS_ORIGIN_WHITELIST = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-       	'NAME': 'procode_db',
-	'USER': 'nenad',
-	'PASSWORD': 'Procode-2020',
+       	'NAME': '',
+	'USER': '',
+	'PASSWORD': '',
 	'HOST': '',
 	'PORT': ''
     }
